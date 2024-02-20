@@ -35,9 +35,21 @@
 .feedContent {
   width: 80%;
   margin: 10px auto;
+  margin-bottom: 10px;
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.buttonGroup {
+  display: flex;
+  align-items: center;
+}
+.deleteButton, .editButton {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.date {
+  margin-right: 10px;
 }
