@@ -1,0 +1,19 @@
+.login {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-content: space-around;
+  height: 100px;
+  width: 300px;
+  background-color: #2b578e;
+  padding: 10px 10px;
+  margin: 15px;
+  border-radius: 1rem;
+}
+
+.login-btn {
+  width: 100px;
+  height: 50px;
+  font-size: x-large;
+  padding: 5px;
+}
