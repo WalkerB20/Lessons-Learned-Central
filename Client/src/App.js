@@ -1,5 +1,5 @@
 
-import './components/Styles/App.css';
+import './components/styles/App.css';
 // import Footer from './components/Footer';
 // import Navbar from './components/Navbar';
 import Home from './components/Home';
