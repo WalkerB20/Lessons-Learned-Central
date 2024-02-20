@@ -5,6 +5,9 @@ services:
     build:
       context: ./Client
       dockerfile: Dockerfile
+    volumes:
+      - ./Client:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
       - "3000:3000"
     depends_on:
@@ -14,15 +17,18 @@ services:
     build:
       context: ./Server
       dockerfile: Dockerfile
+    volumes:
+      - ./Server:/usr/src/server
+      - /usr/src/server/node_modules
     ports:
       - "3001:3001"
     environment:
-    - DB_HOST=${DB_HOST}
-    - DB_PORT=${DB_PORT}
-    - DB_USER=${DB_USER}
-    - DB_PASSWORD=${DB_PASSWORD}
-    - DB_NAME=${DB_NAME}
-    - DATABASE_URL=${DATABASE_URL}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DATABASE_URL=${DATABASE_URL}
     depends_on:
       - db
 
