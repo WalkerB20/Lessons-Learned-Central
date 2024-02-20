@@ -3,7 +3,7 @@ version: '3.8'
 services:
   app:
     build:
-      context: ./Client/src
+      context: ./Client
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
