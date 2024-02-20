@@ -9,11 +9,11 @@ function App() {
   return (
 
     <div className="App">
-      <Navbar />
+      {/* <Navbar /> */}
       <header className="App-header">
-        <Home />
+        {/* <Home /> */}
       </header>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
