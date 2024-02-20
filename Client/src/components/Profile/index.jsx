@@ -6,10 +6,10 @@ const {user, isAuthenticated} = useAuth0()
   return(
     isAuthenticated && (
       <>
-        <Image src={user.picture} alt={user.name}/>
-        <P>Name: {user.name}</P>
-        <P>Username: {user.nickname}</P>
-        <P>Email: {user.email}</P>
+        <image src={user.picture} alt={user.name}/>
+        <p>Name: {user.name}</p>
+        <p>Username: {user.nickname}</p>
+        <p>Email: {user.email}</p>
       </>
     )
   )
