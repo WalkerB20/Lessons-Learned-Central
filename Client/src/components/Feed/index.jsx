@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/App.css';
+import '../styles/Feed.css';
 
 const Feed = () => {
  // State to manage the likes for each feed content
