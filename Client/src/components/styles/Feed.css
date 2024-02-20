@@ -1,0 +1,55 @@
+/* FEED CSS */
+
+.feed {
+  width: 80%;
+  margin: 20px auto;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: rgb(198, 195, 195);
+}
+.feedHeader, .feedHeader h1 {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(198, 195, 195);
+  margin-top: 0px;
+}
+.feedHeader select {
+  display: inline-block;
+  width: 8%;
+  height: 40px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  border: 2px solid #000;
+  border-radius: 5px;
+  margin-top: 0px;
+  cursor: pointer;
+  text-decoration: none;
+  background-color: rgb(198, 195, 195);
+}
+.feedContentContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(198, 195, 195);
+}
+.feedContent {
+  width: 80%;
+  margin: 10px auto;
+  margin-bottom: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.buttonGroup {
+  display: flex;
+  align-items: center;
+}
+.deleteButton, .editButton {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.date {
+  margin-right: 10px;
+}
