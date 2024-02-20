@@ -1,8 +1,10 @@
 import express from 'express';
 import knex from 'knex';
-import knexfile from './knexfile.js';
+import { knexfile } from './knexfile.js';
+import { config } from 'dotenv';
+config();
 
-// Server Configurationq
+// Server Configuration
 const app = express();
 const PORT = process.env.PORT || 3001;
 const db = knex(knexfile[process.env.NODE_ENV || 'development']);
@@ -16,10 +18,9 @@ app.get("/", (req, res) => {
 });
 
 // Server Route to get database
-app.get("/llc", async (req, res) => {
-    res.send("Welcome to the LLC Database!");
-    const llc = await db.select().from('llc');
-    res.json(llc);
+app.get("/AAR", async (req, res) => {
+    const aar = await db.select().from('AAR');
+    res.json(aar);
 });
 
 // PORT Listener
