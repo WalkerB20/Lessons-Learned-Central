@@ -6,7 +6,15 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <Router>
-    <App />
-  </Router>
+  <React.StrictMode>
+    {/* <Auth0Provider
+      domain={domain}
+      clientId={clientId}
+      redirectUri={window.location.origin}
+      > */}
+    {/* <AppProvider> */}
+          <App />
+        {/* </AppProvider> */}
+    {/* </Auth0Provider> */}
+  </React.StrictMode>
 );
