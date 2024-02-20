@@ -1,3 +1,4 @@
+import Login from '../Login';
 
 const Home = () => {
 
@@ -6,6 +7,7 @@ const Home = () => {
     <div className='home'>
       <h1>ARMY LESSONS LEARNED</h1>
     </div>
+    <Login />
     </>
   )
 }
