@@ -7,7 +7,15 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    {/* <Auth0Provider
+      domain={domain}
+      clientId={clientId}
+      redirectUri={window.location.origin}
+      > */}
+    {/* <AppProvider> */}
+          <App />
+        {/* </AppProvider> */}
+    {/* </Auth0Provider> */}
   </React.StrictMode>
 );
 
