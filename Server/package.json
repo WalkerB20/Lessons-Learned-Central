@@ -2,7 +2,7 @@
   "name": "LLC Server",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
+  "notes": "npm start or npm run start-dev to start the server",
   "main": "server.js",
   "dependencies": {
     "abbrev": "^1.1.1",
@@ -140,10 +140,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "migrate": "knex migrate:latest",
-    "rollback": "knex migrate:rollback",
-    "seed": "knex seed:run"
+    "start": "nodemon server.js",
+    "start-dev": "knex migrate:rollback && knex migrate:latest"
   },
   "keywords": [
     "LLC"
