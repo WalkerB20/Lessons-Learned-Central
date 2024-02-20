@@ -3,7 +3,7 @@ version: '3.8'
 services:
   app:
     build:
-      context: ./client/src
+      context: ./Client/src
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
@@ -12,12 +12,12 @@ services:
 
   server:
     build:
-      context: ./server
+      context: ./Server
       dockerfile: Dockerfile
     ports:
       - "3001:3001"
     environment:
-      DATABASE_URL: postgresql://llcadmin:lessonslearned123@db:5432/llc_db
+      DATABASE_URL: ${DATABASE_URL}
     depends_on:
       - db
 
@@ -26,9 +26,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: llc_db
-      POSTGRES_USER: llcadmin
-      POSTGRES_PASSWORD: lessonslearned123
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
 
