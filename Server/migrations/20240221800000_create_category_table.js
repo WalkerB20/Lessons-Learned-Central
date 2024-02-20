@@ -2,7 +2,7 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function(knex) {
+export const up = function(knex) {
   return knex.schema.createTable('Category', function(table) {
     table.increments('Category_ID').primary();
     table.integer('Range_ID').unsigned();
@@ -24,7 +24,7 @@ exports.up = function(knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function(knex) {
+export const down = function(knex) {
   return knex.schema.alterTable('Category', function(table) {
     table.dropForeign('Range_ID');
     table.dropForeign('Deployment_ID');

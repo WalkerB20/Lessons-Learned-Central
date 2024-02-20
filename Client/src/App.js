@@ -1,8 +1,9 @@
 
-// import Footer from './components/Footer';
-// import Navbar from './components/Navbar';
-// import Home from './components/Home';
-import './components/styles/App.css';
+//import './App.css';
+import Footer from './components/Footer/index.jsx';
+import Navbar from './components/Navbar/index.jsx';
+import Home from './components/Home/index.jsx';
+import './components/Styles/App.css';
 
 function App() {
   return (

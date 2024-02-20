@@ -6,7 +6,7 @@ config();
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
-export const knexfile = {
+const knexfile = {
 
     development: {
       client: 'pg',
@@ -41,3 +41,5 @@ export const knexfile = {
       },
     },
 };
+
+export default knexfile;
