@@ -15,9 +15,9 @@ app.get("/", (req, res) => {
     res.send("Welcome to the Server!");
 });
 
-// Server Route to get all the LLCs database
+// Server Route to get database
 app.get("/llc", async (req, res) => {
-    res.send("Welcome to the LLC Route!");
+    res.send("Welcome to the LLC Database!");
     const llc = await db.select().from('llc');
     res.json(llc);
 });
