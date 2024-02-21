@@ -16,7 +16,7 @@ RUN npm install -g nodemon
 # Bundle app source
 COPY . .
 
-# Your app binds to port 3000 so you'll use the EXPOSE instruction to have it mapped by the docker daemon
+# Your app binds to port 3001 so you'll use the EXPOSE instruction to have it mapped by the docker daemon
 EXPOSE 3001
 
 # Define the command to run your app using CMD which defines your runtime
