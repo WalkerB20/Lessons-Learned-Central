@@ -4,6 +4,31 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
 
 export default function AARComponent() {
+
+  const url = 'http://localhost:3000/llc';
+
+  const data = {
+    eventTitle: 'Sample Event',
+    eventType: 'Sample Type',
+    eventDate: '2024-02-21',
+    eventLocation: 'Sample Location',
+    commentsForSustain: 'Sample Sustain Comment',
+    commentsForImprove: 'Sample Improve Comment'
+  };
+
+  fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+
   const [formData, setFormData] = useState({
     eventTitle: '',
     eventType: '',
