@@ -1,8 +1,7 @@
 import React from 'react';
 import {useAuth0} from '@auth0/auth0-react';
-import './LoginButton.css';
-
-const LoginButton = () => {
+import '../Styles/Login.css'
+const Login = () => {
   const {isAuthenticated, loginWithPopup} = useAuth0()
  return(
    !isAuthenticated && (
@@ -13,4 +12,4 @@ const LoginButton = () => {
  )
 }
 
-export default LoginButton
+export default Login

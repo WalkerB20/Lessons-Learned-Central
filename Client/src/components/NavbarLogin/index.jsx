@@ -1,14 +1,14 @@
 import React from 'react';
 // import {StyledNavbar} from './Styles'
-import LoginButton from './LoginButton';
-import LogoutButton from './LogoutButton';
-import './LoginButton.css';
+import Login from '../Login';
+import Logout from '../Logout';
+import '../Styles/Login.css';
 
 const NavbarLogin = () => {
   return (
     <>
-      <LoginButton/>
-      <LogoutButton/>
+      <Login/>
+      <Logout/>
     </>
   )
 }

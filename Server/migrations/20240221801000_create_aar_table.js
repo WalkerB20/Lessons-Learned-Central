@@ -8,7 +8,7 @@ export const up = function(knex) {
     table.string('AAR_Name');
     table.string('AAR_Location');
     table.date('AAR_Activity_Date');
-    table.integer('AAR_Duration');
+    table.float('AAR_Duration');
     table.integer('Event_ID').unique();
     table.integer('User_ID').unsigned();
     table.foreign('User_ID').references('User.User_ID');

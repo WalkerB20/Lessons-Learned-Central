@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa";
-import '../styles/Feed.css';
+import '../Styles/Feed.css';
 
 const Feed = () => {
   // State to manage the likes for each feed content
