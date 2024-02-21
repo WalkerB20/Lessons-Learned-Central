@@ -1,7 +1,7 @@
 import Feed from '../Feed';
 import Navbar from '../Navbar';
 import AARComponent from '../AARComponent';
-import '../styles/App.css';
+import '../Styles/App.css';
 
 
 const Home = () => {
