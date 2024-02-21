@@ -2,14 +2,14 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.seed = async function(knex) {
+export async function seed(knex) {
   // Deletes ALL existing entries
   await knex('Equipment').del()
   await knex('Equipment').insert([
-    {Airborne_Operation_ID: 1, Aircraft: "C-130", JMPI: "Completed", JM_rehearsals: "Conducted"},
-    {Airborne_Operation_ID: 2, Aircraft: "Chinook", JMPI: "Pending", JM_rehearsals: "Scheduled"},
-    {Airborne_Operation_ID: 3, Aircraft: "Black Hawk", JMPI: "Completed", JM_rehearsals: "Not Conducted"},
-    {Airborne_Operation_ID: 4, Aircraft: "Osprey", JMPI: "Completed", JM_rehearsals: "Conducted"},
-    {Airborne_Operation_ID: 5, Aircraft: "Apache", JMPI: "Pending", JM_rehearsals: "Scheduled"}
+    {Equipment_ID: 1, Type: "Radio", Status: "Operational"},
+    {Equipment_ID: 2, Type: "Night Vision Goggles", Status: "Under Maintenance"},
+    {Equipment_ID: 3, Type: "Body Armor", Status: "In Stock"},
+    {Equipment_ID: 4, Type: "Rifles", Status: "Issued"},
+    {Equipment_ID: 5, Type: "Grenades", Status: "Low Inventory"}
   ]);
 };
