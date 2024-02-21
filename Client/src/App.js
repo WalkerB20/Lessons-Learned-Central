@@ -1,12 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import './components/styles/App.css';
+import './components/Styles/App.css';
 // import Footer from './components/Footer';
 // import Navbar from './components/Navbar';
 // import Home from './components/Home';
-import AARComponent from './components/AARComponent';
-import NavbarLogin from './components/NavbarLogin';
-import './components/styles/App.css';
-import Home from './components/Home';
+import AARComponent from './components/AARComponent/index';
+import NavbarLogin from './components/NavbarLogin/index';
+import Home from './components/Home/index';
 
 export default function App() {
   return (
