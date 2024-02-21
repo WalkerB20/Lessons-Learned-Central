@@ -1,6 +1,6 @@
 import AAR from '../AAR';
 import Search from '../Search';
-import '../styles/Navbar.css';
+import '../Styles/Navbar.css';
 
 const Navbar = () => {
   return (

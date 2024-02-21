@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/Feed.css';
+import '../Styles/Feed.css';
 
 const Feed = () => {
   // State to manage the likes for each feed content
@@ -29,7 +29,7 @@ const Feed = () => {
       {/* This will just have to be mapped with feed content */}
       <div className="feedContentContainer">
         <div className="feedContent">
-          <h3>Placeholder for feed 1</h3>
+          <h3>Testing testing 1 2</h3>
           <div className="buttonGroup">
             <button className="deleteButton" type="button">
               Delete

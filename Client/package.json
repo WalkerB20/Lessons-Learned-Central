@@ -2,6 +2,7 @@
   "name": "lessons-learned-central",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
     "@testing-library/jest-dom": "^5.17.0",

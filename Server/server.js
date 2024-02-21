@@ -17,6 +17,11 @@ app.get("/", (req, res) => {
     res.send("Welcome to the Server!");
 });
 
+// Test
+app.get("/test", (req, res) => {
+    res.send("Why are you here?");
+});
+
 // Server Route to get database
 app.get("/AAR", async (req, res) => {
     const aar = await db.select().from('AAR');
