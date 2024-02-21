@@ -1,14 +1,13 @@
-import AAR from '../AAR';
+
+import { Link } from 'react-router-dom';
 import Search from '../Search';
 import '../styles/Navbar.css';
 
-const Navbar = () => {
+export default function Navbar() {
   return (
     <nav className="navbar">
-      <AAR />
-      <Search />
+      <Link to="/aar" className="aar">AAR</Link>
+        <Search />
     </nav>
-  )
-}
-
-export default Navbar;
+  );
+};
