@@ -1,6 +1,6 @@
 import Feed from '../Feed';
 import Navbar from '../Navbar';
-import '../styles/App.css';
+import '../Styles/App.css';
 
 
 const Home = () => {

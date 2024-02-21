@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import styles from '../styles/AARComponent.css';
+import styles from '../Styles/AARComponent.css';
 
 export default function AARComponent() {
   const [formData, setFormData] = useState({
