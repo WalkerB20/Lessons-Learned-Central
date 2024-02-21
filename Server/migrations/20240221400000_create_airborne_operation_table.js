@@ -2,7 +2,7 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function(knex) {
+export const up = function(knex) {
   return knex.schema.createTable('Airborne_Operation', function(table) {
     table.increments('Airborne_Operation_ID').primary();
     table.string('Aircraft');
@@ -15,6 +15,6 @@ exports.up = function(knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function(knex) {
+export const down = function(knex) {
   return knex.schema.dropTableIfExists('Airborne_Operation');
 };

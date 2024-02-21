@@ -1,0 +1,22 @@
+/* Navbar CSS */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 8px auto;
+  margin-left: 8.8em;
+  margin-right: 8.8em;
+
+}
+.navbar input, .navbar button {
+  font-size: 16px;
+  outline: none;
+  border:#000;
+  border: 2px solid #000;
+  background: none;
+  padding: 8px;
+  margin: 0;
+}

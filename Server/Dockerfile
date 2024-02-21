@@ -8,7 +8,10 @@ WORKDIR /usr/src/server
 COPY package*.json ./
 
 # Install any dependencies
-RUN npm install
+RUN npm install --legacy-peer-deps
+
+# Install nodemon for development
+RUN npm install -g nodemon
 
 # Bundle app source
 COPY . .
@@ -17,4 +20,4 @@ COPY . .
 EXPOSE 3001
 
 # Define the command to run your app using CMD which defines your runtime
-CMD [ "node", "server.js" ]
+CMD [ "nodemon", "server.js" ]

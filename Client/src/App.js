@@ -1,6 +1,8 @@
 
+import './components/styles/App.css';
 // import Footer from './components/Footer';
 // import Navbar from './components/Navbar';
+
 // import Home from './components/Home';
 import NavbarLogin from './components/NavbarLogin';
 import './components/styles/App.css';
@@ -15,6 +17,7 @@ function App() {
         {/* <Home /> */}
       </header>
       {/* <Footer /> */}
+
     </div>
         </>
   );
