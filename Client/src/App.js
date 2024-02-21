@@ -3,9 +3,9 @@ import './components/Styles/App.css';
 // import Footer from './components/Footer';
 // import Navbar from './components/Navbar';
 // import Home from './components/Home';
-import AARComponent from './components/AARComponent/index';
-import NavbarLogin from './components/NavbarLogin/index';
-import Home from './components/Home/index';
+import AARComponent from './components/AARComponent/index.jsx';
+import NavbarLogin from './components/NavbarLogin/index.jsx';
+import Home from './components/Home/index.jsx';
 
 export default function App() {
   return (
