@@ -8,9 +8,14 @@
   padding: 10px 20px;
   margin: 8px auto;
   margin-left: 8.8em;
-  margin-right: 8.8em;
-
+  /* margin-right: 8.8em; - had to comment this out to keep the spacing in line with the feed portion*/
 }
+
+.navbar .aar {
+  font-size: 16px; /* Had to adjust font size due to the <Link> defaults */
+  text-decoration: none; /* Added this portion to remove underline defaulted from the <Link>*/
+}
+
 .navbar input, .navbar button {
   font-size: 16px;
   outline: none;

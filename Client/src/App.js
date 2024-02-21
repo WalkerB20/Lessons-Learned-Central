@@ -1,15 +1,23 @@
-
-import './components/Styles/App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './components/styles/App.css';
 // import Footer from './components/Footer';
 // import Navbar from './components/Navbar';
-import Home from './components/Home/index.jsx';
+// import Home from './components/Home';
+import AARComponent from './components/AARComponent';
+import NavbarLogin from './components/NavbarLogin';
+import './components/styles/App.css';
+import Home from './components/Home';
 
-function App() {
+export default function App() {
   return (
-    <div className='App'>
-      <Home />
-    </div>
+    <Router>
+      <div className="App">
+        <NavbarLogin />
+          <Routes>
+            <Route path="/aar" element={<AARComponent />} />
+            <Route exact path="/" element={<Home />} />
+          </Routes>
+      </div>
+    </Router>
   );
 }
-
-export default App;

@@ -1,7 +1,6 @@
 import Feed from '../Feed';
 import Navbar from '../Navbar';
-import AARComponent from '../AARComponent';
-import '../Styles/App.css';
+import '../styles/App.css';
 
 
 const Home = () => {
@@ -9,7 +8,6 @@ const Home = () => {
     <div className="home">
       <Navbar />
       <Feed />
-      <AARComponent />
     </div>
 
   )

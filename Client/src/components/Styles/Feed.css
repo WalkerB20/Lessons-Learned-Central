@@ -39,6 +39,7 @@
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
+  position: relative;
   justify-content: space-between;
   align-items: center;
 }
@@ -52,4 +53,28 @@
 }
 .date {
   margin-right: 10px;
+}
+.toggleButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  font-size: 20px;
+}
+.feedDropdown {
+  display: block;
+  position: absolute;
+  top: calc(100%);
+  left: 0;
+  width: 99%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 5.8px;
+}
+.viewByButton {
+  display: flex;
+  margin-left: 8.5em;
+  font-weight: bold;
+  cursor: pointer;
+  background-color: rgb(198, 195, 195);
 }
