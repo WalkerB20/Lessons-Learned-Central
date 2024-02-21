@@ -1,8 +1,8 @@
 import React from 'react';
-import './LoginButton.css';
+import '../styles/Login.css';
 import {useAuth0} from '@auth0/auth0-react';
 
-export default function LogoutButton() {
+export default function Logout() {
   const {isAuthenticated, logout} = useAuth0()
 
   return(
