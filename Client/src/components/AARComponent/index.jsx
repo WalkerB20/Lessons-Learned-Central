@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
@@ -17,24 +17,58 @@ export default function AARComponent() {
     eventDate: new Date()//for the calendar
   });
 
+  const [rangeItems, setRangeItems] = useState([]);
+  const [deploymentItems, setDeploymentItems] = useState([]);
+  const [ftxItems, setFtxItems] = useState([]);
+  const [equipmentItems, setEquipmentItems] = useState([]);
+  const [airborneOpsItems, setAirborneOpsItems] = useState([]);
+
+  useEffect(() => {
+    // Fetch data based on the event type
+    // Replace with your actual URLs
+    switch(formData.eventType) {
+      case 'Range':
+        fetch('http://localhost:3001/aar/rangeItems')
+          .then(response => response.json())
+          .then(data => setRangeItems(data));
+        break;
+      case 'Deployment':
+        fetch('http://localhost:3001/aar/deploymentItems')
+          .then(response => response.json())
+          .then(data => setDeploymentItems(data));
+        break;
+      case 'FTX':
+        fetch('http://localhost:3001/aar/ftxItems')
+          .then(response => response.json())
+          .then(data => setFtxItems(data));
+        break;
+      case 'Equipment':
+        fetch('http://localhost:3001/aar/equipmentItems')
+          .then(response => response.json())
+          .then(data => setEquipmentItems(data));
+        break;
+      case 'AirborneOps':
+        fetch('http://localhost:3001/aar/airborneOpsItems')
+          .then(response => response.json())
+          .then(data => setAirborneOpsItems(data));
+        break;
+      default:
+        break;
+    }
+  }, [formData.eventType]);
+
   const handleChange = (e) => {
-    console.log('handleChange called');//console to debug
     const { name, value } = e.target;
-    console.log('Name:', name, 'Value:', value);//console to debug
-    if (name === 'eventType') {
+    let additionalOptions = formData.additionalOptions;
+    if (name === 'eventType' && value === 'Range' && !rangeItems.find(item => item.Range_ID === value)) {
+      additionalOptions = 'Other';
+    }
     setFormData({
       ...formData,
       [name]: value,
-      additionalOptions: '',
-      eventDate: new Date()
+      additionalOptions
     });
-  } else {
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  }
-};
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -59,7 +93,7 @@ export default function AARComponent() {
     setFormData({
       eventTitle: '',
       eventType: '',
-      eventDate: '',
+      eventDate: new Date(),
       eventLocation: '',
       commentsSustain: '',
       commentsImprove: '',
@@ -75,115 +109,55 @@ export default function AARComponent() {
   };
 
   const renderAdditionalOptions = () => {
-    switch (formData.eventType) {
+    switch(formData.eventType) {
       case 'Range':
         return (
           <>
-            <option value="M4">M4</option>
-            <option value="240B">240B</option>
-            <option value="320">320</option>
-            <option value="M9">M9</option>
-            <option value="Other">Other</option>
-              {/* {/* {formData.additionalOptions === 'Other' ? (
-              <input
-                type="text"
-                name="additionalOptions"
-                value={formData.additionalOptions}
-                onChange={handleChange} */}
-              {/* />
-            ) : null} */}
+            {rangeItems.map(item => (
+              <option key={item.Range_ID} value={item.Range_ID}>{item.Event_Type}</option>
+            ))}
           </>
         );
-
       case 'Deployment':
         return (
           <>
-            <option value="GCC">GCC</option>
-            <option value="Pre-deployment">Pre-deployment</option>
-            <option value="Packinglist">Packing List</option>
-            <option value="Equipment">Equipment</option>
-            <option value="Post-deployment">Post-deployment</option>
-            <option value="Other">Other</option>
-            {/* {/* {formData.additionalOptions === 'Other' ? (
-              <input
-                type="text"
-                name="additionalOptions"
-                value={formData.additionalOptions}
-                onChange={handleChange}
-              />
-            ) : null} */}
+            {deploymentItems.map(item => (
+              <React.Fragment key={item.Deployment_ID}>
+                <option value={item.Deployment_ID}>{item.Event_Type}</option>
+              </React.Fragment>
+            ))}
           </>
         );
-
-        case 'FTX':
-          return (
-            <>
-              <option value="TNGSite">Training Site</option>
-              <option value="Logistics">Logistics</option>
-              <option value="TNGModules">Training Modules</option>
-              <option value="LeadUpTraining">Lead-up Training</option>
-              <option value="Packinglist">Packing List</option>
-              <option value="Other">Other</option>
-              {/* {formData.additionalOptions === 'Other' ? (
-                <input
-                  type="text"
-                  name="additionalOptions"
-                  value={formData.additionalOptions}
-                  onChange={handleChange}
-                />
-              ) : null} */}
-            </>
-          );
-
-          case 'Equipment':
-            return (
-              <>
-                <option value="EquipmentType">Equipment Type</option>
-                <option value="EquipmentStatus">Equipment Status</option>
-                {/* {formData.additionalOptions === 'Other' ? (
-                  <input
-                    type="text"
-                    name="additionalOptions"
-                    value={formData.additionalOptions}
-                    onChange={handleChange}
-                  />
-                ) : null} */}
-              </>
-            );
-            case 'AirborneOps':
-              return (
-                <>
-                  <option value="JumpManifest">Jump Manifest</option>
-                  <option value="JumpStatus">Jump Status</option>
-                  <option value="JumpEquipment">Jump Equipment</option>
-                  <option value="JumpSafety">Jump Safety</option>
-                  <option value="JumpmasterRehearsals">Jumpmaster Rehearsals</option>
-                  <option value="JMPI">JMPI</option>
-                  {/* {formData.additionalOptions === 'Other' ? (
-                    <input
-                      type="text"
-                      name="additionalOptions"
-                      value={formData.additionalOptions}
-                      onChange={handleChange}
-                    />
-                  ) : null} */}
-                </>
-              );
-            case 'Other':
-              return (
-                <>
-                  <option value="Other">Other</option>
-                    {/* {formData.additionalOptions === 'Other' ? (
-                      <input
-                        type="text"
-                        name="additionalOptions"
-                        value={formData.additionalOptions}
-                        onChange={handleChange}
-                      />
-                    ) : null} */}
-                </>
-              );
-
+      case 'FTX':
+        return (
+          <>
+            {ftxItems.map(item => (
+              <React.Fragment key={item.FTX_ID}>
+              <option key={item.FTX_ID}>{item.Event_Type}</option>
+              </React.Fragment>
+            ))}
+          </>
+        );
+      case 'Equipment':
+        return (
+          <>
+            {equipmentItems.map(item => (
+              <React.Fragment key={item.Equipment_ID}>
+              <option key={item.Equipment_ID}>{item.Event_Type}</option>
+              </React.Fragment>
+            ))}
+          </>
+        );
+      case 'AirborneOps':
+        return (
+          <>
+            {airborneOpsItems.map(item => (
+              <React.Fragment key={item.Airborne_Operation_ID}>
+              <option key={item.Airborne_Operation_ID}>{item.Event_Type}</option>
+              </React.Fragment>
+            ))}
+          </>
+        );
       default:
         return null;
     }

@@ -11,6 +11,7 @@ const router = express.Router();
 const PORT = process.env.PORT || 3001;
 const db = knex(knexfile[process.env.NODE_ENV || 'development']);
 
+
 // MIDDLEWARE
 app.use(cors());
 app.use(express.json());
@@ -41,12 +42,57 @@ app.listen(PORT, (err) => {
 });
 
 // TESTING ROUTE
-app.get("/test", (req, res, next) => {
+app.get("/aar", (req, res, next) => {
     try {
-        res.send("Why are you here?");
+        res.send("Welcome to the AAR route!");
     } catch (err) {
         next({ message: 'Error occurred while handling /test route', originalError: err });
     }
+});
+
+app.get('/aar/rangeItems', async (req, res) => {
+  try {
+    const rangeItems = await db.select('Event_Type').from('Range');
+    res.json(rangeItems);
+  } catch (err) {
+    res.status(500).json({ message: `Error occurred while fetching range items: ${err.message}` });
+  }
+});
+
+app.get('/aar/deploymentItems', async (req, res) => {
+  try {
+    const deploymentItems = await db.select('Event_Type').from('Deployment');
+    res.json(deploymentItems);
+  } catch (err) {
+    res.status(500).json({ message: `Error occurred while fetching deployment items: ${err.message}` });
+  }
+});
+
+app.get('/aar/ftxItems', async (req, res) => {
+  try {
+    const ftxItems = await db.select('Event_Type').from('FTX');
+    res.json(ftxItems);
+  } catch (err) {
+    res.status(500).json({ message: `Error occurred while fetching ftx items: ${err.message}` });
+  }
+});
+
+app.get('/aar/equipmentItems', async (req, res) => {
+  try {
+    const equipmentItems = await db.select('Event_Type').from('Equipment');
+    res.json(equipmentItems);
+  } catch (err) {
+    res.status(500).json({ message: `Error occurred while fetching equipment items: ${err.message}` });
+  }
+});
+
+app.get('/aar/airborneOpsItems', async (req, res) => {
+  try {
+    const airborneOpsItems = await db.select('Event_Type').from('Airborne_Operation');
+    res.json(airborneOpsItems);
+  } catch (err) {
+    res.status(500).json({ message: `Error occurred while fetching Airborne Operation items: ${err.message}` });
+  }
 });
 
 // DATABASE ROUTES
@@ -62,18 +108,21 @@ app.get("/llc", async (req, res, next) => {
     }
 });
 
+
+
 router.post('/llc', async (req, res) => {
   const { eventTitle, eventType, eventDate, eventLocation, commentsForSustain, commentsForImprove, categoryId, userId, eventId } = req.body;
 
   try {
     // Start a transaction because we're making multiple related changes
     await db.transaction(async trx => {
+
       const [aar] = await trx('AAR').insert({
         AAR_Name: eventTitle,
         AAR_Location: eventLocation,
         AAR_Activity_Date: eventDate,
         User_ID: userId,
-        Event_ID: eventId
+        Event_ID: eventId,
       }).returning('AAR_ID');
 
       const aarId = aar.AAR_ID; // Extract the AAR_ID from the returned object
