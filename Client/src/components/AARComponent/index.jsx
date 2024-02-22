@@ -4,16 +4,19 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
 
 export default function AARComponent() {
-
   const url = 'http://localhost:3001/llc';
-
   const [formData, setFormData] = useState({
     eventTitle: '',
     eventType: '',
     eventLocation: '',
+    sustainTitle: '',
     commentsSustain: '',
+    recommendationsSustain: '',
+    improveTitle: '',
     commentsImprove: '',
-    additionalOptions: '',//needed for the extra input field
+    recommendationsImprove: '',
+    additionalOptions: '',//needed for the extra options field
+    additionalInput: '',//needed for the extra input field
     eventDate: new Date()//for the calendar
   });
 
@@ -33,11 +36,11 @@ export default function AARComponent() {
       ...formData,
       [name]: value
     });
-  }
+  };
 };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
     // Handles the form submission
     console.log('Form submitted:', formData);
 
@@ -59,11 +62,16 @@ export default function AARComponent() {
     setFormData({
       eventTitle: '',
       eventType: '',
-      eventDate: '',
+      eventDate: new Date(),
       eventLocation: '',
+      sustainTitle: '',
       commentsSustain: '',
+      recommendationsSustain: '',
+      improveTitle: '',
       commentsImprove: '',
-      additionalOptions: '' //needed for the extra input field
+      recommendationsImprove: '',
+      additionalOptions: '', //needed for the extra input field
+      additionalInput: '',//needed for the extra input field
     });
   };
 
@@ -75,7 +83,7 @@ export default function AARComponent() {
   };
 
   const renderAdditionalOptions = () => {
-    switch (formData.eventType) {
+    switch(formData.eventType) {
       case 'Range':
         return (
           <>
@@ -94,7 +102,6 @@ export default function AARComponent() {
             ) : null} */}
           </>
         );
-
       case 'Deployment':
         return (
           <>
@@ -196,10 +203,9 @@ export default function AARComponent() {
         <div className="form-group">
 
           <label>Event Title:</label>
-          <input type="text" name="eventTitle" value={formData.eventTitle} onChange={handleChange} />
+          <input type="text" placeholder="Give a title to your event" name="eventTitle" value={formData.eventTitle} onChange={handleChange} />
 
           <label>Event Type:</label>
-          {/* <div className="event-type-select"> */}
             <select name="eventType" value={formData.eventType} onChange={handleChange}>
               <option value="Select">Select an option</option>
               <option value="Range">Range</option>
@@ -209,38 +215,90 @@ export default function AARComponent() {
               <option value="AirborneOps">Airborne Operations</option>
               <option value="Other">Other</option>
             </select>
-            {/* <span className="helper-text">Please select the type of event</span> */}
-          {/* </div> */}
-          {formData.eventType && (
+
+          {formData.eventType && formData.eventType !== 'Other' && (
             <>
               <label>Additional Options:</label> {/*can change name to whatever*/}
-              <select name="additionalOptions" onChange={handleChange}>
+              <select
+                name="additionalOptions"
+                value={formData.additionalOptions}
+                onChange={handleChange}
+              >
                 <option value="">Select...</option>
                 {renderAdditionalOptions()}
               </select>
+
+              {formData.additionalOptions === 'Other' && (
+                <input
+                  type="text"
+                  name="additionalInput"
+                  value={formData.additionalInput}
+                  onChange={handleChange}
+                  placeholder="Provide additional information"/>  /*can change name to whatever*/
+              )}
             </>
           )}
+
+              {formData.eventType === 'Other' && (
+                <>
+                  <label>Additional Information:</label> {/* we can change this to whatever we want*/}
+                  <input
+                    type="text"
+                    name="additionalInput"
+                    value={formData.additionalInput}
+                    onChange={handleChange}
+                    placeholder="Provide additional information"/>  {/*can change to whatever as well*/}
+                </>
+              )}
 
           <label>Event Date:</label>
           <DatePicker
             selected={formData.eventDate}
             onChange={handleDateChange}
-            dateFormat="yyyy-MM-dd" // Adjust date format as needed
+            dateFormat="yyyy-MM-dd" // date format can be adjusted if we need to
             className={styles.datePicker}
           />
 
           <label>Event Location:</label>
-          <input type="text" name="eventLocation" value={formData.eventLocation} onChange={handleChange} />
+          <input type="text" placeholder="Where did your event take place?" name="eventLocation" value={formData.eventLocation} onChange={handleChange} />
 
-          <label>Comments for Sustain:</label>
-          <textarea name="commentsSustain" value={formData.commentsSustain} onChange={handleChange}></textarea>
+          <label>Sustain:</label>
+          <input
+            type="text"
+            placeholder="Your sustain title here."
+            name="sustainTitle"
+            value={formData.sustainTitle}
+            onChange={handleChange}/>
+          <textarea
+            name="commentsSustain"
+            placeholder='Discussion. What happened?'
+            value={formData.commentsSustain}
+            onChange={handleChange}></textarea>
+          <textarea
+            name="recommendationsSustain"
+            placeholder='Recommendation. What can be sustained for the future?'
+            value={formData.recommendationsSustain}
+            onChange={handleChange}></textarea>
 
-          <label>Comments for Improve:</label>
-          <textarea name="commentsImprove" value={formData.commentsImprove} onChange={handleChange}></textarea>
-
+          <label>Improve:</label>
+          <input
+            type="text"
+            placeholder="Your improvement title here."
+            name="improveTitle"
+            value={formData.improveTitle}
+            onChange={handleChange}/>
+          <textarea
+            name="commentsImprove"
+            placeholder="Discussion. What went wrong?"
+            value={formData.commentsImprove}
+            onChange={handleChange}></textarea>
+          <textarea
+            name="recommendationsImprove"
+            placeholder="Recommendation. What can be improved?"
+            value={formData.recommendationsImprove}
+            onChange={handleChange}></textarea>
         </div>
         <button type="submit">Submit</button>
       </form>
     </div>
-  );
-};
+  )};

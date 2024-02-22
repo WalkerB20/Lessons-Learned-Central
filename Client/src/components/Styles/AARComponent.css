@@ -50,18 +50,6 @@
   background-color: #0056b3;
 }
 
-/* .event-type-select {
-  position: relative;
-}
-
-.event-type-select .helper-text {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  font-size: 12px;
-  color: #999;
-} */
-
 .datePicker {
   display: flex;
   justify-content: center;
