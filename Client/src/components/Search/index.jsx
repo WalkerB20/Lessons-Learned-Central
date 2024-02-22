@@ -1,10 +1,12 @@
+import '../Styles/Navbar.css';
 
 const Search = () => {
 
   return (
-    <div className="search">
-      <form>
+    <div >
+      <form className="search">
       <input
+        className="search-input"
         type="text"
         placeholder="Search..."
       />

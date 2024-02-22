@@ -1,11 +1,12 @@
 /* FEED CSS */
 
 .feed {
-  width: 80%;
+  width:100%;
   margin: 20px auto;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: rgb(198, 195, 195);
+  border-radius: 1rem;
 }
 .feedHeader, .feedHeader h1 {
   display: flex;
@@ -33,23 +34,33 @@
   background-color: rgb(198, 195, 195);
 }
 .feedContent {
-  width: 80%;
+  width: 95%;
   margin: 10px auto;
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  background-color: white;
+  border-radius: 1rem;
 }
 .buttonGroup {
   display: flex;
   align-items: center;
+  background-color: transparent;
 }
-.deleteButton, .editButton {
+.deleteButton, .editButton, .date {
   margin-left: 10px;
   margin-right: 10px;
 }
 .date {
-  margin-right: 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color:rgb(219, 191, 14);
+  color: black;
+  cursor: pointer;
+  font-weight: 600;
 }

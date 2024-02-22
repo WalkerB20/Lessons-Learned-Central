@@ -2,13 +2,14 @@ import React from 'react';
 // import {StyledNavbar} from './Styles'
 import Login from '../Login';
 import Logout from '../Logout';
-import '../styles/Login.css';
+import '../Styles/Login.css';
+import '../Styles/Navbar.css';
 
 const NavbarLogin = () => {
   return (
     <>
-      <Login/>
-      <Logout/>
+      <Login className="tab"/>
+      <Logout className="tab"/>
     </>
   )
 }

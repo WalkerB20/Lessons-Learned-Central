@@ -1,8 +1,9 @@
+import '../Styles/Navbar.css';
 
 const AAR = () => {
 
   return (
-    <button className="aar" type="text">AAR</button>
+    <button className="tab" type="text">AAR</button>
   )
 }
 

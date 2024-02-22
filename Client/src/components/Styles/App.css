@@ -1,24 +1,12 @@
 
 * {
-  background-color: rgb(250, 244, 244);
+  box-sizing: border-box;
+  background-color: black;
 }
 .App {
   text-align: center;
 }
-/* AAR CSS */
-.aar {
-  width: 8%;
-  margin-right: 120ch;
-  font-size: 20px;
-  display: inline-block;
-  border: 2px solid #000;
-  border-radius: 5px;
-  cursor: pointer;
-  background-color: rgb(198, 195, 195);
-}
-.aar:hover {
-  background-color: rgb(186, 236, 207);
-}
+
 
 
 

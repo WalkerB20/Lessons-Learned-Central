@@ -29,7 +29,7 @@ const Feed = () => {
       {/* This will just have to be mapped with feed content */}
       <div className="feedContentContainer">
         <div className="feedContent">
-          <h3>Testing testing 1 2</h3>
+          <h3>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sunt sit.</h3>
           <div className="buttonGroup">
             <button className="deleteButton" type="button">
               Delete
@@ -42,7 +42,7 @@ const Feed = () => {
           </div>
         </div>
         <div className="feedContent">
-          <h3>Placeholder for feed 2</h3>
+          <h3>Dolorem ipsam autem recusandae distinctio sapiente soluta voluptates vitae nostrum.</h3>
           <div className="buttonGroup">
             <button className="deleteButton" type="button">
               Delete
@@ -55,7 +55,7 @@ const Feed = () => {
           </div>
         </div>
         <div className="feedContent">
-          <h3>Placeholder for feed 3</h3>
+          <h3>Rerum, dolores magni, modi ullam iusto, hic praesentium a possimus.</h3>
           <div className="buttonGroup">
             <button className="deleteButton" type="button">
               Delete

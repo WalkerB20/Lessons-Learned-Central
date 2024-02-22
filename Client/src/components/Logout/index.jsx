@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/Login.css';
+import '../Styles/Login.css';
 import {useAuth0} from '@auth0/auth0-react';
 
 export default function Logout() {
@@ -8,7 +8,7 @@ export default function Logout() {
   return(
 
     isAuthenticated && (
-    <button onClick={() => logout()}>
+    <button className="tab" onClick={() => logout()}>
         Log Out
     </button>
     )

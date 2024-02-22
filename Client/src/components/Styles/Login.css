@@ -1,8 +1,6 @@
 .login {
   display: flex;
-  justify-content: space-around;
   flex-wrap: wrap;
-  align-content: space-around;
   height: 100px;
   width: 300px;
   background-color: #2b578e;
