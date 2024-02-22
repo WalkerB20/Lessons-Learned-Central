@@ -13,7 +13,7 @@ export default function App() {
       <div className="App">
         <NavbarLogin />
           <Routes>
-            <Route path="/aar" element={<AARComponent />} />
+            <Route path="/llc" element={<AARComponent />} />
             <Route exact path="/" element={<Home />} />
           </Routes>
       </div>

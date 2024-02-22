@@ -4,6 +4,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
 
 export default function AARComponent() {
+
+  const url = 'http://localhost:3001/llc';
+
   const [formData, setFormData] = useState({
     eventTitle: '',
     eventType: '',
@@ -37,6 +40,21 @@ export default function AARComponent() {
     e.preventDefault();
     // Handles the form submission
     console.log('Form submitted:', formData);
+
+    // Fetch request
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+
     // Form reset after submission
     setFormData({
       eventTitle: '',
