@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
@@ -20,46 +20,6 @@ export default function AARComponent() {
     eventDate: new Date()//for the calendar
   });
 
-  const [rangeItems, setRangeItems] = useState([]);
-  const [deploymentItems, setDeploymentItems] = useState([]);
-  const [ftxItems, setFtxItems] = useState([]);
-  const [equipmentItems, setEquipmentItems] = useState([]);
-  const [airborneOpsItems, setAirborneOpsItems] = useState([]);
-
-  useEffect(() => {
-    // Fetch data based on the event type
-    // Replace with your actual URLs
-    switch(formData.eventType) {
-      case 'Range':
-        fetch('http://localhost:3001/aar/rangeItems')
-          .then(response => response.json())
-          .then(data => setRangeItems(data));
-        break;
-      case 'Deployment':
-        fetch('http://localhost:3001/aar/deploymentItems')
-          .then(response => response.json())
-          .then(data => setDeploymentItems(data));
-        break;
-      case 'FTX':
-        fetch('http://localhost:3001/aar/ftxItems')
-          .then(response => response.json())
-          .then(data => setFtxItems(data));
-        break;
-      case 'Equipment':
-        fetch('http://localhost:3001/aar/equipmentItems')
-          .then(response => response.json())
-          .then(data => setEquipmentItems(data));
-        break;
-      case 'AirborneOps':
-        fetch('http://localhost:3001/aar/airborneOpsItems')
-          .then(response => response.json())
-          .then(data => setAirborneOpsItems(data));
-        break;
-      default:
-        break;
-    }
-  }, [formData.eventType]);
-
   const handleChange = (e) => {
     console.log('handleChange called');//console to debug
     const { name, value } = e.target;
@@ -77,6 +37,7 @@ export default function AARComponent() {
       [name]: value
     });
   };
+};
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -340,5 +301,4 @@ export default function AARComponent() {
         <button type="submit">Submit</button>
       </form>
     </div>
-  );
-};
+  )};
