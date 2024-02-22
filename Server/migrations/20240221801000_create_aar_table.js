@@ -10,7 +10,6 @@ export const up = async function(knex) {
         table.string('AAR_Name');
         table.string('AAR_Location');
         table.date('AAR_Activity_Date');
-        table.float('AAR_Duration');
         table.uuid('Event_ID').unique().defaultTo(knex.raw('uuid_generate_v4()'));
         table.uuid('User_ID');
         table.foreign('User_ID').references('User.User_ID');
