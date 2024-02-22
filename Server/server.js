@@ -11,6 +11,7 @@ const router = express.Router();
 const PORT = process.env.PORT || 3001;
 const db = knex(knexfile[process.env.NODE_ENV || 'development']);
 
+
 // MIDDLEWARE
 app.use(cors());
 app.use(express.json());
@@ -43,7 +44,7 @@ app.listen(PORT, (err) => {
 // TESTING ROUTE
 app.get("/events", (req, res, next) => {
     try {
-        res.send("Why are you here?");
+        res.send("Welcome to the AAR route!");
     } catch (err) {
         next({ message: 'Error occurred while handling /test route', originalError: err });
     }
@@ -198,4 +199,57 @@ router.post('/events', async (req, res, next) => {
     } catch (err) {
         next({ message: 'Error occurred while inserting data', originalError: err });
     }
+});
+
+router.post('/llc', async (req, res) => {
+  const { eventTitle, eventType, eventDate, eventLocation, commentsForSustain, commentsForImprove, categoryId, userId, eventId } = req.body;
+
+  try {
+    // Start a transaction because we're making multiple related changes
+    await db.transaction(async trx => {
+
+      const [aar] = await trx('AAR').insert({
+        AAR_Name: eventTitle,
+        AAR_Location: eventLocation,
+        AAR_Activity_Date: eventDate,
+        User_ID: userId,
+        Event_ID: eventId,
+      }).returning('AAR_ID');
+
+      const aarId = aar.AAR_ID; // Extract the AAR_ID from the returned object
+
+      // Insert data into the AAR_Category table
+      const [aarCategory] = await trx('AAR_Category').insert({
+        AAR_ID: aarId,
+        Category_ID: categoryId
+      }).returning('AAR_Category_ID');
+
+      const aarCategoryId = aarCategory.AAR_Category_ID; // Extract the AAR_Category_ID from the returned object
+
+      const [commentSustain] = await trx('Comment').insert({
+        Comment_Type: 'Sustain',
+        Comment_Discussion: commentsForSustain,
+        // Add the other Comment fields here
+      }).returning('Comment_ID');
+
+      const commentSustainId = commentSustain.Comment_ID; // Extract the Comment_ID from the returned object
+
+      const [commentImprove] = await trx('Comment').insert({
+        Comment_Type: 'Improve',
+        Comment_Discussion: commentsForImprove,
+        // Add the other Comment fields here
+      }).returning('Comment_ID');
+
+      const commentImproveId = commentImprove.Comment_ID; // Extract the Comment_ID from the returned object
+
+      await trx('AAR_Comment').insert([
+        { AAR_Category_ID: aarCategoryId, Comment_ID: commentSustainId },
+        { AAR_Category_ID: aarCategoryId, Comment_ID: commentImproveId },
+      ]);
+    });
+
+    res.json({ message: 'AAR and comments successfully created' });
+  } catch (err) {
+    res.status(500).json({ message: `Error occurred while inserting data: ${err.message}` });
+  }
 });
