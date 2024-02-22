@@ -5,29 +5,7 @@ import styles from '../Styles/AARComponent.css';
 
 export default function AARComponent() {
 
-  const url = 'http://localhost:3000/llc';
-
-  const data = {
-    eventTitle: 'Sample Event',
-    eventType: 'Sample Type',
-    eventDate: '2024-02-21',
-    eventLocation: 'Sample Location',
-    commentsForSustain: 'Sample Sustain Comment',
-    commentsForImprove: 'Sample Improve Comment'
-  };
-
-  fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
-  })
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch((error) => {
-    console.error('Error:', error);
-  });
+  const url = 'http://localhost:3001/llc';
 
   const [formData, setFormData] = useState({
     eventTitle: '',
@@ -62,6 +40,21 @@ export default function AARComponent() {
     e.preventDefault();
     // Handles the form submission
     console.log('Form submitted:', formData);
+
+    // Fetch request
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+
     // Form reset after submission
     setFormData({
       eventTitle: '',

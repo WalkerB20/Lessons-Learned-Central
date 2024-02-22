@@ -6,10 +6,10 @@ export async function seed(knex) {
   // Deletes ALL existing entries
   await knex('Event_Category').del()
   await knex('Event_Category').insert([
-    {Event_Category_ID: 1, Category_ID: 1, Event_ID: 1},
-    {Event_Category_ID: 2, Category_ID: 2, Event_ID: 2},
-    {Event_Category_ID: 3, Category_ID: 3, Event_ID: 3},
-    {Event_Category_ID: 4, Category_ID: 4, Event_ID: 4},
-    {Event_Category_ID: 5, Category_ID: 5, Event_ID: 5}
+    {Event_Category_ID: '00000000-0000-0000-0000-000000000055', Category_ID: '00000000-0000-0000-0000-000000000040', Event_ID: '00000000-0000-0000-0000-000000000050'},
+    {Event_Category_ID: '00000000-0000-0000-0000-000000000056', Category_ID: '00000000-0000-0000-0000-000000000041', Event_ID: '00000000-0000-0000-0000-000000000051'},
+    {Event_Category_ID: '00000000-0000-0000-0000-000000000057', Category_ID: '00000000-0000-0000-0000-000000000042', Event_ID: '00000000-0000-0000-0000-000000000052'},
+    {Event_Category_ID: '00000000-0000-0000-0000-000000000058', Category_ID: '00000000-0000-0000-0000-000000000043', Event_ID: '00000000-0000-0000-0000-000000000053'},
+    {Event_Category_ID: '00000000-0000-0000-0000-000000000059', Category_ID: '00000000-0000-0000-0000-000000000044', Event_ID: '00000000-0000-0000-0000-000000000054'}
   ]);
 };
