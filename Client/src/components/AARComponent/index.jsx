@@ -4,9 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
 
 export default function AARComponent() {
-
   const url = 'http://localhost:3001/llc';
-
   const [formData, setFormData] = useState({
     eventTitle: '',
     eventType: '',
@@ -116,40 +114,42 @@ export default function AARComponent() {
           </>
         );
 
-        case 'FTX':
-          return (
-            <>
-              <option value="TNGSite">Training Site</option>
-              <option value="Logistics">Logistics</option>
-              <option value="TNGModules">Training Modules</option>
-              <option value="LeadUpTraining">Lead-up Training</option>
-              <option value="Packinglist">Packing List</option>
-              <option value="Other">Other</option>
-            </>
-          );
+      case 'FTX':
+        return (
+          <>
+            <option value="TNGSite">Training Site</option>
+            <option value="Logistics">Logistics</option>
+            <option value="TNGModules">Training Modules</option>
+            <option value="LeadUpTraining">Lead-up Training</option>
+            <option value="Packinglist">Packing List</option>
+            <option value="Other">Other</option>
+          </>
+        );
 
-          case 'Equipment':
-            return (
-              <>
-                <option value="EquipmentType">Equipment Type</option>
-                <option value="EquipmentStatus">Equipment Status</option>
-                <option value="Other">Other</option>
-              </>
-            );
-            case 'AirborneOps':
-              return (
-                <>
-                  <option value="JumpManifest">Jump Manifest</option>
-                  <option value="JumpStatus">Jump Status</option>
-                  <option value="JumpEquipment">Jump Equipment</option>
-                  <option value="JumpSafety">Jump Safety</option>
-                  <option value="JumpmasterRehearsals">Jumpmaster Rehearsals</option>
-                  <option value="JMPI">JMPI</option>
-                  <option value="Other">Other</option>
-                </>
-              );
-            case 'Other':
-              return null;
+      case 'Equipment':
+        return (
+          <>
+            <option value="EquipmentType">Equipment Type</option>
+            <option value="EquipmentStatus">Equipment Status</option>
+            <option value="Other">Other</option>
+          </>
+        );
+
+      case 'AirborneOps':
+        return (
+          <>
+            <option value="JumpManifest">Jump Manifest</option>
+            <option value="JumpStatus">Jump Status</option>
+            <option value="JumpEquipment">Jump Equipment</option>
+            <option value="JumpSafety">Jump Safety</option>
+            <option value="JumpmasterRehearsals">Jumpmaster Rehearsals</option>
+            <option value="JMPI">JMPI</option>
+            <option value="Other">Other</option>
+          </>
+        );
+
+      case 'Other':
+        return null;
 
       default:
         return null;
@@ -180,9 +180,9 @@ export default function AARComponent() {
             <>
               <label>Additional Options:</label> {/*can change name to whatever*/}
               <select
-              name="additionalOptions"
-              value={formData.additionalOptions}
-              onChange={handleChange}
+                name="additionalOptions"
+                value={formData.additionalOptions}
+                onChange={handleChange}
               >
                 <option value="">Select...</option>
                 {renderAdditionalOptions()}
@@ -194,8 +194,7 @@ export default function AARComponent() {
                   name="additionalInput"
                   value={formData.additionalInput}
                   onChange={handleChange}
-                  placeholder="Provide additional information"  /*can change name to whatever*/
-                />
+                  placeholder="Provide additional information"/>  /*can change name to whatever*/
               )}
             </>
           )}
@@ -208,8 +207,7 @@ export default function AARComponent() {
                     name="additionalInput"
                     value={formData.additionalInput}
                     onChange={handleChange}
-                    placeholder="Provide additional information"  /*can change to whatever as well*/
-                  />
+                    placeholder="Provide additional information"/>  {/*can change to whatever as well*/}
                 </>
               )}
 
@@ -230,20 +228,17 @@ export default function AARComponent() {
             placeholder="Your sustain title here."
             name="sustainTitle"
             value={formData.sustainTitle}
-            onChange={handleChange}
-          />
+            onChange={handleChange}/>
           <textarea
             name="commentsSustain"
             placeholder='Discussion. What happened?'
             value={formData.commentsSustain}
-            onChange={handleChange}
-          ></textarea>
+            onChange={handleChange}></textarea>
           <textarea
             name="recommendationsSustain"
             placeholder='Recommendation. What can be sustained for the future?'
             value={formData.recommendationsSustain}
-            onChange={handleChange}
-          ></textarea>
+            onChange={handleChange}></textarea>
 
           <label>Improve:</label>
           <input
@@ -251,21 +246,17 @@ export default function AARComponent() {
             placeholder="Your improvement title here."
             name="improveTitle"
             value={formData.improveTitle}
-            onChange={handleChange}
-          />
+            onChange={handleChange}/>
           <textarea
             name="commentsImprove"
             placeholder="Discussion. What went wrong?"
             value={formData.commentsImprove}
-            onChange={handleChange}
-          ></textarea>
+            onChange={handleChange}></textarea>
           <textarea
             name="recommendationsImprove"
             placeholder="Recommendation. What can be improved?"
             value={formData.recommendationsImprove}
-            onChange={handleChange}
-          ></textarea>
-
+            onChange={handleChange}></textarea>
         </div>
         <button type="submit">Submit</button>
       </form>
