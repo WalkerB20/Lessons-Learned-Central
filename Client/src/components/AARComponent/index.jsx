@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
@@ -9,41 +9,52 @@ export default function AARComponent() {
     eventTitle: '',
     eventType: '',
     eventLocation: '',
-    sustainTitle: '',
-    commentsSustain: '',
-    recommendationsSustain: '',
-    improveTitle: '',
-    commentsImprove: '',
-    recommendationsImprove: '',
+    sections: [{
+      type: '',
+      title: '',
+      comments: '',
+      recommendations: ''
+    }],
     additionalOptions: '',//needed for the extra options field
     additionalInput: '',//needed for the extra input field
     eventDate: new Date()//for the calendar
   });
 
-  const handleChange = (event) => {
-    console.log('handleChange called');//console to debug
-    const { name, value } = event.target;
-    console.log('Name:', name, 'Value:', value);//console to debug
-    if (name === 'eventType') {
-    setFormData({
-      ...formData,
-      [name]: value,
+useEffect(() => {
+  if (formData.eventType !== 'Other' && formData.eventType === 'Other') {
+    setFormData(prevState => ({
+      ...prevState,
       additionalOptions: '',
-      additionalInput: '',//needed for the extra input field
-      eventDate: new Date()
-    });
-  } else if (name === 'additionalOptions') {
-    setFormData({
-      ...formData,
-      [name]: value,
-      additionalInput: '',//needed for the extra input field
-    });
-  } else {
-    setFormData({
-      ...formData,
-      [name]: value
-    });
+      additionalInput: '',
+    }));
   }
+}, [formData.eventType, formData.additionalOptions]);
+
+const handleChange = (event, index) => {
+  const { name, value } = event.target;
+  if (name === 'eventType' || name === 'additionalOptions') {
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value,
+      additionalInput: value === 'Other' ? '' : prevState.additionalInput, // Reset additionalInput if selecting Other
+      sections: value === 'Other' ?
+        [{ type: '', title: '', comments: '', recommendations: '' }] : prevState.sections // Reset sections if selecting Other
+    }));
+  } else { // For section fields
+    const updatedSections = [...formData.sections];
+    updatedSections[index] = { ...updatedSections[index], [name]: value };
+    setFormData(prevState => ({
+      ...prevState,
+      sections: updatedSections
+    }));
+  }
+};
+
+const handleAddSection = () => {
+  setFormData(prevState => ({
+    ...prevState,
+    sections: [...prevState.sections, { type: '', title: '', comments: '', recommendations: '' }]
+  }));
 };
 
   const handleSubmit = (event) => {
@@ -71,17 +82,16 @@ export default function AARComponent() {
       eventType: '',
       eventDate: '',
       eventLocation: '',
-      sustainTitle: '',
-      commentsSustain: '',
-      recommendationsSustain: '',
-      improveTitle: '',
-      commentsImprove: '',
-      recommendationsImprove: '',
       additionalOptions: '', //needed for the extra input field
       additionalInput: '',//needed for the extra input field
+      sections: [{
+        type: '',//maybe an empty string?
+        title: '',
+        comments: '',
+        recommendations: ''
+      }],
     });
   };
-
   const handleDateChange = (date) => {
     setFormData({
       ...formData,
@@ -167,7 +177,7 @@ export default function AARComponent() {
 
           <label>Event Type:</label>
             <select name="eventType" value={formData.eventType} onChange={handleChange}>
-              <option value="Select">Select an option</option>
+              <option value="">Select an option</option>{/*changed "select" to ""*/}
               <option value="Range">Range</option>
               <option value="Deployment">Deployment</option>
               <option value="FTX">FTX</option>
@@ -222,44 +232,47 @@ export default function AARComponent() {
           <label>Event Location:</label>
           <input type="text" placeholder="Where did your event take place?" name="eventLocation" value={formData.eventLocation} onChange={handleChange} />
 
-          <label>Sustain:</label>
-          <input
-            type="text"
-            placeholder="Your sustain title here."
-            name="sustainTitle"
-            value={formData.sustainTitle}
-            onChange={handleChange}/>
-          <textarea
-            name="commentsSustain"
-            placeholder='Discussion. What happened?'
-            value={formData.commentsSustain}
-            onChange={handleChange}></textarea>
-          <textarea
-            name="recommendationsSustain"
-            placeholder='Recommendation. What can be sustained for the future?'
-            value={formData.recommendationsSustain}
-            onChange={handleChange}></textarea>
-
-          <label>Improve:</label>
-          <input
-            type="text"
-            placeholder="Your improvement title here."
-            name="improveTitle"
-            value={formData.improveTitle}
-            onChange={handleChange}/>
-          <textarea
-            name="commentsImprove"
-            placeholder="Discussion. What went wrong?"
-            value={formData.commentsImprove}
-            onChange={handleChange}></textarea>
-          <textarea
-            name="recommendationsImprove"
-            placeholder="Recommendation. What can be improved?"
-            value={formData.recommendationsImprove}
-            onChange={handleChange}></textarea>
+          {formData.sections.map((section, index) => (
+            <div key={index} className="aar-section">
+              <label>Comments:</label>
+              <select
+                name="type"
+                value={section.type}
+                onChange={(e) => handleChange(e, index)}
+              >
+                <option value="">Select a comment type...</option>
+                <option value="sustain">Sustain</option>
+                <option value="improve">Improve</option>
+              </select>
+              {section.type && ( // Render text fields only if a comment type is selected
+                <>
+                  <input
+                    type="text"
+                    name="title"
+                    value={section.title}
+                    onChange={(e) => handleChange(e, index)}
+                    placeholder={`Your ${section.type === 'sustain' ? 'sustain' : 'improvement'} title here.`}
+                  />
+                  <textarea
+                    name="comments"
+                    value={section.comments}
+                    onChange={(e) => handleChange(e, index)}
+                    placeholder={`Discussion. What ${section.type === 'sustain' ? 'happened' : 'went wrong'}?`}
+                  ></textarea>
+                  <textarea
+                    name="recommendations"
+                    value={section.recommendations}
+                    onChange={(e) => handleChange(e, index)}
+                    placeholder={`Recommendation. What can be ${section.type === 'sustain' ? 'sustained' : 'improved'} for the future?`}
+                  ></textarea>
+                </>
+              )}
+            </div>
+          ))}
         </div>
+        <button type="button" onClick={handleAddSection}>Add another comment</button>
         <button type="submit">Submit</button>
       </form>
     </div>
   );
-};
+}
