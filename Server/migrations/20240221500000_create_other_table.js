@@ -2,16 +2,21 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export const up = function(knex) {
-  return knex.schema.createTable('Other', function(table) {
-    table.increments('Other_ID').primary();
-  });
+export const up = async function(knex) {
+  return knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
+    .then(() => {
+      return knex.schema.createTable('Other', function(table) {
+        table.uuid('Other_ID').primary().defaultTo(knex.raw('uuid_generate_v4()'));
+        table.string('Other_Type');
+      })
+    });
 };
 
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export const down = function(knex) {
-  return knex.schema.dropTableIfExists('Other');
+export const down = async function(knex) {
+  return knex.schema.dropTableIfExists('Other')
+    .then(() => knex.raw('DROP EXTENSION IF EXISTS "uuid-ossp"'));
 };

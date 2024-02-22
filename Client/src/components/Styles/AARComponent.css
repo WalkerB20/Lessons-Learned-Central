@@ -1,0 +1,61 @@
+
+.aarForm {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.aarForm h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.aarForm .form-group {
+  margin-bottom: 20px;
+}
+
+.aarForm label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.aarForm input[type="text"],
+.aarForm select,
+.aarForm textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.aarForm select {
+  appearance: none;
+}
+
+.aarForm button {
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.aarForm button:hover {
+  background-color: #0056b3;
+}
+
+.datePicker {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}

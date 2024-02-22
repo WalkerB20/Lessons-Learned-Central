@@ -10,6 +10,11 @@
   width: 100%;
 }
 
+.navbar .aar {
+  font-size: 16px; /* Had to adjust font size due to the <Link> defaults */
+  text-decoration: none; /* Added this portion to remove underline defaulted from the <Link>*/
+}
+
 .topnav {
   display: flex;
   align-items: center;
@@ -44,7 +49,8 @@
   background-color: #f2f2f2;
 }
 
-.navbar input{
+
+.navbar input  {
   font-size: 16px;
   outline: none;
   border:#000;

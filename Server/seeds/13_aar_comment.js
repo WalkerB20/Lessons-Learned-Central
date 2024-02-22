@@ -6,10 +6,10 @@ export async function seed(knex) {
   // Deletes ALL existing entries
   await knex('AAR_Comment').del()
   await knex('AAR_Comment').insert([
-    {AAR_Comment_ID: 1, AAR_Category_ID: 1, Comment_ID: 2},
-    {AAR_Comment_ID: 2, AAR_Category_ID: 2, Comment_ID: 4},
-    {AAR_Comment_ID: 3, AAR_Category_ID: 3, Comment_ID: 1},
-    {AAR_Comment_ID: 4, AAR_Category_ID: 4, Comment_ID: 3},
-    {AAR_Comment_ID: 5, AAR_Category_ID: 5, Comment_ID: 5}
+    {AAR_Comment_ID: '00000000-0000-0000-0000-000000000065', AAR_Category_ID: '00000000-0000-0000-0000-000000000060', Comment_ID: '00000000-0000-0000-0000-000000000035'},
+    {AAR_Comment_ID: '00000000-0000-0000-0000-000000000066', AAR_Category_ID: '00000000-0000-0000-0000-000000000061', Comment_ID: '00000000-0000-0000-0000-000000000036'},
+    {AAR_Comment_ID: '00000000-0000-0000-0000-000000000067', AAR_Category_ID: '00000000-0000-0000-0000-000000000062', Comment_ID: '00000000-0000-0000-0000-000000000037'},
+    {AAR_Comment_ID: '00000000-0000-0000-0000-000000000068', AAR_Category_ID: '00000000-0000-0000-0000-000000000063', Comment_ID: '00000000-0000-0000-0000-000000000038'},
+    {AAR_Comment_ID: '00000000-0000-0000-0000-000000000069', AAR_Category_ID: '00000000-0000-0000-0000-000000000064', Comment_ID: '00000000-0000-0000-0000-000000000039'}
   ]);
 };

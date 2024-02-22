@@ -2,28 +2,31 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export const up = function(knex) {
-  return knex.schema.createTable('AAR', function(table) {
-    table.increments('AAR_ID').primary();
-    table.string('AAR_Name');
-    table.string('AAR_Location');
-    table.date('AAR_Activity_Date');
-    table.float('AAR_Duration');
-    table.integer('Event_ID').unique();
-    table.integer('User_ID').unsigned();
-    table.foreign('User_ID').references('User.User_ID');
-});
+export const up = async function(knex) {
+  return knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
+    .then(() => {
+      return knex.schema.createTable('AAR', function(table) {
+        table.uuid('AAR_ID').primary().defaultTo(knex.raw('uuid_generate_v4()'));
+        table.string('AAR_Name');
+        table.string('AAR_Location');
+        table.date('AAR_Activity_Date');
+        table.uuid('Event_ID').unique().defaultTo(knex.raw('uuid_generate_v4()'));
+        table.uuid('User_ID');
+        table.foreign('User_ID').references('User.User_ID');
+      })
+    });
 };
 
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-export const down = function(knex) {
+export const down = async function(knex) {
   return knex.schema.alterTable('AAR', function(table) {
     table.dropForeign('User_ID');
   })
   .then (function() {
     return knex.schema.dropTableIfExists('AAR');
-  });
+  })
+  .then(() => knex.raw('DROP EXTENSION IF EXISTS "uuid-ossp"'));
 };
