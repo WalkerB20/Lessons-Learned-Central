@@ -18,6 +18,7 @@ const db = knex(knexfile[process.env.NODE_ENV || 'development']);
 app.use(cors());
 app.use(express.json());
 app.use('/', router);
+app.options('*', cors());
 
 // ERROR HANDLING MIDDLEWARE
 app.use((err, req, res, next) => {
@@ -59,7 +60,7 @@ router.get('/events', async (req, res, next) => {
         const aarData = await db.select('*').from('AAR');
 
         // Fetch data from the Sustain Comment table
-        const sustainCommentData = await db.select('*').from('Sustain_Comment', 'Improve_Comment');
+        const sustainCommentData = await db.select('*').from('Sustain_Comment');
 
         // Fetch data from the Improve Comment table
         const improveCommentData = await db.select('*').from('Improve_Comment');
@@ -174,5 +175,22 @@ router.post('/events', async (req, res, next) => {
         res.json({ success: true, message: 'Data inserted successfully' });
     } catch (err) {
         next({ message: 'Error occurred while inserting data', originalError: err });
+    }
+});
+
+//DELETE FOR EVENTS IN FEED.JSX
+router.delete('/events/:aarId', async (req, res, next) => {//changed to router
+    const { aarId } = req.params;
+    try {
+        // Start a transaction
+        await db.transaction(async trx => {
+            // Delete from the AAR table
+            await trx('AAR').where('AAR_ID', aarId).del();
+            //await trx('Comment').where('AAR_ID', aarId).del();//probably don't need this if the whole thing will be deleted
+        });
+        res.json({ success: true, message: 'AAR entry and associated data deleted successfully' });
+    } catch (err) {
+        console.error('Error occurred while deleting AAR entry and associated data:', err);
+        res.status(500).json({ success: false, message: 'Failed to delete AAR entry and associated data' });
     }
 });
