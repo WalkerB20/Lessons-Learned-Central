@@ -7,7 +7,9 @@ export const up = async function(knex) {
     .then(() => {
       return knex.schema.createTable('Airborne_Operation', function(table) {
         table.uuid('Airborne_Operation_ID').primary().defaultTo(knex.raw('uuid_generate_v4()'));
-        table.string('Event_Type', 255);
+        table.string('Airborne_Event_Type', 255);
+        table.string('Airborne_Event_Option', 255);
+        table.string('Airborne_Event_Other', 255);
       })
     });
 };
