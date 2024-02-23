@@ -5,12 +5,12 @@
 export const up = async function(knex) {
   return knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
     .then(() => {
-      return knex.schema.createTable('Comment', function(table) {
-        table.uuid('Comment_ID').primary().defaultTo(knex.raw('uuid_generate_v4()'));
-        table.string('Comment_Type');
-        table.string('Comment_Title');
-        table.text('Comment_Discussion');
-        table.text('Comment_Recommendation');
+      return knex.schema.createTable('Sustain_Comment', function(table) {
+        table.uuid('Sustain_Comment_ID').primary().defaultTo(knex.raw('uuid_generate_v4()'));
+        table.string('Sustain_Comment_Type');
+        table.string('Sustain_Comment_Title');
+        table.text('Sustain_Comment_Discussion');
+        table.text('Sustain_Comment_Recommendation');
       })
     });
 };
