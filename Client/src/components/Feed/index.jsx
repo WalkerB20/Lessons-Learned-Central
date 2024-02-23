@@ -3,7 +3,6 @@ import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa";
 import '../Styles/Feed.css';
 //import AARComponent from '../AARComponent'; thought i would need, but i
-
 const Feed = () => {
   // State to manage the likes for each feed content
   const [expandedFeeds, setExpandedFeeds] = useState({});
@@ -12,7 +11,6 @@ const Feed = () => {
     feed2: 0,
     feed3: 0
   });
-
   const [aarData, setAarData] = useState([]);//added this line to fetch data from the server
   const [editedValues, setEditedValues] = useState({
     eventTitle: '',
@@ -29,7 +27,6 @@ const Feed = () => {
     additionalInput: '',
   });//added this line to edit the data from the server
   const feedUrl = 'http://localhost:3001'; //created this variable to store the URL and use in the fetch request
-
   useEffect(() => {//the GET request to fetch data from the server
     const fetchAarData = async () => {
       try {
@@ -49,21 +46,18 @@ const Feed = () => {
     };
       fetchAarData();
     }, []);
-
   const handleLike = (feedName) => {//should this be married up with server language???
     setLikes((prevLikes) => ({
       ...prevLikes,
       [feedName]: prevLikes[feedName] + 1
     }));
   };
-
   const toggleFeed = (aarId) => {//previously feedId
     setExpandedFeeds((prevState) => ({
       ...prevState,
       [aarId]: !prevState[aarId],//previous feedId
     }));
   };
-
   const handleDelete = (aarId) => {//previously feedId
     // Sends delete request to the server
     fetch(`${feedUrl}/events/${aarId}`, {//previuosly llc
@@ -84,7 +78,6 @@ const Feed = () => {
         console.error('Error deleting feed item:', error);
     });
   };
-
   const handleEdit = (aarId) => {//previously feedId
     // Implements the edit functionality
     console.log('Edit feed item:', aarId);//previously feedId
@@ -113,7 +106,6 @@ const Feed = () => {
     console.error('Error editing feed item:', error);
   };
 }
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setEditedValues((prevValues) => ({
@@ -121,7 +113,6 @@ const Feed = () => {
       [name]: value
     }));
   };
-
   return (
     <div className="feed">
       <div className="feedHeader">
@@ -164,17 +155,12 @@ const Feed = () => {
     </div>
   );
 };
-
 export default Feed;
-
-
 //your original code
-
 // import React, { useState } from 'react';
 // import { FaPlus } from "react-icons/fa";
 // import { FaMinus } from "react-icons/fa";
 // import '../Styles/Feed.css';
-
 // const Feed = () => {
 //   // State to manage the likes for each feed content
 //   const [expandedFeeds, setExpandedFeeds] = useState({});
@@ -183,22 +169,18 @@ export default Feed;
 //     feed2: 0,
 //     feed3: 0
 //   });
-
 //   const handleLike = (feedName) => {
 //     setLikes((prevLikes) => ({
 //       ...prevLikes,
 //       [feedName]: prevLikes[feedName] + 1
 //     }));
 //   };
-
 //   const toggleFeed = (feedId) => {
 //     setExpandedFeeds((prevState) => ({
 //       ...prevState,
 //       [feedId]: !prevState[feedId],
 //     }));
 //   };
-
-
 //   return (
 //     <div className="feed">
 //       <div className="feedHeader">
@@ -306,5 +288,4 @@ export default Feed;
 //     </div>
 //   );
 // };
-
 // export default Feed;
