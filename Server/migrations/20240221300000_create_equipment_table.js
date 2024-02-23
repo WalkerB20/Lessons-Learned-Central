@@ -9,7 +9,6 @@ export const up = async function(knex) {
         table.uuid('Equipment_ID').primary().defaultTo(knex.raw('uuid_generate_v4()'));
         table.string('Equipment_Event_Type', 255);
         table.string('Equipment_Event_Option', 255);
-        table.string('Equipment_Event_Other', 255);
       })
     });
 };
