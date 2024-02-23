@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
-
 export default function AARComponent() {
-  const url = 'http://localhost:3001/events';//previously llc
+  const url = 'http://localhost:3001';//previously llc
   const [formData, setFormData] = useState({
     eventTitle: '',
     eventType: '',
@@ -19,7 +18,6 @@ export default function AARComponent() {
     additionalInput: '',//needed for the extra input field
     eventDate: new Date()//for the calendar
   });
-
 useEffect(() => {
   if (formData.eventType !== 'Other' && formData.eventType === 'Other') {
     setFormData(prevState => ({
@@ -29,7 +27,6 @@ useEffect(() => {
     }));
   }
 }, [formData.eventType, formData.additionalOptions]);
-
 const handleChange = (event, index) => {
   const { name, value } = event.target;
   if (name === 'eventType' || name === 'additionalOptions') {
@@ -54,19 +51,16 @@ const handleChange = (event, index) => {
     }));
   }
 };
-
 const handleAddSection = () => {
   setFormData(prevState => ({
     ...prevState,
     sections: [...prevState.sections, { type: '', title: '', comments: '', recommendations: '' }]
   }));
 };
-
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handles the form submission
     console.log('Form submitted:', formData);
-
     // Fetch request
     fetch(`${url}/events`, {
       method: 'POST',
@@ -80,7 +74,6 @@ const handleAddSection = () => {
     .catch((error) => {
       console.error('Error:', error);
     });
-
     // Form reset after submission
     setFormData({
       eventTitle: '',
@@ -97,13 +90,13 @@ const handleAddSection = () => {
       }],
     });
   };
+
   const handleDateChange = (date) => {
     setFormData({
       ...formData,
       eventDate: date
     });
   };
-
   const renderAdditionalOptions = () => {
     switch(formData.eventType) {
       case 'Range':
@@ -143,7 +136,6 @@ const handleAddSection = () => {
             ) : null} */}
           </>
         );
-
         case 'FTX':
           return (
             <>
@@ -163,7 +155,6 @@ const handleAddSection = () => {
               ) : null} */}
             </>
           );
-
           case 'Equipment':
             return (
               <>
@@ -212,21 +203,17 @@ const handleAddSection = () => {
                     ) : null} */}
                 </>
               );
-
       default:
         return null;
     }
   };
-
   return (
     <div className="aarForm">
       <h2>After Action Review Form</h2>{/*can change name to whatever*/}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-
           <label>Event Title:</label>
           <input type="text" placeholder="Give a title to your event" name="eventTitle" value={formData.eventTitle} onChange={handleChange} />
-
           <label>Event Type:</label>
             <select name="eventType" value={formData.eventType} onChange={handleChange}>
               <option value="">Select an option</option>{/*changed "select" to ""*/}
@@ -237,7 +224,6 @@ const handleAddSection = () => {
               <option value="AirborneOps">Airborne Operations</option>
               <option value="Other">Other</option>
             </select>
-
           {formData.eventType && formData.eventType !== 'Other' && (
             <>
               <label>Additional Options:</label> {/*can change name to whatever*/}
@@ -249,7 +235,6 @@ const handleAddSection = () => {
                 <option value="">Select...</option>
                 {renderAdditionalOptions()}
               </select>
-
               {formData.additionalOptions === 'Other' && (
                 <input
                   type="text"
@@ -260,7 +245,6 @@ const handleAddSection = () => {
               )}
             </>
           )}
-
               {formData.eventType === 'Other' && (
                 <>
                   <label>Additional Information:</label> {/* we can change this to whatever we want*/}
@@ -272,7 +256,6 @@ const handleAddSection = () => {
                     placeholder="Provide additional information"/>  {/*can change to whatever as well*/}
                 </>
               )}
-
           <label>Event Date:</label>
           <DatePicker
             selected={formData.eventDate}
@@ -280,10 +263,8 @@ const handleAddSection = () => {
             dateFormat="yyyy-MM-dd" // date format can be adjusted if we need to
             className={styles.datePicker}
           />
-
           <label>Event Location:</label>
           <input type="text" placeholder="Where did your event take place?" name="eventLocation" value={formData.eventLocation} onChange={handleChange} />
-
           {formData.sections.map((section, index) => (
             <div key={index} className="aar-section">
               <label>Comments:</label>

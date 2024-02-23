@@ -3,6 +3,8 @@ import knex from 'knex';
 import knexfile from './knexfile.js';
 import { config } from 'dotenv';
 import cors from 'cors';
+
+// Load environment variables for .env file
 config();
 
 // SERVER CONFIGURATION
@@ -50,13 +52,17 @@ app.get("/events", (req, res, next) => {
     }
 });
 
+// GET FOR EVENTS IN AARCOMPONENTS.JSX
 router.get('/events', async (req, res, next) => {
     try {
         // Fetch data from the AAR table
         const aarData = await db.select('*').from('AAR');
 
-        // Fetch data from the Comment table
-        const commentData = await db.select('*').from('Comment');
+        // Fetch data from the Sustain Comment table
+        const sustainCommentData = await db.select('*').from('Sustain_Comment', 'Improve_Comment');
+
+        // Fetch data from the Improve Comment table
+        const improveCommentData = await db.select('*').from('Improve_Comment');
 
         // Fetch data from the AAR_Comment table
         const aarCommentData = await db.select('*').from('AAR_Comment');
@@ -88,7 +94,8 @@ router.get('/events', async (req, res, next) => {
         // Send the fetched data as a response
         res.json({
             aarData,
-            commentData,
+            sustainCommentData,
+            improveCommentData,
             aarCommentData,
             rangeData,
             deploymentData,
@@ -104,6 +111,7 @@ router.get('/events', async (req, res, next) => {
     }
 });
 
+// POST FOR EVENTS IN FORM DATA AARCOMPONENTS.JSX
 router.post('/events', async (req, res, next) => {
     const formData = req.body;
     try {
@@ -114,64 +122,76 @@ router.post('/events', async (req, res, next) => {
                 AAR_Name: formData.eventTitle,
                 AAR_Location: formData.eventLocation,
                 AAR_Activity_Date: formData.eventDate,
-                AAR_Location: formData.eventLocation
                 // Add other fields as necessary
             }).returning('AAR_ID');
 
             // Insert into the Comment table and get the inserted ID
-            const [sustainCommentId] = await trx('Comment').insert({
-                Comment_Title: formData.sustainTitle,
-                Comment_Discussion: formData.commentsSustain,
-                Comment_Recommendation: formData.recommendationsSustain
+            const [sustainCommentId] = await trx('Sustain_Comment').insert({
+                Sustain_Comment_Type: 'Sustain',
+                Sustain_Comment_Title: formData.sustainTitle,
+                Sustain_Comment_Discussion: formData.commentsSustain,
+                Sustain_Comment_Recommendation: formData.recommendationsSustain
                 // Add other fields as necessary
-            }).returning('Comment_ID');
+            }).returning('Sustain_Comment_ID');
 
-            const [improveCommentId] = await trx('Comment').insert({
-                Comment_Title: formData.improveTitle,
-                Comment_Discussion: formData.commentsImprove,
-                Comment_Recommendation: formData.recommendationsImprove
+            const [improveCommentId] = await trx('Improve_Comment').insert({
+                Improve_Comment_Type: 'Improve',
+                Improve_Comment_Title: formData.improveTitle,
+                Improve_Comment_Discussion: formData.commentsImprove,
+                Improve_Comment_Recommendation: formData.recommendationsImprove
                 // Add other fields as necessary
-            }).returning('Comment_ID');
+            }).returning('Improve_Comment_ID');
 
             // Insert into the AAR_Comment table
             await trx('AAR_Comment').insert([
-                { AAR_Comment_ID: aarId[0], Comment_ID: sustainCommentId[0] },
-                { AAR_Comment_ID: aarId[0], Comment_ID: improveCommentId[0] }
+                { AAR_Comment_ID: aarId[0], Sustain_Comment_ID: sustainCommentId[0] },
+                { AAR_Comment_ID: aarId[0], Improve_Comment_ID: improveCommentId[0] }
             ]);
 
             // Insert into the Range table and get the inserted ID
             const [rangeId] = await trx('Range').insert({
-                Event_Type: formData.eventType
+                Range_Event_Type: formData.eventType,
+                Range_Event_Option: formData.additionalOptions,
+                Range_Event_Other: formData.additionalInput
                 // Add other fields as necessary
             }).returning('Range_ID');
 
             // Insert into the Deployment table and get the inserted ID
             const [deploymentId] = await trx('Deployment').insert({
-                Event_Type: formData.eventType,
+                Deployment_Event_Type: formData.eventType,
+                Deployment_Event_Option: formData.additionalOptions,
+                Deployment_Event_Other: formData.additionalInput
                 // Add other fields as necessary
             }).returning('Deployment_ID');
 
             // Insert into the FTX table and get the inserted ID
             const [ftxId] = await trx('FTX').insert({
-                Event_Type: formData.eventType
+                FTX_Event_Type: formData.eventType,
+                FTX_Event_Option: formData.additionalOptions,
+                FTX_Event_Other: formData.additionalInput
                 // Add other fields as necessary
             }).returning('FTX_ID');
 
             // Insert into the Equipment table and get the inserted ID
             const [equipmentId] = await trx('Equipment').insert({
-                Event_Type: formData.eventType
+                Equipment_Event_Type: formData.eventType,
+                Equipment_Event_Option: formData.additionalOptions,
+                Equipment_Event_Other: formData.additionalInput
                 // Add other fields as necessary
             }).returning('Equipment_ID');
 
             // Insert into the Airborne_Operation table and get the inserted ID
             const [airborneOperationId] = await trx('Airborne_Operation').insert({
-                Event_Type: formData.eventType
+                Airborne_Event_Type: formData.eventType,
+                Airborne_Event_Option: formData.additionalOptions,
+                Airborne_Event_Other: formData.additionalInput
                 // Add other fields as necessary
             }).returning('Airborne_Operation_ID');
 
             // Insert into the Other table and get the inserted ID
             const [otherId] = await trx('Other').insert({
-                Event_Type: formData.additionalOptions
+                Other_Event_Type: formData.additionalOptions,
+                Other_Event_Option: formData.additionalInput
                 // Add fields as necessary
             }).returning('Other_ID');
 
