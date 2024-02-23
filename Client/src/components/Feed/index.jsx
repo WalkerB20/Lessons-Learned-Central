@@ -33,17 +33,20 @@ const Feed = () => {
   useEffect(() => {//the GET request to fetch data from the server
     const fetchAarData = async () => {
       try {
-        const response = await fetch(`${feedUrl}/events`);//previously llc
-        if (response.ok) {
-          const data = await response.json();
-          setAarData(data);
-        } else {
-          console.error('Did not fetch AAR data:', response.status);
+        const response = await fetch(`${feedUrl}/events`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch AAR data');
         }
+        const responseData = await response.json();
+        const aarData = responseData.aarData; // Extracting the array of AAR data
+        if (!Array.isArray(aarData)) {
+          throw new Error('Invalid data format: expected an array');
+        }
+        setAarData(aarData);
       } catch (error) {
-          console.error('Failed to fetch AAR data:', error);
-        }
-      };
+        console.error('Failed to fetch AAR data:', error);
+      }
+    };
       fetchAarData();
     }, []);
 

@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
 
 export default function AARComponent() {
-  const url = 'http://localhost:3001/events';//previously llc
+  const url = 'http://localhost:3001';//previously llc
   const [formData, setFormData] = useState({
     eventTitle: '',
     eventType: '',
@@ -97,6 +97,7 @@ const handleAddSection = () => {
       }],
     });
   };
+
   const handleDateChange = (date) => {
     setFormData({
       ...formData,
