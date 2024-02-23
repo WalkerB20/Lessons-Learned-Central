@@ -30,19 +30,20 @@ const Feed = () => {
   useEffect(() => {//the GET request to fetch data from the server
     const fetchAarData = async () => {
       try {
-        const response = await fetch(`${feedUrl}/events`);//previously llc
+        const response = await fetch(`${feedUrl}/events`);
         if (!response.ok) {
           throw new Error('Failed to fetch AAR data');
         }
-        const data = await response.json();
-        if (!Array.isArray(data)) {
+        const responseData = await response.json();
+        const aarData = responseData.aarData; // Extracting the array of AAR data
+        if (!Array.isArray(aarData)) {
           throw new Error('Invalid data format: expected an array');
         }
-          setAarData(data);
+        setAarData(aarData);
       } catch (error) {
-          console.error('Failed to fetch AAR data:', error);
-        }
-      };
+        console.error('Failed to fetch AAR data:', error);
+      }
+    };
       fetchAarData();
     }, []);
   const handleLike = (feedName) => {//should this be married up with server language???

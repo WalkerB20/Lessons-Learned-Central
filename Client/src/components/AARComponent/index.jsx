@@ -90,6 +90,7 @@ const handleAddSection = () => {
       }],
     });
   };
+
   const handleDateChange = (date) => {
     setFormData({
       ...formData,
