@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa";
 import '../Styles/Feed.css';
-//import AARComponent from '../AARComponent'; thought i would need, but i dunno
+//import AARComponent from '../AARComponent'; thought i would need, but i
 
 const Feed = () => {
   // State to manage the likes for each feed content
@@ -33,7 +33,7 @@ const Feed = () => {
   useEffect(() => {//the GET request to fetch data from the server
     const fetchAarData = async () => {
       try {
-        const response = await fetch(`${feedUrl}/llc`);
+        const response = await fetch(`${feedUrl}/events`);//previously llc
         if (response.ok) {
           const data = await response.json();
           setAarData(data);
@@ -63,7 +63,7 @@ const Feed = () => {
 
   const handleDelete = (aarId) => {//previously feedId
     // Sends delete request to the server
-    fetch(`${feedUrl}/llc/${aarId}`, {
+    fetch(`${feedUrl}/events/${aarId}`, {//previuosly llc
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -87,7 +87,7 @@ const Feed = () => {
     console.log('Edit feed item:', aarId);//previously feedId
     const feedToEdit = { ...editedValues }; // Using editedValues for edit data
     try {
-      fetch(`${feedUrl}/llc/${aarId}`, {
+      fetch(`${feedUrl}/events/${aarId}`, {//previously llc
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'

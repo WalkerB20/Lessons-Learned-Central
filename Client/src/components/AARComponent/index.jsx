@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
 
 export default function AARComponent() {
-  const url = 'http://localhost:3001/llc';
+  const url = 'http://localhost:3001/events';//previously llc
   const [formData, setFormData] = useState({
     eventTitle: '',
     eventType: '',
@@ -36,9 +36,14 @@ const handleChange = (event, index) => {
     setFormData(prevState => ({
       ...prevState,
       [name]: value,
-      additionalInput: value === 'Other' ? '' : prevState.additionalInput, // Reset additionalInput if selecting Other
+      additionalInput: value === 'Other' ? '' : prevState.additionalInput,
       sections: value === 'Other' ?
-        [{ type: '', title: '', comments: '', recommendations: '' }] : prevState.sections // Reset sections if selecting Other
+        [{ type: '', title: '', comments: '', recommendations: '' }] : prevState.sections
+    }));
+  } else if (name === 'eventTitle' || name === 'additionalInput' || name === 'eventLocation') {
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
     }));
   } else { // For section fields
     const updatedSections = [...formData.sections];
