@@ -170,7 +170,7 @@ const handleAddSection = () => {
                 ) : null} */}
               </>
             );
-            case 'AirborneOps':
+            case 'Airborne':
               return (
                 <>
                   <option value="JumpManifest">Jump Manifest</option>
@@ -221,7 +221,7 @@ const handleAddSection = () => {
               <option value="Deployment">Deployment</option>
               <option value="FTX">FTX</option>
               <option value="Equipment">Equipment</option>
-              <option value="AirborneOps">Airborne Operations</option>
+              <option value="Airborne">Airborne Operations</option>
               <option value="Other">Other</option>
             </select>
           {formData.eventType && formData.eventType !== 'Other' && (
