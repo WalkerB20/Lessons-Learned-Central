@@ -68,7 +68,7 @@ const handleAddSection = () => {
     console.log('Form submitted:', formData);
 
     // Fetch request
-    fetch(url, {
+    fetch(`${url}/events`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -85,7 +85,7 @@ const handleAddSection = () => {
     setFormData({
       eventTitle: '',
       eventType: '',
-      eventDate: '',
+      eventDate: new Date(),
       eventLocation: '',
       additionalOptions: '', //needed for the extra input field
       additionalInput: '',//needed for the extra input field
@@ -105,7 +105,7 @@ const handleAddSection = () => {
   };
 
   const renderAdditionalOptions = () => {
-    switch (formData.eventType) {
+    switch(formData.eventType) {
       case 'Range':
         return (
           <>
@@ -114,9 +114,16 @@ const handleAddSection = () => {
             <option value="320">320</option>
             <option value="M9">M9</option>
             <option value="Other">Other</option>
+              {/* {/* {formData.additionalOptions === 'Other' ? (
+              <input
+                type="text"
+                name="additionalOptions"
+                value={formData.additionalOptions}
+                onChange={handleChange} */}
+              {/* />
+            ) : null} */}
           </>
         );
-
       case 'Deployment':
         return (
           <>
@@ -126,45 +133,85 @@ const handleAddSection = () => {
             <option value="Equipment">Equipment</option>
             <option value="Post-deployment">Post-deployment</option>
             <option value="Other">Other</option>
+            {/* {/* {formData.additionalOptions === 'Other' ? (
+              <input
+                type="text"
+                name="additionalOptions"
+                value={formData.additionalOptions}
+                onChange={handleChange}
+              />
+            ) : null} */}
           </>
         );
 
-      case 'FTX':
-        return (
-          <>
-            <option value="TNGSite">Training Site</option>
-            <option value="Logistics">Logistics</option>
-            <option value="TNGModules">Training Modules</option>
-            <option value="LeadUpTraining">Lead-up Training</option>
-            <option value="Packinglist">Packing List</option>
-            <option value="Other">Other</option>
-          </>
-        );
+        case 'FTX':
+          return (
+            <>
+              <option value="TNGSite">Training Site</option>
+              <option value="Logistics">Logistics</option>
+              <option value="TNGModules">Training Modules</option>
+              <option value="LeadUpTraining">Lead-up Training</option>
+              <option value="Packinglist">Packing List</option>
+              <option value="Other">Other</option>
+              {/* {formData.additionalOptions === 'Other' ? (
+                <input
+                  type="text"
+                  name="additionalOptions"
+                  value={formData.additionalOptions}
+                  onChange={handleChange}
+                />
+              ) : null} */}
+            </>
+          );
 
-      case 'Equipment':
-        return (
-          <>
-            <option value="EquipmentType">Equipment Type</option>
-            <option value="EquipmentStatus">Equipment Status</option>
-            <option value="Other">Other</option>
-          </>
-        );
-
-      case 'AirborneOps':
-        return (
-          <>
-            <option value="JumpManifest">Jump Manifest</option>
-            <option value="JumpStatus">Jump Status</option>
-            <option value="JumpEquipment">Jump Equipment</option>
-            <option value="JumpSafety">Jump Safety</option>
-            <option value="JumpmasterRehearsals">Jumpmaster Rehearsals</option>
-            <option value="JMPI">JMPI</option>
-            <option value="Other">Other</option>
-          </>
-        );
-
-      case 'Other':
-        return null;
+          case 'Equipment':
+            return (
+              <>
+                <option value="EquipmentType">Equipment Type</option>
+                <option value="EquipmentStatus">Equipment Status</option>
+                {/* {formData.additionalOptions === 'Other' ? (
+                  <input
+                    type="text"
+                    name="additionalOptions"
+                    value={formData.additionalOptions}
+                    onChange={handleChange}
+                  />
+                ) : null} */}
+              </>
+            );
+            case 'AirborneOps':
+              return (
+                <>
+                  <option value="JumpManifest">Jump Manifest</option>
+                  <option value="JumpStatus">Jump Status</option>
+                  <option value="JumpEquipment">Jump Equipment</option>
+                  <option value="JumpSafety">Jump Safety</option>
+                  <option value="JumpmasterRehearsals">Jumpmaster Rehearsals</option>
+                  <option value="JMPI">JMPI</option>
+                  {/* {formData.additionalOptions === 'Other' ? (
+                    <input
+                      type="text"
+                      name="additionalOptions"
+                      value={formData.additionalOptions}
+                      onChange={handleChange}
+                    />
+                  ) : null} */}
+                </>
+              );
+            case 'Other':
+              return (
+                <>
+                  <option value="Other">Other</option>
+                    {/* {formData.additionalOptions === 'Other' ? (
+                      <input
+                        type="text"
+                        name="additionalOptions"
+                        value={formData.additionalOptions}
+                        onChange={handleChange}
+                      />
+                    ) : null} */}
+                </>
+              );
 
       default:
         return null;

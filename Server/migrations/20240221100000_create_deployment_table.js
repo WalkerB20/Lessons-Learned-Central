@@ -7,10 +7,7 @@ export const up = async function(knex) {
     .then(() => {
       return knex.schema.createTable('Deployment', function(table) {
         table.uuid('Deployment_ID').primary().defaultTo(knex.raw('uuid_generate_v4()'));
-        table.string('Pre_deployment');
-        table.string('Packing_list');
-        table.string('Equipment');
-        table.string('Post_deployment');
+        table.string('Event_Type', 255);
       })
     });
 };
