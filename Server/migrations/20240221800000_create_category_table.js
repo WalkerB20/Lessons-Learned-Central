@@ -15,8 +15,8 @@ export const up = async function(knex) {
         table.foreign('FTX_ID').references('FTX.FTX_ID');
         table.uuid('Equipment_ID');
         table.foreign('Equipment_ID').references('Equipment.Equipment_ID');
-        table.uuid('Airborne_Operation_ID');
-        table.foreign('Airborne_Operation_ID').references('Airborne_Operation.Airborne_Operation_ID');
+        table.uuid('Airborne_ID');
+        table.foreign('Airborne_ID').references('Airborne.Airborne_ID');
         table.uuid('Other_ID');
         table.foreign('Other_ID').references('Other.Other_ID');
       })

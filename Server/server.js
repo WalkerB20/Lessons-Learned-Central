@@ -3,6 +3,8 @@ import knex from 'knex';
 import knexfile from './knexfile.js';
 import { config } from 'dotenv';
 import cors from 'cors';
+
+// Load environment variables for .env file
 config();
 
 // SERVER CONFIGURATION
@@ -16,6 +18,7 @@ const db = knex(knexfile[process.env.NODE_ENV || 'development']);
 app.use(cors());
 app.use(express.json());
 app.use('/', router);
+app.options('*', cors());
 
 // ERROR HANDLING MIDDLEWARE
 app.use((err, req, res, next) => {
@@ -42,7 +45,7 @@ app.listen(PORT, (err) => {
 });
 
 // TESTING ROUTE
-app.get("/aar", (req, res, next) => {
+app.get("/events", (req, res, next) => {
     try {
         res.send("Welcome to the AAR route!");
     } catch (err) {
@@ -50,117 +53,144 @@ app.get("/aar", (req, res, next) => {
     }
 });
 
-app.get('/aar/rangeItems', async (req, res) => {
-  try {
-    const rangeItems = await db.select('Event_Type').from('Range');
-    res.json(rangeItems);
-  } catch (err) {
-    res.status(500).json({ message: `Error occurred while fetching range items: ${err.message}` });
-  }
-});
-
-app.get('/aar/deploymentItems', async (req, res) => {
-  try {
-    const deploymentItems = await db.select('Event_Type').from('Deployment');
-    res.json(deploymentItems);
-  } catch (err) {
-    res.status(500).json({ message: `Error occurred while fetching deployment items: ${err.message}` });
-  }
-});
-
-app.get('/aar/ftxItems', async (req, res) => {
-  try {
-    const ftxItems = await db.select('Event_Type').from('FTX');
-    res.json(ftxItems);
-  } catch (err) {
-    res.status(500).json({ message: `Error occurred while fetching ftx items: ${err.message}` });
-  }
-});
-
-app.get('/aar/equipmentItems', async (req, res) => {
-  try {
-    const equipmentItems = await db.select('Event_Type').from('Equipment');
-    res.json(equipmentItems);
-  } catch (err) {
-    res.status(500).json({ message: `Error occurred while fetching equipment items: ${err.message}` });
-  }
-});
-
-app.get('/aar/airborneOpsItems', async (req, res) => {
-  try {
-    const airborneOpsItems = await db.select('Event_Type').from('Airborne_Operation');
-    res.json(airborneOpsItems);
-  } catch (err) {
-    res.status(500).json({ message: `Error occurred while fetching Airborne Operation items: ${err.message}` });
-  }
-});
-
-// DATABASE ROUTES
-app.get("/llc", async (req, res, next) => {
+// GET FOR EVENTS IN AARCOMPONENTS.JSX
+router.get('/events', async (req, res, next) => {
     try {
-        const aar = await db.select().from('AAR');
-        if (!aar) {
-            throw new Error('No data found in AAR');
-        }
-        res.json(aar);
+        // Fetch data from the AAR table
+        const aarData = await db.select('*').from('AAR');
+
+        // Fetch data from the Sustain Comment table
+        const sustainCommentData = await db.select('*').from('Sustain_Comment');
+
+        // Fetch data from the Improve Comment table
+        const improveCommentData = await db.select('*').from('Improve_Comment');
+
+        // Fetch data from the AAR_Comment table
+        const aarCommentData = await db.select('*').from('AAR_Comment');
+
+        // Fetch data from the Range table
+        const rangeData = await db.select('*').from('Range');
+
+        // Fetch data from the Deployment table
+        const deploymentData = await db.select('*').from('Deployment');
+
+        // Fetch data from the FTX table
+        const ftxData = await db.select('*').from('FTX');
+
+        // Fetch data from the Equipment table
+        const equipmentData = await db.select('*').from('Equipment');
+
+        // Fetch data from the Airborne_Operation table
+        const airborneOperationData = await db.select('*').from('Airborne');
+
+        // Fetch data from the Other table
+        const otherData = await db.select('*').from('Other');
+
+        // Fetch data from the Category table
+        const categoryData = await db.select('*').from('Category');
+
+        // Fetch data from the AAR_Category table
+        const aarCategoryData = await db.select('*').from('AAR_Category');
+
+        // Send the fetched data as a response
+        res.json({
+            aarData,
+            sustainCommentData,
+            improveCommentData,
+            aarCommentData,
+            rangeData,
+            deploymentData,
+            ftxData,
+            equipmentData,
+            airborneOperationData,
+            otherData,
+            categoryData,
+            aarCategoryData
+        });
     } catch (err) {
-        next({ message: `Error occurred while fetching data from AAR: ${err.message}`, originalError: err });
+        next({ message: 'Error occurred while fetching data', originalError: err });
     }
 });
 
+// POST FOR EVENTS IN FORM DATA AARCOMPONENTS.JSX
+router.post('/events', async (req, res, next) => {
+    const formData = req.body;
+    try {
+        // Start a transaction
+        await db.transaction(async trx => {
+            // Insert into the AAR table and get the inserted ID
+            const [aarId] = await trx('AAR').insert({
+                AAR_Name: formData.eventTitle,
+                AAR_Location: formData.eventLocation,
+                AAR_Activity_Date: formData.eventDate,
+                // Add other fields as necessary
+            }).returning('AAR_ID');
 
+            // Insert into the Comment table and get the inserted ID
+            const commentIds = await Promise.all(formData.sections.map(async section => {
+                const [commentId] = await trx(`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment`).insert({
+                    [`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment_Type`]: section.type,
+                    [`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment_Title`]: section.title,
+                    [`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment_Discussion`]: section.comments,
+                    [`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment_Recommendation`]: section.recommendations
+                    // Add other fields as necessary
+                }).returning(`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment_ID`);
 
-router.post('/llc', async (req, res) => {
-  const { eventTitle, eventType, eventDate, eventLocation, commentsForSustain, commentsForImprove, categoryId, userId, eventId } = req.body;
+                // Insert into the AAR_Comment table
+                await trx('AAR_Comment').insert({
+                    AAR_Comment_ID: aarId[0],
+                    [`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment_ID`]: commentId[0]
+                });
 
-  try {
-    // Start a transaction because we're making multiple related changes
-    await db.transaction(async trx => {
+                return commentId;
+            }));
 
-      const [aar] = await trx('AAR').insert({
-        AAR_Name: eventTitle,
-        AAR_Location: eventLocation,
-        AAR_Activity_Date: eventDate,
-        User_ID: userId,
-        Event_ID: eventId,
-      }).returning('AAR_ID');
+            // Convert eventType to match database table naming convention
+            const formattedEventType = formData.eventType.replace(/([a-z])([A-Z])/g, '$1_$2');
+            const dbEventType = formattedEventType.charAt(0).toUpperCase() + formattedEventType.slice(1);
 
-      const aarId = aar.AAR_ID; // Extract the AAR_ID from the returned object
+            // Insert into the specific event table and get the inserted ID
+            const [eventId] = await trx(dbEventType).insert({
+                [`${dbEventType}_Event_Type`]: formData.eventType,
+                [`${dbEventType}_Event_Option`]: formData.additionalOptions,
+                [`${dbEventType}_Event_Other`]: formData.additionalInput
+                // Add other fields as necessary
+            }).returning(`${dbEventType}_ID`);
 
-      // Insert data into the AAR_Category table
-      const [aarCategory] = await trx('AAR_Category').insert({
-        AAR_ID: aarId,
-        Category_ID: categoryId
-      }).returning('AAR_Category_ID');
+            // Insert into the Category table and get the inserted ID
+            const [categoryId] = await trx('Category').insert({
+                [`${dbEventType}_ID`]: eventId[0]
+                // Add other fields as necessary
+            }).returning('Category_ID');
 
-      const aarCategoryId = aarCategory.AAR_Category_ID; // Extract the AAR_Category_ID from the returned object
+            // Insert into the AAR_Category table
+            await trx('AAR_Category').insert({
+                AAR_ID: aarId[0],
+                Category_ID: categoryId[0]
+            });
 
-      const [commentSustain] = await trx('Comment').insert({
-        Comment_Type: 'Sustain',
-        Comment_Discussion: commentsForSustain,
-        // Add the other Comment fields here
-      }).returning('Comment_ID');
+            // Repeat the above steps for other tables as necessary
+        });
 
-      const commentSustainId = commentSustain.Comment_ID; // Extract the Comment_ID from the returned object
-
-      const [commentImprove] = await trx('Comment').insert({
-        Comment_Type: 'Improve',
-        Comment_Discussion: commentsForImprove,
-        // Add the other Comment fields here
-      }).returning('Comment_ID');
-
-      const commentImproveId = commentImprove.Comment_ID; // Extract the Comment_ID from the returned object
-
-      await trx('AAR_Comment').insert([
-        { AAR_Category_ID: aarCategoryId, Comment_ID: commentSustainId },
-        { AAR_Category_ID: aarCategoryId, Comment_ID: commentImproveId },
-      ]);
-    });
-
-    res.json({ message: 'AAR and comments successfully created' });
-  } catch (err) {
-    res.status(500).json({ message: `Error occurred while inserting data: ${err.message}` });
-  }
+        res.json({ success: true, message: 'Data inserted successfully' });
+    } catch (err) {
+        next({ message: 'Error occurred while inserting data', originalError: err });
+    }
 });
 
-app.use(router);
+//DELETE FOR EVENTS IN FEED.JSX
+router.delete('/events/:aarId', async (req, res, next) => {//changed to router
+    const { aarId } = req.params;
+    try {
+        // Start a transaction
+        await db.transaction(async trx => {
+            // Delete from the AAR table
+            await trx('AAR').where('AAR_ID', aarId).del();
+            //await trx('Comment').where('AAR_ID', aarId).del();//probably don't need this if the whole thing will be deleted
+        });
+        res.json({ success: true, message: 'AAR entry and associated data deleted successfully' });
+    } catch (err) {
+        console.error('Error occurred while deleting AAR entry and associated data:', err);
+        res.status(500).json({ success: false, message: 'Failed to delete AAR entry and associated data' });
+    }
+});
