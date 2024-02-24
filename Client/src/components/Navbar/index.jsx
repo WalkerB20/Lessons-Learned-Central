@@ -11,11 +11,11 @@ export default function Navbar() {
       <nav className="topnav">
         <h1 className="page-title">Lessons Learned Central</h1>
         <div className="topnav-buttons">
-        <Link to="/llc" className="tab">AAR</Link>
+          <Search className="search" />
+          <Link to="/llc" className="tab">AAR</Link>
           <NavbarLogin className="tab" />
         </div>
       </nav>
-        <Search className="search" />
     </nav>
   );
 };

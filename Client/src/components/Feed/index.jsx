@@ -89,7 +89,7 @@ const Feed = () => {
             <div className="feedContent-title-bubble-end">
               <button onClick={() => handleLike('feed1')}>
                 <IconContext.Provider value={{className: "like"}}>
-                  {likes.feed3 ? <AiFillLike /> : <AiOutlineLike />}
+                  {likes.feed1 ? <AiFillLike /> : <AiOutlineLike />}
                 </IconContext.Provider>
                 {likes.feed1 || 0}
               </button>
