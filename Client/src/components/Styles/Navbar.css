@@ -20,12 +20,14 @@
   align-items: center;
   justify-content: space-between;
   color:white;
+  border-bottom: #ffcc01 2px solid;
+  margin-bottom: 10px;
 }
 
 .topnav-buttons{
   display: flex;
   flex-wrap: wrap;
-  background-color: black;
+  background-color: #221f20;;
   color:white;
   padding: 10px;
   border-radius: 10px;
@@ -61,15 +63,14 @@
   border-radius: 10px
 }
 
-.navbar button {
+.topnav-buttons > a {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color: rgb(219, 191, 14);
+  background-color: #ffcc01;
   color: black;
   cursor: pointer;
 }
-
 .navbar button:hover {
   background-color: white;
   color: black;
@@ -82,14 +83,19 @@
   border: 2px solid #000;
   border-radius: 5px;
   cursor: pointer;
-  background-color: rgb(219, 191, 14);
+  background-color:#ffcc01;
+  font-weight: 600;
+}
+
+.tab:hover {
+  background-color: white;
+  color: #221f20;
 }
 
 .page-title {
   font-size: 3rem;
   margin: 10px;
   padding: 10px;
-  border: 2px solid #000;
   border-radius: 5px;
-  color:  rgb(219, 191, 14);
+  color:  #ffcc01;
 }

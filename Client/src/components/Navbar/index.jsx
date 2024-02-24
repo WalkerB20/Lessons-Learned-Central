@@ -8,13 +8,13 @@ import NavbarLogin from '../NavbarLogin';
 export default function Navbar() {
   return (
     <nav className="navbar">
-      <h1 className="topnav">
+      <nav className="topnav">
         <h1 className="page-title">Lessons Learned Central</h1>
         <div className="topnav-buttons">
-        <Link to="/llc" className="aar">AAR</Link>
+        <Link to="/llc" className="tab">AAR</Link>
           <NavbarLogin className="tab" />
         </div>
-      </h1>
+      </nav>
         <Search className="search" />
     </nav>
   );

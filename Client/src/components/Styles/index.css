@@ -1,5 +1,5 @@
 body {
-  margin: 3%;
+  margin: 0, 3% 0 3%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -18,7 +18,7 @@ a {
 }
 
 a:hover {
-  color: #000000;
+  color: #221f20;
   background-color: white;
 }
 
@@ -27,15 +27,16 @@ button {
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
-  background-color:rgb(219, 191, 14);
+  background-color:#ffcc01;
   color: black;
   cursor: pointer;
   font-weight: 600;
+  font-size: 1em;
 }
 
 button:hover {
   background-color: black;
-  color: rgb(219, 191, 14);
+  color: #ffcc01;
 }
 
 h3 {
