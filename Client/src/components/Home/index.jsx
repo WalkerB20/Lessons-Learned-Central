@@ -1,12 +1,11 @@
 import Feed from '../Feed';
-import Navbar from '../Navbar';
+// import Navbar from '../Navbar';
 import '../Styles/App.css';
 
 
 const Home = () => {
   return (
     <div className="home">
-      <Navbar />
       <Feed />
     </div>
 

@@ -1,80 +1,236 @@
 /* FEED CSS */
 
 .feed {
-  width: 80%;
+  width:95%;
   margin: 20px auto;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: rgb(198, 195, 195);
+  background-color: #999;
+  border-radius: 1rem;
 }
+
 .feedHeader, .feedHeader h1 {
   display: flex;
   justify-content: space-between;
-  background-color: rgb(198, 195, 195);
+  background-color: #999;
   margin-top: 0px;
 }
+
 .feedHeader select {
   display: inline-block;
-  width: 8%;
+  width: 50%;
   height: 40px;
   text-align: center;
   font-size: 14px;
   font-weight: bold;
-  border: 2px solid #000;
   border-radius: 5px;
   margin-top: 0px;
   cursor: pointer;
   text-decoration: none;
-  background-color: rgb(198, 195, 195);
+  background-color:#ffcc01;
 }
+
+.feedHeader-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #999;
+  margin-top: 0px;
+}
+
+.feedHeader-buttons > * {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  background-color:rgb(219, 191, 14);
+  color: black;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 3em;
+  margin-bottom: 10px;
+  width: 500px;
+}
+
 .feedContentContainer {
   display: flex;
   flex-direction: column;
-  background-color: rgb(198, 195, 195);
+  background-color:#999;
 }
+
 .feedContent {
-  width: 80%;
-  margin: 10px auto;
-  margin-bottom: 10px;
+  /* display: flex; */
+  flex-direction: column;
+  background-color: #727365;
+  margin: 10px 10px;
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+
+}
+
+.feedContent-title-bubble {
+  width: 100%;
+  padding: 10px 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
+  flex-direction: row;
   position: relative;
   justify-content: space-between;
   align-items: center;
+  background-color: white;
+  border-radius: 1rem;
+
 }
+
+.feedContent-title-bubble-end {
+  background-color: transparent;
+}
+
 .buttonGroup {
   display: flex;
+  flex-direction: column;
   align-items: center;
-}
-.deleteButton, .editButton {
+  gap: 10px;
   margin-left: 10px;
   margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  background-color: transparent;
+  font-size:1.5rem;
+  padding: 0 0 0 0;
 }
+
+/* .buttonGroup > *:hover {
+  background-color: black;
+  color: rgb(219, 191, 14);
+} */
+
 .date {
-  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color:transparent;
+  color: rgb(97, 97, 97);
+  font-weight: 600;
+  font-size: 1em;
+  cursor: default;
+  margin-left: 50px;
 }
+
 .toggleButton {
-  background: none;
+  display: flex;
+  align-self: flex-start;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  /* outline: none; */
+  padding: 0;
+  color: white;
+  font-size: 3rem;
+}
+
+.like {
+  display: flex;
+  align-self: flex-start;
+  background-color: transparent;
   border: none;
   cursor: pointer;
   outline: none;
-  padding: 0;
-  font-size: 20px;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+  font-size: 1.5rem;
+  height: 50px;
 }
+
+.feedContent-title-line {
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  color:black;
+  width: 100%;
+}
+
+.title {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: left;
+  align-items: center;
+  margin: 0 0 0 50px;
+  border: none;
+  background-color:transparent;
+  color: black;
+  font-weight: 600;
+  font-size: 1.5em;
+  cursor: default;
+}
+
 .feedDropdown {
   display: block;
-  position: absolute;
+  position: relative;
   top: calc(100%);
   left: 0;
-  width: 99%;
+  width: 100%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 5.8px;
+  border-radius: 1rem;
+  background-color: #221f20;
 }
+
+.feedDropDown-comment {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 10px;
+  text-align: left;
+  background-color:  #221f20;
+}
+
+.feedDropDown-comment > * {
+  display: flex;
+  align-content: flex-start;
+  padding: 10px 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color:#ffcc01;
+  color: black;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+
+}
+
 .viewByButton {
   display: flex;
   margin-left: 8.5em;
   font-weight: bold;
   cursor: pointer;
-  background-color: rgb(198, 195, 195);
+  background-color:#999;
 }
+
+/* .sortBy > * {
+  display: flex;
+  margin-left: 1rem;
+  font-weight: 700;
+  font-size: 1.5em;
+  cursor: pointer;
+  background-color: rgb(198, 195, 195);
+  padding: 10px 10px;
+} */
+
+/* option {
+  font-size: 1.3rem;
+  cursor: pointer;
+  background-color: #D5D5D7;
+  padding: 20px 20px;
+  margin: 20px 20px;
+} */
+

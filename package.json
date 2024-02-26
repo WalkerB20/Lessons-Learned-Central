@@ -8,5 +8,11 @@
     "knex": "^3.1.0",
     "pg": "^8.11.3",
     "wsl": "^1.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "scripts": {
+    "start": "concurrently \"npm run start --prefix ./Client\" \"npm run start --prefix ./Server\""
   }
 }

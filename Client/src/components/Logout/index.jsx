@@ -8,7 +8,7 @@ export default function Logout() {
   return(
 
     isAuthenticated && (
-    <button onClick={() => logout()}>
+    <button className="tab" onClick={() => logout()}>
         Log Out
     </button>
     )
