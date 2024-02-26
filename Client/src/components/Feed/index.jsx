@@ -8,6 +8,7 @@ import { IconContext } from "react-icons";
 import '../Styles/Feed.css';
 
 const Feed = () => {
+  const [likes, setLikes] = useState({}); // State variable for tracking likes
   const [expandedFeeds, setExpandedFeeds] = useState({});
   const [aarData, setAarData] = useState([]);
   const [editedValues] = useState({
@@ -63,7 +64,12 @@ const Feed = () => {
         }
       } else {
         console.log('Post liked successfully.');
+        setLikes(prevLikes => ({
+          ...prevLikes,
+          [postId]: (prevLikes[postId] || 0) + 1,
+        }));
       }
+
     } catch (error) {
       console.error('Error liking the post:', error);
     }
@@ -164,13 +170,13 @@ const Feed = () => {
             </div>
             <div className="buttonGroup">
 
-              {/* <button onClick={() => handleLike(aar.AAR_ID)}>
+              <button onClick={() => handleLike(aar.AAR_ID)}>
                 <IconContext.Provider value={{className: "like"}}>
                     {likes.feed1 ?
                     <AiFillLike /> : <AiOutlineLike />}
                 </IconContext.Provider>
                 ({likes[aar.AAR_ID]})
-              </button> changed likes */}
+              </button> changed likes
 
               <button onClick={() => handleEdit(aar.AAR_ID)}>
                 <IconContext.Provider value={{className: "buttonGroup"}}>
