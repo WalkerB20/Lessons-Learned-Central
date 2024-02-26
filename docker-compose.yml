@@ -121,7 +121,7 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ./Server:/usr/src/patchroutes
-      - /usr/src/postroutes/node_modules
+      - /usr/src/patchroutes/node_modules
     ports:
       - "3005:3005"
     environment:
