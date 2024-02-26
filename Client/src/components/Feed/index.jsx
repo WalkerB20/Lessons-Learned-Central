@@ -25,11 +25,13 @@ const Feed = () => {
     additionalOptions: '',
     additionalInput: '',
   });//added this line to edit the data from the server
-  const feedUrl = 'http://localhost:3001'; //created this variable to store the URL and use in the fetch request
+  const getroutes = 'http://localhost:3001/api'; //created this variable to store the URL and use in the fetch request
+  const deleteroutes = 'http://localhost:3001/api'; //created this variable to store the URL and use in the fetch request
+  const patchroutes = 'http://localhost:3001/api'
   useEffect(() => {//the GET request to fetch data from the server
     const fetchAarData = async () => {
       try {
-        const response = await fetch(`${feedUrl}/events`);
+        const response = await fetch(`${getroutes}/postdata`);
         if (!response.ok) {
           throw new Error('Failed to fetch AAR data');
         }
@@ -59,7 +61,7 @@ const Feed = () => {
   };
   const handleDelete = (aarId) => {//previously feedId
     // Sends delete request to the server
-    fetch(`${feedUrl}/events/${aarId}`, {//previuosly llc
+    fetch(`${deleteroutes}/postdelete/${aarId}`, {//previuosly llc
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
@@ -82,7 +84,7 @@ const Feed = () => {
     console.log('Edit feed item:', aarId);//previously feedId
     const feedToEdit = { ...editedValues }; // Using editedValues for edit data
     try {
-      fetch(`${feedUrl}/events/${aarId}`, {//previously llc
+      fetch(`${patchroutes}/postpatch/${aarId}`, {//previously llc
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
@@ -143,8 +145,8 @@ const Feed = () => {
         {expandedFeeds[aar.AAR_ID] && (
               <div className="feedDropdown">
                 <ul>
-                  <li>Comments for Sustain: {aar.CommentsForSustain}</li>
-                  <li>Comments for Improve: {aar.CommentsForImprove}</li>
+                  <li>Comments for Sustain: {aar.sustainCommentData}</li>
+                  <li>Comments for Improve: {aar.improveCommentData}</li>
                 </ul>
               </div>
             )}
