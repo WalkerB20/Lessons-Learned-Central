@@ -18,7 +18,7 @@ export default function Navbar() {
           <NavbarLogin className="tab" />
         </div>
       </nav>
-      {location.pathname !== '/llc' && <Search className="search" />}
+      {location.pathname === '/' && <Search className="search" />}
     </nav>
   );
 };
