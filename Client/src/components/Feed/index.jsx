@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { FaMinus, FaPlus } from 'react-icons/fa';
 import { AiFillCaretRight, AiFillCaretDown } from "react-icons/ai";
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
@@ -6,14 +6,12 @@ import { FiEdit } from "react-icons/fi";
 import { TiDeleteOutline } from "react-icons/ti";
 import { IconContext } from "react-icons";
 import '../Styles/Feed.css';
-import { useAuth0 } from '@auth0/auth0-react';
+
 
 const Feed = () => {
   const [likes, setLikes] = useState({}); // State variable for tracking likes
   const [expandedFeeds, setExpandedFeeds] = useState({});
   const [aarData, setAarData] = useState([]);
-  const { getAccessTokenSilentl: getAccessTokenSilentlyRaw } = useAuth0();
-  const getAccessTokenSilently = useCallback(() => getAccessTokenSilentlyRaw(), [getAccessTokenSilentlyRaw]);
   const [editedValues] = useState({
     eventTitle: '',
     eventType: '',
@@ -32,17 +30,11 @@ const Feed = () => {
   const deleteroutes = 'http://localhost:3001/api';
   const patchroutes = 'http://localhost:3001/api';
   const postroutes = 'http://localhost:3001/api';
-  
 
   useEffect(() => {
     const fetchAarData = async () => {
-      const token = await getAccessTokenSilently();
       try {
-        const response = await fetch(`${getroutes}/postdata`, {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
+        const response = await fetch(`${getroutes}/postdata`);
         if (!response.ok) {
           throw new Error('Failed to fetch AAR data');
         }
@@ -53,10 +45,9 @@ const Feed = () => {
       }
     };
     fetchAarData();
-  }, [getAccessTokenSilently]);
+  }, []);
 
-  const handleLike = async (postId) => {
-    const token = await getAccessTokenSilently();
+  const handleLike = async (postId, token) => {
     try {
       const response = await fetch(`${postroutes}/like`, {
         method: 'POST',
@@ -66,7 +57,7 @@ const Feed = () => {
         },
         body: JSON.stringify({ postId }),
       });
-  
+
       if (!response.ok) {
         if (response.status === 409) {
           console.log("You've already liked this post.");
@@ -93,8 +84,7 @@ const Feed = () => {
     }));
   };
 
-  const handleDelete = async (aarId) => {
-    const token = await getAccessTokenSilently();
+  const handleDelete = async (aarId, token) => {
     try {
       await fetch(`${deleteroutes}/postdelete/${aarId}`, {
         method: 'DELETE',
@@ -114,8 +104,7 @@ const Feed = () => {
     }
   };
 
-  const handleEdit = async (aarId) => {
-    const token = await getAccessTokenSilently();
+  const handleEdit = async (aarId, token) => {
     try {
       const feedToEdit = { ...editedValues };
       const response = await fetch(`${patchroutes}/postpatch/${aarId}`, {
@@ -137,6 +126,11 @@ const Feed = () => {
     } catch (error) {
       console.error('Error editing feed item:', error);
     }
+  };
+
+  const formatDate = (dateString) => {
+    const options = { day: '2-digit', month: 'short', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
   return (
@@ -170,7 +164,7 @@ const Feed = () => {
       {aarData.map((aar, index) => ( //added to map the data from the server for dynamic updates
         <div className="feedContent" key={index}>{/*added the index key*/}
           <div className="feedContent-title-bubble">
-            <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>{/*added the index to get the data*/}
+            <button  onClick={() => toggleFeed(aar.AAR_ID)}>{/*added the index to get the data*/}
 
               <IconContext.Provider value={{className:"toggleButton"}}>
                 {expandedFeeds[aar.AAR_ID] ?
@@ -179,19 +173,17 @@ const Feed = () => {
 
             </button>
             <div className="feedContent-title-line">
-              <h3 className="title">
+              <h3 className="title-feed">
                 {aar.AAR_Name}
               </h3>{/*hopefully this takes the naming convention of the submission*/}
+              <p className="date">
+                {formatDate(aar.AAR_Activity_Date)}
+              </p>{/*this should be the date of the submission*/}
+
             </div>
             <div className="buttonGroup">
 
-              <button onClick={() => handleLike(aar.AAR_ID)}>
-                <IconContext.Provider value={{className: "like"}}>
-                    {likes.feed1 ?
-                    <AiFillLike /> : <AiOutlineLike />}
-                </IconContext.Provider>
-                ({likes[aar.AAR_ID]})
-              </button>{/*changed like*/}
+
 
               <button onClick={() => handleEdit(aar.AAR_ID)}>
                 <IconContext.Provider value={{className: "buttonGroup"}}>
@@ -204,19 +196,21 @@ const Feed = () => {
                   <TiDeleteOutline />
                 </IconContext.Provider>
               </button>{/*changed delete*/}
-
-              <p className="date">
-                {aar.AAR_Activity_Date}
-              </p>{/*this should be the date of the submission*/}
-
-          </div>
+            </div>
+          <button onClick={() => handleLike(aar.AAR_ID)}>
+                <IconContext.Provider value={{className: "buttonGroup"}}>
+                    {likes.feed1 ?
+                    <AiFillLike /> : <AiOutlineLike />}
+                </IconContext.Provider>
+                ({likes[aar.AAR_ID]})
+              </button>{/*changed like*/}
         </div>
 
         {expandedFeeds[aar.AAR_ID] && (
               <div className="feedDropdown">
               <ul className="feedDropDown-comment">
-                  <li>Comments for Sustain: {aar.sustainCommentData}</li>
-                  <li>Comments for Improve: {aar.improveCommentData}</li>
+                  <li>SUSTAIN: {aar.sustainCommentData}</li>
+                  <li>IMPROVE: {aar.improveCommentData}</li>
                 </ul>
               </div>
             )}
