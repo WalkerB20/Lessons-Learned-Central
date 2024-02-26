@@ -1,7 +1,11 @@
 import cors from 'cors';
 import express from 'express';
+import pkgJwt from 'express-jwt';
+import pkgJwksRsa from 'jwks-rsa';
 
 const router = express.Router();
+const { jwt } = pkgJwt;
+const { jwksRsa } = pkgJwksRsa;
 
 const deleteroutes = (db) => {
   router.use(cors());
