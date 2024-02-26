@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
+
 export default function AARComponent() {
   const postroutes = 'http://localhost:3001/api';//previously llc
   const [formData, setFormData] = useState({
@@ -18,6 +19,7 @@ export default function AARComponent() {
     additionalInput: '',//needed for the extra input field
     eventDate: new Date()//for the calendar
   });
+
   useEffect(() => {
     if (formData.eventType !== 'Other') {
       setFormData(prevState => ({
@@ -27,6 +29,7 @@ export default function AARComponent() {
       }));
     }
   }, [formData.eventType]); // Only reset when eventType changes
+
 const handleChange = (event, index) => {
   const { name, value } = event.target;
   if (name === 'eventType' || name === 'additionalOptions') {
@@ -51,12 +54,14 @@ const handleChange = (event, index) => {
     }));
   }
 };
+
 const handleAddSection = () => {
   setFormData(prevState => ({
     ...prevState,
     sections: [...prevState.sections, { type: '', title: '', comments: '', recommendations: '' }]
   }));
 };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handles the form submission
@@ -97,6 +102,7 @@ const handleAddSection = () => {
       eventDate: date
     });
   };
+
   const renderAdditionalOptions = () => {
     switch(formData.eventType) {
       case 'Range':
@@ -136,6 +142,7 @@ const handleAddSection = () => {
               <>
                 <option value="EquipmentType">Equipment Type</option>
                 <option value="EquipmentStatus">Equipment Status</option>
+                <option value="Other">Other</option>
               </>
             );
             case 'Airborne':
@@ -147,6 +154,7 @@ const handleAddSection = () => {
                   <option value="JumpSafety">Jump Safety</option>
                   <option value="JumpmasterRehearsals">Jumpmaster Rehearsals</option>
                   <option value="JMPI">JMPI</option>
+                  <option value="Other">Other</option>
                 </>
               );
             case 'Other':
