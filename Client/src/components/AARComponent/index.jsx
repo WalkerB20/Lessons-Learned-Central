@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
 export default function AARComponent() {
-  const url = 'http://localhost:3001';//previously llc
+  const postroutes = 'http://localhost:3001/api';//previously llc
   const [formData, setFormData] = useState({
     eventTitle: '',
     eventType: '',
@@ -18,15 +18,15 @@ export default function AARComponent() {
     additionalInput: '',//needed for the extra input field
     eventDate: new Date()//for the calendar
   });
-useEffect(() => {
-  if (formData.eventType !== 'Other' && formData.eventType === 'Other') {
-    setFormData(prevState => ({
-      ...prevState,
-      additionalOptions: '',
-      additionalInput: '',
-    }));
-  }
-}, [formData.eventType, formData.additionalOptions]);
+  useEffect(() => {
+    if (formData.eventType !== 'Other') {
+      setFormData(prevState => ({
+        ...prevState,
+        additionalOptions: '',
+        additionalInput: '',
+      }));
+    }
+  }, [formData.eventType]); // Only reset when eventType changes
 const handleChange = (event, index) => {
   const { name, value } = event.target;
   if (name === 'eventType' || name === 'additionalOptions') {
@@ -62,7 +62,7 @@ const handleAddSection = () => {
     // Handles the form submission
     console.log('Form submitted:', formData);
     // Fetch request
-    fetch(`${url}/events`, {
+    fetch(`${postroutes}/form`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
