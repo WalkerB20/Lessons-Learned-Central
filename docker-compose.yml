@@ -2,11 +2,6 @@ version: '3.8'
 
 services:
   app:
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 500M
     build:
       context: ./Client
       dockerfile: Dockerfile

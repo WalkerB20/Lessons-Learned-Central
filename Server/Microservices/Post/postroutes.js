@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
@@ -11,6 +12,9 @@ const postroutes = (db) => {
 // POST FOR EVENTS IN FORM DATA AARCOMPONENTS.JSX
 router.post('/form', async (req, res, next) => {
   const formData = req.body;
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.verify(token, YOUR_JWT_SECRET);
+  const userId = decodedToken.sub;
   try {
       // Start a transaction
       await db.transaction(async trx => {
@@ -21,6 +25,7 @@ router.post('/form', async (req, res, next) => {
               AAR_Activity_Date: formData.eventDate,
               Sustain_Comment_ID: formData.sustainCommentId,
               Improve_Comment_ID: formData.improveCommentId,
+              User_ID: userId,
               // Add other fields as necessary
           }).returning('AAR_ID');
 
