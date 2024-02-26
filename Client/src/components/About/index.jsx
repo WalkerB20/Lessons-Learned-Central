@@ -5,7 +5,7 @@ import '../Styles/About.css';
 const About = () => {
   return (
     <div className='about'>
-      <h1 className='title'>About Lessons Learned Central</h1>
+      <h1 className='title-about'>About Lessons Learned Central</h1>
       <div className ='about-body'>
         <h2>Welcome to our military-focused social media platform!</h2>
 

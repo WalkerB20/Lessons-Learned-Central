@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 // import { FaMinus, FaPlus } from 'react-icons/fa';
 import { AiFillCaretRight, AiFillCaretDown } from "react-icons/ai";
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
@@ -8,121 +8,28 @@ import { IconContext } from "react-icons";
 import '../Styles/Feed.css';
 
 const Feed = () => {
-  const [likes, setLikes] = useState({}); // State variable for tracking likes
+  // State to manage the likes for each feed content
   const [expandedFeeds, setExpandedFeeds] = useState({});
-  const [aarData, setAarData] = useState([]);
-  const [editedValues] = useState({
-    eventTitle: '',
-    eventType: '',
-    eventDate: '',
-    eventLocation: '',
-    sustainTitle: '',
-    commentsSustain: '',
-    recommendationsSustain: '',
-    improveTitle: '',
-    commentsImprove: '',
-    recommendationsImprove: '',
-    additionalOptions: '',
-    additionalInput: '',
+  const [likes, setLikes] = useState({
+    feed1: 0,
+    feed2: 0,
+    feed3: 0
   });
-  const getroutes = 'http://localhost:3001/api';
-  const deleteroutes = 'http://localhost:3001/api';
-  const patchroutes = 'http://localhost:3001/api';
-  const postroutes = 'http://localhost:3001/api';
 
-  useEffect(() => {
-    const fetchAarData = async () => {
-      try {
-        const response = await fetch(`${getroutes}/postdata`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch AAR data');
-        }
-        const responseData = await response.json();
-        setAarData(responseData.aarData);
-      } catch (error) {
-        console.error('Failed to fetch AAR data:', error);
-      }
-    };
-    fetchAarData();
-  }, []);
-
-  const handleLike = async (postId) => {
-    try {
-      const response = await fetch(`${postroutes}/like`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ postId }),
-      });
-
-      if (!response.ok) {
-        if (response.status === 409) {
-          console.log("You've already liked this post.");
-        } else {
-          throw new Error('Failed to like the post');
-        }
-      } else {
-        console.log('Post liked successfully.');
-        setLikes(prevLikes => ({
-          ...prevLikes,
-          [postId]: (prevLikes[postId] || 0) + 1,
-        }));
-      }
-
-    } catch (error) {
-      console.error('Error liking the post:', error);
-    }
-  };
-
-  const toggleFeed = (aarId) => {
-    setExpandedFeeds((prevState) => ({
-      ...prevState,
-      [aarId]: !prevState[aarId],
+  const handleLike = (feedName) => {
+    setLikes((prevLikes) => ({
+      ...prevLikes,
+      [feedName]: prevLikes[feedName] + 1
     }));
   };
 
-  const handleDelete = async (aarId) => {
-    try {
-      await fetch(`${deleteroutes}/postdelete/${aarId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Failed to delete item with ID ${aarId}. Status: ${response.status}`);
-        }
-        setAarData(aarData.filter(item => item.AAR_ID !== aarId));
-      });
-    } catch (error) {
-      console.error('Error deleting feed item:', error);
-    }
+  const toggleFeed = (feedId) => {
+    setExpandedFeeds((prevState) => ({
+      ...prevState,
+      [feedId]: !prevState[feedId],
+    }));
   };
 
-  const handleEdit = async (aarId) => {
-    try {
-      const feedToEdit = { ...editedValues };
-      const response = await fetch(`${patchroutes}/postpatch/${aarId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(feedToEdit),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to edit item with ID ${aarId}. Status: ${response.status}`);
-      }
-
-      const updatedItem = await response.json();
-      setAarData(aarData.map(item => item.AAR_ID === aarId ? { ...item, ...updatedItem } : item));
-
-    } catch (error) {
-      console.error('Error editing feed item:', error);
-    }
-  };
 
   return (
     <div className="feed">
@@ -152,63 +59,170 @@ const Feed = () => {
 
       {/* This will just have to be mapped with feed content */}
       <div className="feedContentContainer">
-      {aarData.map((aar, index) => ( //added to map the data from the server for dynamic updates
-        <div className="feedContent" key={index}>{/*added the index key*/}
+
+        <div className="feedContent">
           <div className="feedContent-title-bubble">
-            <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>{/*added the index to get the data*/}
 
-              <IconContext.Provider value={{className:"toggleButton"}}>
-                {expandedFeeds[aar.AAR_ID] ?
-                < AiFillCaretDown/> : <AiFillCaretRight />}
-              </IconContext.Provider>{/*samesies*/}
-
+            <button onClick={() => toggleFeed('feed1')}>
+              <IconContext.Provider value={{className: "toggleButton"}}>
+                {expandedFeeds['feed1'] ? < AiFillCaretDown/> : <AiFillCaretRight />}
+              </IconContext.Provider>
             </button>
+
             <div className="feedContent-title-line">
               <h3 className="title">
-                {aar.AAR_Name}
-              </h3>{/*hopefully this takes the naming convention of the submission*/}
+                  Rerum, dolores magni, modi ullam iusto, hic praesentium a possimus.
+              </h3>
+                  <p className="date">01/01/2024</p>
             </div>
+
             <div className="buttonGroup">
-
-              <button onClick={() => handleLike(aar.AAR_ID)}>
-                <IconContext.Provider value={{className: "like"}}>
-                    {likes.feed1 ?
-                    <AiFillLike /> : <AiOutlineLike />}
-                </IconContext.Provider>
-                ({likes[aar.AAR_ID]})
-              </button> changed likes
-
-              <button onClick={() => handleEdit(aar.AAR_ID)}>
-                <IconContext.Provider value={{className: "buttonGroup"}}>
-                  <FiEdit />
-                </IconContext.Provider>
-              </button>{/*changed edit*/}
-
-              <button onClick={() => handleDelete(aar.AAR_ID)}>
+              <button type="button">
                 <IconContext.Provider value={{className: "buttonGroup"}}>
                   <TiDeleteOutline />
                 </IconContext.Provider>
-              </button>{/*changed delete*/}
+              </button>
 
-              <p className="date">
-                {aar.AAR_Activity_Date}
-              </p>{/*this should be the date of the submission*/}
+              <button type="button">
+                <IconContext.Provider value={{className: "buttonGroup"}}>
+                  <FiEdit />
+                </IconContext.Provider>
+              </button>
+            </div>
+
+            <div className="feedContent-title-bubble-end">
+              <button onClick={() => handleLike('feed1')}>
+                <IconContext.Provider value={{className: "like"}}>
+                  {likes.feed1 ? <AiFillLike /> : <AiOutlineLike />}
+                </IconContext.Provider>
+                {likes.feed1 || 0}
+              </button>
+
+              </div>
 
           </div>
+
+          {expandedFeeds['feed1'] && (
+            <div className="feedDropdown">
+              <ul className="feedDropDown-comment">
+                <ol>
+                  SUSTAIN: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque rerum pariatur eveniet quibusdam veritatis explicabo!
+                </ol>
+                <ol>
+                  IMPROVE: Voluptates assumenda est aut minus inventore facere iste quibusdam debitis, cupiditate obcaecati voluptatem ducimus repellendus illo non, eos sunt velit molestiae excepturi?
+                </ol>
+              </ul>
+            </div>
+          )}
         </div>
 
-        {expandedFeeds[aar.AAR_ID] && (
-              <div className="feedDropdown">
-              <ul className="feedDropDown-comment">
-                  <li>Comments for Sustain: {aar.sustainCommentData}</li>
-                  <li>Comments for Improve: {aar.improveCommentData}</li>
-                </ul>
+        <div className="feedContent">
+          <div className="feedContent-title-bubble">
+            <button onClick={() => toggleFeed('feed2')}>
+              <IconContext.Provider value={{className: "toggleButton"}}>
+                {expandedFeeds['feed2'] ? < AiFillCaretDown/> : <AiFillCaretRight />}
+              </IconContext.Provider>
+            </button>
+            <div className="feedContent-title-line">
+            <h3 className="title">Rerum, dolores magni, modi ullam iusto, hic praesentium a possimus.</h3>
+              <p className="date">01/01/2024</p>
               </div>
-            )}
+
+            <div className="buttonGroup">
+              <button type="button">
+                <IconContext.Provider value={{className: "buttonGroup"}}>
+                  <TiDeleteOutline />
+                </IconContext.Provider>
+              </button>
+
+              <button type="button">
+                <IconContext.Provider value={{className: "buttonGroup"}}>
+                  <FiEdit />
+                </IconContext.Provider>
+              </button>
+            </div>
+
+            <div className="feedContent-title-bubble-end">
+              <button onClick={() => handleLike('feed2')}>
+                <IconContext.Provider value={{className: "like"}}>
+                  {likes.feed2 ? <AiFillLike /> : <AiOutlineLike />}
+                </IconContext.Provider>
+                {likes.feed2 || 0}
+              </button>
+
+              </div>
+
           </div>
-        ))}
+
+          {expandedFeeds['feed2'] && (
+            <div className="feedDropdown">
+              <ul className="feedDropDown-comment">
+                <ol>
+                  SUSTAIN: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque rerum pariatur eveniet quibusdam veritatis explicabo!
+                </ol>
+                <ol>
+                  IMPROVE: Voluptates assumenda est aut minus inventore facere iste quibusdam debitis, cupiditate obcaecati voluptatem ducimus repellendus illo non, eos sunt velit molestiae excepturi?
+                </ol>
+              </ul>
+            </div>
+          )}
+        </div>
+
+        <div className="feedContent">
+          <div className="feedContent-title-bubble">
+            <button onClick={() => toggleFeed('feed3')}>
+              <IconContext.Provider value={{className: "toggleButton"}}>
+                {expandedFeeds['feed3'] ? < AiFillCaretDown/> : <AiFillCaretRight />}
+              </IconContext.Provider>
+            </button>
+            <div className="feedContent-title-line">
+            <h3 className="title">Rerum, dolores magni, modi ullam iusto, hic praesentium a possimus.</h3>
+              <p className="date">01/01/2024</p>
+              </div>
+
+            <div className="buttonGroup">
+              <button type="button">
+                <IconContext.Provider value={{className: "buttonGroup"}}>
+                  <TiDeleteOutline />
+                </IconContext.Provider>
+              </button>
+
+              <button type="button">
+                <IconContext.Provider value={{className: "buttonGroup"}}>
+                  <FiEdit />
+                </IconContext.Provider>
+              </button>
+            </div>
+
+            <div className="feedContent-title-bubble-end">
+              <button onClick={() => handleLike('feed3')}>
+                <IconContext.Provider value={{className: "like"}}>
+                  {likes.feed3 ? <AiFillLike /> : <AiOutlineLike />}
+                </IconContext.Provider>
+                {likes.feed3 || 0}
+              </button>
+
+              </div>
+
+          </div>
+
+          {expandedFeeds['feed3'] && (
+            <div className="feedDropdown">
+              <ul className="feedDropDown-comment">
+                <ol>
+                  SUSTAIN: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Neque rerum pariatur eveniet quibusdam veritatis explicabo!
+                </ol>
+                <ol>
+                  IMPROVE: Voluptates assumenda est aut minus inventore facere iste quibusdam debitis, cupiditate obcaecati voluptatem ducimus repellendus illo non, eos sunt velit molestiae excepturi?
+                </ol>
+              </ul>
+            </div>
+          )}
+        </div>
+
       </div>
     </div>
   );
 };
+
 export default Feed;
