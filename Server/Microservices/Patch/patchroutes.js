@@ -12,6 +12,11 @@ const patchroutes = (db) => {
   router.patch('/postpatch/:aarId', async (req, res, next) => {
     const aarId = req.params.aarId;
     const updatedData = req.body;
+    if (!req.headers.authorization) {
+      // Handle the error: the Authorization header was not sent in the request
+      res.status(401).send('Authorization header is missing');
+      return;
+    }
       // Extract the JWT from the Authorization header
   const token = req.headers.authorization.split(' ')[1];
 

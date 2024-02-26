@@ -12,6 +12,11 @@ const postroutes = (db) => {
 // POST FOR EVENTS IN FORM DATA AARCOMPONENTS.JSX
 router.post('/form', async (req, res, next) => {
   const formData = req.body;
+  if (!req.headers.authorization) {
+    // Handle the error: the Authorization header was not sent in the request
+    res.status(401).send('Authorization header is missing');
+    return;
+  }
   const token = req.headers.authorization.split(' ')[1];
   const decodedToken = jwt.verify(token, YOUR_JWT_SECRET);
   const userId = decodedToken.sub;

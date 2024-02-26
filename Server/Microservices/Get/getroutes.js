@@ -10,6 +10,11 @@ const getroutes = (db) => {
   router.options('*', cors());
 
 router.get("/post", (req, res, next) => {
+  if (!req.headers.authorization) {
+    // Handle the error: the Authorization header was not sent in the request
+    res.status(401).send('Authorization header is missing');
+    return;
+  }
   const token = req.headers.authorization.split(' ')[1];
 
   // Decode the JWT to get the user's ID
