@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 import { FaPlus, FaMinus } from "react-icons/fa";//combined both imports into one line
 import '../Styles/Feed.css';
 //import AARComponent from '../AARComponent'; thought i would need, but i
 const Feed = () => {
   // State to manage the likes for each feed content
+  const { isAuthenticated, getAccessTokenSilently } = useAuth0();
   const [expandedFeeds, setExpandedFeeds] = useState({});
   const [likes, setLikes] = useState({
     feed1: 0,
@@ -28,85 +30,115 @@ const Feed = () => {
   const getroutes = 'http://localhost:3001/api'; //created this variable to store the URL and use in the fetch request
   const deleteroutes = 'http://localhost:3001/api'; //created this variable to store the URL and use in the fetch request
   const patchroutes = 'http://localhost:3001/api'
-  useEffect(() => {//the GET request to fetch data from the server
+  useEffect(() => {
     const fetchAarData = async () => {
+      if (!isAuthenticated) return; // Exit if not authenticated
+
       try {
-        const response = await fetch(`${getroutes}/postdata`);
+        const token = await getAccessTokenSilently(); // Get access token for the logged-in user
+        const response = await fetch(`${getroutes}/postdata`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the access token in API requests
+          },
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch AAR data');
         }
         const responseData = await response.json();
-        const aarData = responseData.aarData; // Extracting the array of AAR data
-        if (!Array.isArray(aarData)) {
-          throw new Error('Invalid data format: expected an array');
-        }
-        setAarData(aarData);
+        setAarData(responseData.aarData); // Assuming responseData.aarData is the correct data structure
       } catch (error) {
         console.error('Failed to fetch AAR data:', error);
       }
     };
-      fetchAarData();
-    }, []);
-  const handleLike = (feedName) => {//should this be married up with server language???
-    setLikes((prevLikes) => ({
-      ...prevLikes,
-      [feedName]: prevLikes[feedName] + 1
-    }));
+    fetchAarData();
+  }, [isAuthenticated, getAccessTokenSilently]);
+  
+  const handleLike = async (postId) => {
+    try {
+      const token = await getAccessTokenSilently();
+      const response = await fetch(`${getroutes}/like`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ postId }),
+      });
+  
+      if (!response.ok) {
+        if (response.status === 409) {
+          // Handle already liked case
+          console.log("You've already liked this post.");
+        } else {
+          throw new Error('Failed to like the post');
+        }
+      } else {
+        // Update likes state or UI accordingly
+        console.log('Post liked successfully.');
+        // Optionally fetch updated likes count or list here
+      }
+    } catch (error) {
+      console.error('Error liking the post:', error);
+    }
   };
+  
   const toggleFeed = (aarId) => {//previously feedId
     setExpandedFeeds((prevState) => ({
       ...prevState,
       [aarId]: !prevState[aarId],//previous feedId
     }));
   };
-  const handleDelete = (aarId) => {//previously feedId
-    // Sends delete request to the server
-    fetch(`${deleteroutes}/postdelete/${aarId}`, {//previuosly llc
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+  const handleDelete = async (aarId) => {
+    try {
+      const token = await getAccessTokenSilently(); // Get access token
+      await fetch(`${deleteroutes}/postdelete/${aarId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, // Include the access token in the request
+        },
+      })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Failed to delete item with ID ${aarId}. Status: ${response.status}`);
-        // will in theory remove the deleted feed item from the state
         }
-        setAarData(aarData.filter(item => item.AAR_ID !== aarId));//previously feedId - also updated to AAR_ID
-        //we can input alerts like we did the previous project if we want.
-      })
-      .catch ((error) => {
-        console.error('Error deleting feed item:', error);
-    });
+        setAarData(aarData.filter(item => item.AAR_ID !== aarId));
+      });
+    } catch (error) {
+      console.error('Error deleting feed item:', error);
+    }
   };
-  const handleEdit = (aarId) => {//previously feedId
-    // Implements the edit functionality
-    console.log('Edit feed item:', aarId);//previously feedId
-    const feedToEdit = { ...editedValues }; // Using editedValues for edit data
+  const handleEdit = async (aarId) => {
     try {
-      fetch(`${patchroutes}/postpatch/${aarId}`, {//previously llc
+      const token = await getAccessTokenSilently(); // Get access token for the logged-in user
+      const feedToEdit = { ...editedValues }; // Assuming editedValues contains the data to be edited
+  
+      const response = await fetch(`${patchroutes}/postpatch/${aarId}`, {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, // Include the access token in the request header
         },
-        body: JSON.stringify(feedToEdit)
-      })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Failed to edit this item:', response.status);
+        body: JSON.stringify(feedToEdit),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Failed to edit item with ID ${aarId}. Status: ${response.status}`);
       }
-      return response.json();
-    })
-    .then((data) => {
-        //handles a successful edit
-    })
-    .catch ((error) => {
+  
+      const updatedItem = await response.json(); // Assuming the server responds with the updated item
+  
+      // Update local state to reflect the edit
+      // This step depends on your state structure and what the server returns
+      // Here's a generic example of how you might update the aarData state
+      // This assumes aarData is an array of items and each item has a unique ID
+      setAarData(aarData.map(item => item.AAR_ID === aarId ? { ...item, ...updatedItem } : item));
+  
+    } catch (error) {
       console.error('Error editing feed item:', error);
-    });
-  } catch (error) {
-    console.error('Error editing feed item:', error);
+    }
   };
-}
+  
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setEditedValues((prevValues) => ({
