@@ -4,6 +4,7 @@ import Login from '../Login';
 import Logout from '../Logout';
 import '../Styles/Login.css';
 import '../Styles/Navbar.css';
+import '../Styles/index.css';
 
 const NavbarLogin = () => {
   return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { FaMinus, FaPlus } from 'react-icons/fa';
 import { AiFillCaretRight, AiFillCaretDown } from "react-icons/ai";
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
@@ -7,6 +7,7 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { IconContext } from "react-icons";
 import '../Styles/Feed.css';
 //import AARComponent from '../AARComponent'; thought i would need, but i
+
 const Feed = () => {
   // State to manage the likes for each feed content
   const [expandedFeeds, setExpandedFeeds] = useState({});
@@ -15,6 +16,7 @@ const Feed = () => {
     feed2: 0,
     feed3: 0
   });
+
   const [aarData, setAarData] = useState([]);//added this line to fetch data from the server
   const [editedValues, setEditedValues] = useState({
     eventTitle: '',
@@ -30,7 +32,9 @@ const Feed = () => {
     additionalOptions: '',
     additionalInput: '',
   });//added this line to edit the data from the server
+
   const feedUrl = 'http://localhost:3001'; //created this variable to store the URL and use in the fetch request
+
   useEffect(() => {//the GET request to fetch data from the server
     const fetchAarData = async () => {
       try {
@@ -50,18 +54,21 @@ const Feed = () => {
     };
       fetchAarData();
     }, []);
+
   const handleLike = (feedName) => {//should this be married up with server language???
     setLikes((prevLikes) => ({
       ...prevLikes,
       [feedName]: prevLikes[feedName] + 1
     }));
   };
+
   const toggleFeed = (aarId) => {//previously feedId
     setExpandedFeeds((prevState) => ({
       ...prevState,
       [aarId]: !prevState[aarId],//previous feedId
     }));
   };
+
   const handleDelete = (aarId) => {//previously feedId
     // Sends delete request to the server
     fetch(`${feedUrl}/events/${aarId}`, {//previuosly llc
@@ -82,6 +89,7 @@ const Feed = () => {
         console.error('Error deleting feed item:', error);
     });
   };
+
   const handleEdit = (aarId) => {//previously feedId
     // Implements the edit functionality
     console.log('Edit feed item:', aarId);//previously feedId
@@ -110,6 +118,7 @@ const Feed = () => {
     console.error('Error editing feed item:', error);
   };
 }
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setEditedValues((prevValues) => ({
@@ -117,6 +126,7 @@ const Feed = () => {
       [name]: value
     }));
   };
+
   return (
     <div className="feed">
 
@@ -147,19 +157,52 @@ const Feed = () => {
       <div className="feedContentContainer">
       {aarData.map((aar, index) => ( //added to map the data from the server for dynamic updates
         <div className="feedContent" key={index}>{/*added the index key*/}
-          <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>{/*added the index to get the data*/}
-            {expandedFeeds[aar.AAR_ID] ? <FaMinus /> : <FaPlus />}{/*samesies*/}
-          </button>
-          <h3>{aar.AAR_Name}</h3>{/*hopefully this takes the naming convention of the submission*/}
-          <div className="buttonGroup">
-            <button onClick={() => handleLike(aar.AAR_ID)}>Like({likes[aar.AAR_ID]})</button>{/*changed likes*/}
-            <button onClick={() => handleEdit(aar.AAR_ID)}>Edit</button>{/*changed edit*/}
-            <button onClick={() => handleDelete(aar.AAR_ID)}>Delete</button>{/*changed delete*/}
-            <p className="date">{aar.AAR_Activity_Date}</p>{/*this should be the date of the submission*/}
+          <div className="feedContent-title-bubble">
+            <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>{/*added the index to get the data*/}
+
+              <IconContext.Provider value={{className:"toggleButton"}}>
+                {expandedFeeds[aar.AAR_ID] ?
+                < AiFillCaretDown/> : <AiFillCaretRight />}
+              </IconContext.Provider>{/*samesies*/}
+
+            </button>
+            <div className="feedContent-title-line">
+              <h3 className="title">
+                {aar.AAR_Name}
+              </h3>{/*hopefully this takes the naming convention of the submission*/}
+            </div>
+            <div className="buttonGroup">
+
+              <button onClick={() => handleLike(aar.AAR_ID)}>
+                <IconContext.Provider value={{className: "like"}}>
+                    {likes.feed1 ?
+                    <AiFillLike /> : <AiOutlineLike />}
+                </IconContext.Provider>
+                ({likes[aar.AAR_ID]})
+              </button> {/*changed likes*/}
+
+              <button onClick={() => handleEdit(aar.AAR_ID)}>
+                <IconContext.Provider value={{className: "buttonGroup"}}>
+                  <FiEdit />
+                </IconContext.Provider>
+              </button>{/*changed edit*/}
+
+              <button onClick={() => handleDelete(aar.AAR_ID)}>
+                <IconContext.Provider value={{className: "buttonGroup"}}>
+                  <TiDeleteOutline />
+                </IconContext.Provider>
+              </button>{/*changed delete*/}
+
+              <p className="date">
+                {aar.AAR_Activity_Date}
+              </p>{/*this should be the date of the submission*/}
+
+          </div>
         </div>
+
         {expandedFeeds[aar.AAR_ID] && (
               <div className="feedDropdown">
-                <ul>
+              <ul className="feedDropDown-comment">
                   <li>Comments for Sustain: {aar.CommentsForSustain}</li>
                   <li>Comments for Improve: {aar.CommentsForImprove}</li>
                 </ul>

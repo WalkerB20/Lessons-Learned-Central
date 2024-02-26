@@ -10,7 +10,7 @@ const Search = () => {
         type="text"
         placeholder="Search..."
       />
-      <button className="search" type="submit">SEARCH</button>
+      <button className="search-button" type="submit">SEARCH</button>
       </form>
     </>
   )

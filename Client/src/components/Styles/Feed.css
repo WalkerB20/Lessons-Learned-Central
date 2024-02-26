@@ -1,7 +1,7 @@
 /* FEED CSS */
 
 .feed {
-  width:100%;
+  width:95%;
   margin: 20px auto;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -226,11 +226,11 @@
   padding: 10px 10px;
 } */
 
-option {
+/* option {
   font-size: 1.3rem;
   cursor: pointer;
   background-color: #D5D5D7;
   padding: 20px 20px;
   margin: 20px 20px;
-}
+} */
 

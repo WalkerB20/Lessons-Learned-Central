@@ -1,46 +1,58 @@
 /* Navbar CSS */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
 .navbar {
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 200px;
+  /* width: 100vw; */
+
 }
 
 .topnav {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: space-between;
   color:white;
   border-bottom: #ffcc01 2px solid;
   margin-bottom: 10px;
+  width: 98vw;
+  /* overflow: auto; */
 }
 
 .topnav-buttons {
   display: flex;
   flex-wrap: wrap-reverse;
-  background-color: #221f20;
+  background-color:transparent;
   color:white;
   padding: 10px;
   border-radius: 10px;
   gap: 20px;
-  justify-content: flex-end;
-  align-items: center;
+  /* justify-content: flex-end; */
+  /* align-items: center; */
 }
 
 .search {
   display: flex;
   flex-wrap: wrap-reverse;
-  justify-self : flex-start;
+  justify-self : center;
   gap: 10px;
-  padding: 20px 20px;
+  margin: 0 auto;
+  align-items: center;
   border: none;
   border-radius: 5px;
   color: black;
   cursor: pointer;
+  background-color: transparent;
+  max-width: 1500px;
+  width: 100vw;
+}
+
+.search form {
+  background-color: black;
+
 }
 .navbar input  {
   font-size: 24px;
@@ -51,6 +63,8 @@
   margin: 0 0;
   border-radius: 10px;
   color: #f1e4c7;
+  width: 80%;
+  align-self: center;
 }
 
 .topnav-buttons > * {
@@ -61,10 +75,11 @@
   cursor: pointer;
 }
 
-.navbar button:hover {
-  background-color: white;
-  color: black;
-}
+/* .navbar button:hover {
+  background-color: black;
+  color: #ffcc01;
+  border-color: #ffcc01 5px solid;
+} */
 
 /* AAR CSS */
 .tab {
@@ -76,8 +91,9 @@
 }
 
 .tab:hover {
-  background-color: white;
-  color: #221f20;
+  background-color: rgb(97, 97, 97);
+  color: #D5D5D7;
+  box-shadow: 0 0 0 2px #ffcc01;
 }
 
 .page-title {
@@ -86,6 +102,13 @@
   padding: 10px;
   border-radius: 5px;
   color:  #ffcc01;
+}
+
+.page-title:hover {
+  background-color: rgb(97, 97, 97);
+  color: #D5D5D7;
+  /* border: #ffcc01 2px solid; */
+  box-shadow: 0 0 0 2px #ffcc01;
 }
 
 

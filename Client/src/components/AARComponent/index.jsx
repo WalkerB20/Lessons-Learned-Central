@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
+import '../Styles/index.css';
+import '../Styles/App.css';
+
 export default function AARComponent() {
   const url = 'http://localhost:3001';//previously llc
   const [formData, setFormData] = useState({
@@ -209,7 +212,7 @@ const handleAddSection = () => {
   };
   return (
     <div className="aarForm">
-      <h2>After Action Review Form</h2>{/*can change name to whatever*/}
+      <h1>After Action Review Form</h1>{/*can change name to whatever*/}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Event Title:</label>
@@ -265,6 +268,7 @@ const handleAddSection = () => {
           />
           <label>Event Location:</label>
           <input type="text" placeholder="Where did your event take place?" name="eventLocation" value={formData.eventLocation} onChange={handleChange} />
+
           {formData.sections.map((section, index) => (
             <div key={index} className="aar-section">
               <label>Comments:</label>
@@ -303,8 +307,10 @@ const handleAddSection = () => {
             </div>
           ))}
         </div>
-        <button type="button" onClick={handleAddSection}>Add another comment</button>
-        <button type="submit">Submit</button>
+        <div className="form-footer">
+          <button type="button" onClick={handleAddSection}>Add comment</button>
+          <button type="submit">Submit</button>
+        </div>
       </form>
     </div>
   );
