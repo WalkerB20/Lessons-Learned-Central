@@ -115,6 +115,29 @@ services:
     env_file:
       - ./.env
 
+  patchroutes:
+    build:
+      context: ./Server/Microservices/Patch
+      dockerfile: Dockerfile
+    volumes:
+      - ./Server:/usr/src/patchroutes
+      - /usr/src/postroutes/node_modules
+    ports:
+      - "3005:3005"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DATABASE_URL=${DATABASE_URL}
+    depends_on:
+      - server
+    command: ["npm", "start"]
+    env_file:
+      - ./.env
+
   db:
     image: postgres:latest
     volumes:
