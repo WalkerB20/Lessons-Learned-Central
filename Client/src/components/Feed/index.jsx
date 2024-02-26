@@ -191,7 +191,7 @@ const Feed = () => {
                     <AiFillLike /> : <AiOutlineLike />}
                 </IconContext.Provider>
                 ({likes[aar.AAR_ID]})
-              </button> changed likes
+              </button>{/*changed like*/}
 
               <button onClick={() => handleEdit(aar.AAR_ID)}>
                 <IconContext.Provider value={{className: "buttonGroup"}}>
