@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Footer (){
   return (
-    <div class="footer">
+    <div className="footer">
     &lt;&lt;&lt; Copyright &copy; 2024, Lessons Learned Central &gt;&gt;&gt;
     <p>
       <button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} id="back-to-top">
