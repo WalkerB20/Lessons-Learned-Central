@@ -7,6 +7,7 @@ import { TiDeleteOutline } from "react-icons/ti";
 import { IconContext } from "react-icons";
 import '../Styles/Feed.css';
 
+
 const Feed = () => {
   const [likes, setLikes] = useState({}); // State variable for tracking likes
   const [expandedFeeds, setExpandedFeeds] = useState({});
@@ -56,7 +57,7 @@ const Feed = () => {
         },
         body: JSON.stringify({ postId }),
       });
-  
+
       if (!response.ok) {
         if (response.status === 409) {
           console.log("You've already liked this post.");
@@ -127,6 +128,11 @@ const Feed = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const options = { day: '2-digit', month: 'short', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+  };
+
   return (
     <div className="feed">
 
@@ -158,7 +164,7 @@ const Feed = () => {
       {aarData.map((aar, index) => ( //added to map the data from the server for dynamic updates
         <div className="feedContent" key={index}>{/*added the index key*/}
           <div className="feedContent-title-bubble">
-            <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>{/*added the index to get the data*/}
+            <button  onClick={() => toggleFeed(aar.AAR_ID)}>{/*added the index to get the data*/}
 
               <IconContext.Provider value={{className:"toggleButton"}}>
                 {expandedFeeds[aar.AAR_ID] ?
@@ -167,19 +173,17 @@ const Feed = () => {
 
             </button>
             <div className="feedContent-title-line">
-              <h3 className="title">
+              <h3 className="title-feed">
                 {aar.AAR_Name}
               </h3>{/*hopefully this takes the naming convention of the submission*/}
+              <p className="date">
+                {formatDate(aar.AAR_Activity_Date)}
+              </p>{/*this should be the date of the submission*/}
+
             </div>
             <div className="buttonGroup">
 
-              <button onClick={() => handleLike(aar.AAR_ID)}>
-                <IconContext.Provider value={{className: "like"}}>
-                    {likes.feed1 ?
-                    <AiFillLike /> : <AiOutlineLike />}
-                </IconContext.Provider>
-                ({likes[aar.AAR_ID]})
-              </button>{/*changed like*/}
+
 
               <button onClick={() => handleEdit(aar.AAR_ID)}>
                 <IconContext.Provider value={{className: "buttonGroup"}}>
@@ -192,19 +196,21 @@ const Feed = () => {
                   <TiDeleteOutline />
                 </IconContext.Provider>
               </button>{/*changed delete*/}
-
-              <p className="date">
-                {aar.AAR_Activity_Date}
-              </p>{/*this should be the date of the submission*/}
-
-          </div>
+            </div>
+          <button onClick={() => handleLike(aar.AAR_ID)}>
+                <IconContext.Provider value={{className: "buttonGroup"}}>
+                    {likes.feed1 ?
+                    <AiFillLike /> : <AiOutlineLike />}
+                </IconContext.Provider>
+                ({likes[aar.AAR_ID]})
+              </button>{/*changed like*/}
         </div>
 
         {expandedFeeds[aar.AAR_ID] && (
               <div className="feedDropdown">
               <ul className="feedDropDown-comment">
-                  <li>Comments for Sustain: {aar.sustainCommentData}</li>
-                  <li>Comments for Improve: {aar.improveCommentData}</li>
+                  <li>SUSTAIN: {aar.sustainCommentData}</li>
+                  <li>IMPROVE: {aar.improveCommentData}</li>
                 </ul>
               </div>
             )}
