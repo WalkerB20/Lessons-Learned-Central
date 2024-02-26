@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
@@ -12,25 +11,13 @@ const patchroutes = (db) => {
   router.patch('/postpatch/:aarId', async (req, res, next) => {
     const aarId = req.params.aarId;
     const updatedData = req.body;
-    if (!req.headers.authorization) {
-      // Handle the error: the Authorization header was not sent in the request
-      res.status(401).send('Authorization header is missing');
-      return;
-    }
-      // Extract the JWT from the Authorization header
-  const token = req.headers.authorization.split(' ')[1];
-
-  // Decode the JWT to get the user's ID
-  const decodedToken = jwt.verify(token, YOUR_JWT_SECRET);
-  const userId = decodedToken.sub;
-
     console.log(updatedData);
     try {
       await db.transaction(async trx => {
         // Check if AAR_Activity_Date is a valid date
         if (Date.parse(updatedData.AAR_Activity_Date)) {
           // Update the AAR table
-          await trx('AAR').where('AAR_ID', aarId).andWhere('User_ID', userId).update({
+          await trx('AAR').where('AAR_ID', aarId).update({
             AAR_Name: updatedData.AAR_Name,
             AAR_Location: updatedData.AAR_Location,
             AAR_Activity_Date: updatedData.AAR_Activity_Date,
