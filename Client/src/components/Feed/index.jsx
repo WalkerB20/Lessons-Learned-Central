@@ -40,16 +40,17 @@ const Feed = () => {
     fetchAarData();
   }, []);
 
-  const handleLike = async (postId) => {
+  const handleLike = async (postId, token) => {
     try {
       const response = await fetch(`${postroutes}/like`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ postId }),
       });
-
+  
       if (!response.ok) {
         if (response.status === 409) {
           console.log("You've already liked this post.");
@@ -71,12 +72,13 @@ const Feed = () => {
     }));
   };
 
-  const handleDelete = async (aarId) => {
+  const handleDelete = async (aarId, token) => {
     try {
       await fetch(`${deleteroutes}/postdelete/${aarId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
       })
       .then((response) => {
@@ -90,13 +92,14 @@ const Feed = () => {
     }
   };
 
-  const handleEdit = async (aarId) => {
+  const handleEdit = async (aarId, token) => {
     try {
       const feedToEdit = { ...editedValues };
       const response = await fetch(`${patchroutes}/postpatch/${aarId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(feedToEdit),
       });

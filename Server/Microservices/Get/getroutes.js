@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
@@ -9,6 +10,11 @@ const getroutes = (db) => {
   router.options('*', cors());
 
 router.get("/post", (req, res, next) => {
+  const token = req.headers.authorization.split(' ')[1];
+
+  // Decode the JWT to get the user's ID
+  const decodedToken = jwt.verify(token, YOUR_JWT_SECRET);
+  const userId = decodedToken.sub;
   try {
       res.send("Your Posts are here!");
   } catch (err) {
@@ -19,7 +25,7 @@ router.get("/post", (req, res, next) => {
 router.get('/postdata', async (req, res, next) => {
   try {
       // Fetch data from the AAR table
-      const aarData = await db.select('*').from('AAR');
+      const aarData = await db.select('*').from('AAR').where('User_ID', userId);
 
       // Fetch data from the Sustain Comment table
       const sustainCommentData = await db.select('*').from('Sustain_Comment');

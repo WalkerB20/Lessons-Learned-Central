@@ -8,6 +8,7 @@ export const up = async function(knex) {
       return knex.schema.createTable('User', function(table) {
         table.uuid('User_ID').primary().defaultTo(knex.raw('uuid_generate_v4()'));
         table.string('User_email');
+        table.string('Auth0_ID');
       })
     });
 };
