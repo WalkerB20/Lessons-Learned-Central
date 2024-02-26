@@ -2,26 +2,113 @@
 
 .navbar {
   display: flex;
-  justify-content: space-between;
-  flex-direction: row;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 10px 20px;
-  margin: 8px auto;
-  margin-left: 8.8em;
-  /* margin-right: 8.8em; - had to comment this out to keep the spacing in line with the feed portion*/
+  padding: 0 200px;
+  /* width: 100vw; */
+
 }
 
-.navbar .aar {
-  font-size: 16px; /* Had to adjust font size due to the <Link> defaults */
-  text-decoration: none; /* Added this portion to remove underline defaulted from the <Link>*/
+.topnav {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color:white;
+  border-bottom: #ffcc01 2px solid;
+  margin-bottom: 10px;
+  width: 98vw;
+  /* overflow: auto; */
 }
 
-.navbar input, .navbar button {
-  font-size: 16px;
+.topnav-buttons {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  background-color:transparent;
+  color:white;
+  padding: 10px;
+  border-radius: 10px;
+  gap: 20px;
+  /* justify-content: flex-end; */
+  /* align-items: center; */
+}
+
+.search {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-self : center;
+  gap: 10px;
+  margin: 0 auto;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+  color: black;
+  cursor: pointer;
+  background-color: transparent;
+  max-width: 1500px;
+  width: 100vw;
+}
+
+.search form {
+  background-color: black;
+
+}
+.navbar input  {
+  font-size: 24px;
   outline: none;
   border:#000;
-  border: 2px solid #000;
-  background: none;
+  background: #454545;
   padding: 8px;
-  margin: 0;
+  margin: 0 0;
+  border-radius: 10px;
+  color: #f1e4c7;
+  width: 80%;
+  align-self: center;
 }
+
+.topnav-buttons > * {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: black;
+  cursor: pointer;
+}
+
+/* .navbar button:hover {
+  background-color: black;
+  color: #ffcc01;
+  border-color: #ffcc01 5px solid;
+} */
+
+/* AAR CSS */
+.tab {
+  font-size: 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color:#ffcc01;
+  font-weight: 600;
+}
+
+.tab:hover {
+  background-color: rgb(97, 97, 97);
+  color: #D5D5D7;
+  box-shadow: 0 0 0 2px #ffcc01;
+}
+
+.page-title {
+  font-size: 3rem;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  color:  #ffcc01;
+}
+
+.page-title:hover {
+  background-color: rgb(97, 97, 97);
+  color: #D5D5D7;
+  /* border: #ffcc01 2px solid; */
+  box-shadow: 0 0 0 2px #ffcc01;
+}
+
+

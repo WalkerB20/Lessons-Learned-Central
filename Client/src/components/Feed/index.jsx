@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaMinus } from "react-icons/fa";
+// import { FaMinus, FaPlus } from 'react-icons/fa';
+import { AiFillCaretRight, AiFillCaretDown } from "react-icons/ai";
+import { AiOutlineLike, AiFillLike } from "react-icons/ai";
+import { FiEdit } from "react-icons/fi";
+import { TiDeleteOutline } from "react-icons/ti";
+import { IconContext } from "react-icons";
 import '../Styles/Feed.css';
 
 const Feed = () => {
@@ -115,35 +120,80 @@ const Feed = () => {
 
   return (
     <div className="feed">
+
       <div className="feedHeader">
-        <h1>FEEDS</h1>
+        <h1>LLC FEED</h1>
+
+        <div className="feedHeader-buttons">
+
         <select className="sortBy">
           <option value="null">Sort By</option>
           <option value="popular">Popular</option>
           <option value="recent">Recent</option>
         </select>
+
+        <select className="sortBy">
+          <option value="null">View By</option>
+          <option value="popular">Title</option>
+          <option value="recent">Comment</option>
+        </select>
+
+        </div>
+
       </div>
-      <div className="viewByButton">
-        <button type='button'>View By Title</button> {/*Made changes here, previously alphabetically*/}
-        <button type='button'>View By Comment</button>{/*removed extra className, it was redundant*/}
-      </div>
+
+
+
       {/* This will just have to be mapped with feed content */}
       <div className="feedContentContainer">
       {aarData.map((aar, index) => ( //added to map the data from the server for dynamic updates
         <div className="feedContent" key={index}>{/*added the index key*/}
-          <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>{/*added the index to get the data*/}
-            {expandedFeeds[aar.AAR_ID] ? <FaMinus /> : <FaPlus />}{/*samesies*/}
-          </button>
-          <h3>{aar.AAR_Name}</h3>{/*hopefully this takes the naming convention of the submission*/}
-          <div className="buttonGroup">
-            {/* <button onClick={() => handleLike(aar.AAR_ID)}>Like({likes[aar.AAR_ID]})</button>changed likes */}
-            <button onClick={() => handleEdit(aar.AAR_ID)}>Edit</button>{/*changed edit*/}
-            <button onClick={() => handleDelete(aar.AAR_ID)}>Delete</button>{/*changed delete*/}
-            <p className="date">{aar.AAR_Activity_Date}</p>{/*this should be the date of the submission*/}
+          <div className="feedContent-title-bubble">
+            <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>{/*added the index to get the data*/}
+
+              <IconContext.Provider value={{className:"toggleButton"}}>
+                {expandedFeeds[aar.AAR_ID] ?
+                < AiFillCaretDown/> : <AiFillCaretRight />}
+              </IconContext.Provider>{/*samesies*/}
+
+            </button>
+            <div className="feedContent-title-line">
+              <h3 className="title">
+                {aar.AAR_Name}
+              </h3>{/*hopefully this takes the naming convention of the submission*/}
+            </div>
+            <div className="buttonGroup">
+
+              {/* <button onClick={() => handleLike(aar.AAR_ID)}>
+                <IconContext.Provider value={{className: "like"}}>
+                    {likes.feed1 ?
+                    <AiFillLike /> : <AiOutlineLike />}
+                </IconContext.Provider>
+                ({likes[aar.AAR_ID]})
+              </button> changed likes */}
+
+              <button onClick={() => handleEdit(aar.AAR_ID)}>
+                <IconContext.Provider value={{className: "buttonGroup"}}>
+                  <FiEdit />
+                </IconContext.Provider>
+              </button>{/*changed edit*/}
+
+              <button onClick={() => handleDelete(aar.AAR_ID)}>
+                <IconContext.Provider value={{className: "buttonGroup"}}>
+                  <TiDeleteOutline />
+                </IconContext.Provider>
+              </button>{/*changed delete*/}
+
+              <p className="date">
+                {aar.AAR_Activity_Date}
+              </p>{/*this should be the date of the submission*/}
+
+          </div>
         </div>
+
         {expandedFeeds[aar.AAR_ID] && (
               <div className="feedDropdown">
-                <ul>
+              <ul className="feedDropDown-comment">
                   <li>Comments for Sustain: {aar.sustainCommentData}</li>
                   <li>Comments for Improve: {aar.improveCommentData}</li>
                 </ul>

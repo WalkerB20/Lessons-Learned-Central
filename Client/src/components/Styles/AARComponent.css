@@ -1,25 +1,42 @@
-
-.aarForm {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+/* #727365; */
+.form-group * {
+  color: #D5D5D7;
+  font-size: 24px;
 }
 
-.aarForm h2 {
-  font-size: 24px;
+.aarForm {
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 6px solid #4a4a4a;
+  border-radius: 10px;
+  background-color: rgb(97, 97, 97);
+  color: #D5D5D7;
+  /* height: 80vh; */
+  width: 80vw;
+}
+
+.aarForm h1 {
+  font-size: 36px;
   margin-bottom: 20px;
+  background-color: #4a4a4a;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .aarForm .form-group {
   margin-bottom: 20px;
+  background-color: rgb(97, 97, 97);
+
 }
 
 .aarForm label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
+  background-color:  rgb(97, 97, 97);
 }
 
 .aarForm input[type="text"],
@@ -27,28 +44,39 @@
 .aarForm textarea {
   width: 100%;
   padding: 10px;
-  font-size: 16px;
+  font-size: 20px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 10px;
+  background-color: #999;
+  color: #4a4a4a;
+}
+
+.aar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background-color:  rgb(97, 97, 97);
 }
 
 .aarForm select {
-  appearance: none;
+  cursor: pointer;
+  background-color: #999;
+  color:black;
 }
 
-.aarForm button {
+/* .aarForm button {
   padding: 10px 20px;
   font-size: 18px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: #ffcc01;
+  color: black;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
+} */
 
-.aarForm button:hover {
+/* .aarForm button:hover {
   background-color: #0056b3;
-}
+} */
 
 .datePicker {
   display: flex;
@@ -58,4 +86,48 @@
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  background-color: rgb(97, 97, 97);
+}
+
+.react-datepicker * {
+  background-color: rgb(46, 45, 45);
+}
+.react-datepicker-wrapper {
+  background-color: rgb(97, 97, 97);
+}
+
+.react-datepicker__input-container {
+  background-color: rgb(97, 97, 97);
+}
+
+.react-datepicker__day:hover {
+  background-color: #ffcc01;
+  color: black;
+}
+
+.react-datepicker__day--selected {
+  background-color: #ffcc01;
+  color: black;
+}
+
+.comments-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: rgb(97, 97, 97);
+  gap: 10px;
+}
+
+.form-footer {
+  display: flex;
+  position: relative;
+  bottom: 0;
+  margin-top: 20px;
+  justify-content: center;
+  /* justify-self: flex-end;
+  align-self: last baseline; */
+  gap: 10px;
+  background-color: rgb(97, 97, 97);
+  color: black;
 }
