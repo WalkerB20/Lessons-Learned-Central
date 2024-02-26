@@ -8,6 +8,23 @@ const postroutes = (db) => {
   router.use(express.json());
   router.options('*', cors());
 
+  // POST /api/like
+// Body: { postId: "postId" }
+// Header: Authorization: Bearer <token>
+router.post('/api/like', async (req, res) => {
+    const userId = getUserIdFromToken(req.headers.authorization);
+    const { postId } = req.body;
+  
+    const alreadyLiked = await checkIfUserAlreadyLikedPost(userId, postId);
+    if (alreadyLiked) {
+      return res.status(409).send({ message: "User has already liked this post." });
+    }
+  
+    await recordLike(userId, postId);
+    res.send({ message: "Like recorded successfully." });
+  });
+  
+
 // POST FOR EVENTS IN FORM DATA AARCOMPONENTS.JSX
 router.post('/form', async (req, res, next) => {
   const formData = req.body;
