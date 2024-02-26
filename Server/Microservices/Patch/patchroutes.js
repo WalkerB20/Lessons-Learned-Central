@@ -46,14 +46,7 @@ const patchroutes = (db) => {
         const dbEventType = formattedEventType.charAt(0).toUpperCase() + formattedEventType.slice(1);
 
         // Update the specific event table
-        await trx(dbEventType).where(`${dbEventType}_ID`, updatedData.eventId).update({
-          [`${dbEventType}_Event_Type`]: updatedData.eventType,
-          [`${dbEventType}_Event_Option`]: updatedData.additionalOptions,
-          [`${dbEventType}_Event_Other`]: updatedData.additionalInput
-          // Add other fields as necessary
-        });
-
-        // Send the response
+       // Send the response
         res.status(200).send(`AAR with ID ${aarId} has been successfully updated`);
       });
     } catch (error) {
