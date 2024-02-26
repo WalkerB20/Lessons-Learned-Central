@@ -30,6 +30,7 @@ const Feed = () => {
   const getroutes = 'http://localhost:3001/api'; //created this variable to store the URL and use in the fetch request
   const deleteroutes = 'http://localhost:3001/api'; //created this variable to store the URL and use in the fetch request
   const patchroutes = 'http://localhost:3001/api'
+  const postroutes = 'http://localhost:3001/api'
   useEffect(() => {
     const fetchAarData = async () => {
       if (!isAuthenticated) return; // Exit if not authenticated
@@ -56,7 +57,7 @@ const Feed = () => {
   const handleLike = async (postId) => {
     try {
       const token = await getAccessTokenSilently();
-      const response = await fetch(`${getroutes}/like`, {
+      const response = await fetch(`${postroutes}/like`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
