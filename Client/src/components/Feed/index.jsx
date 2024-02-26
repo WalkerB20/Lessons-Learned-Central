@@ -6,19 +6,11 @@ import { FiEdit } from "react-icons/fi";
 import { TiDeleteOutline } from "react-icons/ti";
 import { IconContext } from "react-icons";
 import '../Styles/Feed.css';
-//import AARComponent from '../AARComponent'; thought i would need, but i
 
 const Feed = () => {
-  // State to manage the likes for each feed content
   const [expandedFeeds, setExpandedFeeds] = useState({});
-  const [likes, setLikes] = useState({
-    feed1: 0,
-    feed2: 0,
-    feed3: 0
-  });
-
-  const [aarData, setAarData] = useState([]);//added this line to fetch data from the server
-  const [editedValues, setEditedValues] = useState({
+  const [aarData, setAarData] = useState([]);
+  const [editedValues] = useState({
     eventTitle: '',
     eventType: '',
     eventDate: '',
@@ -31,100 +23,99 @@ const Feed = () => {
     recommendationsImprove: '',
     additionalOptions: '',
     additionalInput: '',
-  });//added this line to edit the data from the server
+  });
+  const getroutes = 'http://localhost:3001/api';
+  const deleteroutes = 'http://localhost:3001/api';
+  const patchroutes = 'http://localhost:3001/api';
+  const postroutes = 'http://localhost:3001/api';
 
-  const feedUrl = 'http://localhost:3001'; //created this variable to store the URL and use in the fetch request
-
-  useEffect(() => {//the GET request to fetch data from the server
+  useEffect(() => {
     const fetchAarData = async () => {
       try {
-        const response = await fetch(`${feedUrl}/events`);
+        const response = await fetch(`${getroutes}/postdata`);
         if (!response.ok) {
           throw new Error('Failed to fetch AAR data');
         }
         const responseData = await response.json();
-        const aarData = responseData.aarData; // Extracting the array of AAR data
-        if (!Array.isArray(aarData)) {
-          throw new Error('Invalid data format: expected an array');
-        }
-        setAarData(aarData);
+        setAarData(responseData.aarData);
       } catch (error) {
         console.error('Failed to fetch AAR data:', error);
       }
     };
-      fetchAarData();
-    }, []);
+    fetchAarData();
+  }, []);
 
-  const handleLike = (feedName) => {//should this be married up with server language???
-    setLikes((prevLikes) => ({
-      ...prevLikes,
-      [feedName]: prevLikes[feedName] + 1
-    }));
+  const handleLike = async (postId) => {
+    try {
+      const response = await fetch(`${postroutes}/like`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ postId }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 409) {
+          console.log("You've already liked this post.");
+        } else {
+          throw new Error('Failed to like the post');
+        }
+      } else {
+        console.log('Post liked successfully.');
+      }
+    } catch (error) {
+      console.error('Error liking the post:', error);
+    }
   };
 
-  const toggleFeed = (aarId) => {//previously feedId
+  const toggleFeed = (aarId) => {
     setExpandedFeeds((prevState) => ({
       ...prevState,
-      [aarId]: !prevState[aarId],//previous feedId
+      [aarId]: !prevState[aarId],
     }));
   };
 
-  const handleDelete = (aarId) => {//previously feedId
-    // Sends delete request to the server
-    fetch(`${feedUrl}/events/${aarId}`, {//previuosly llc
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+  const handleDelete = async (aarId) => {
+    try {
+      await fetch(`${deleteroutes}/postdelete/${aarId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Failed to delete item with ID ${aarId}. Status: ${response.status}`);
-        // will in theory remove the deleted feed item from the state
         }
-        setAarData(aarData.filter(item => item.AAR_ID !== aarId));//previously feedId - also updated to AAR_ID
-        //we can input alerts like we did the previous project if we want.
-      })
-      .catch ((error) => {
-        console.error('Error deleting feed item:', error);
-    });
+        setAarData(aarData.filter(item => item.AAR_ID !== aarId));
+      });
+    } catch (error) {
+      console.error('Error deleting feed item:', error);
+    }
   };
 
-  const handleEdit = (aarId) => {//previously feedId
-    // Implements the edit functionality
-    console.log('Edit feed item:', aarId);//previously feedId
-    const feedToEdit = { ...editedValues }; // Using editedValues for edit data
+  const handleEdit = async (aarId) => {
     try {
-      fetch(`${feedUrl}/events/${aarId}`, {//previously llc
+      const feedToEdit = { ...editedValues };
+      const response = await fetch(`${patchroutes}/postpatch/${aarId}`, {
         method: 'PATCH',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(feedToEdit)
-      })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Failed to edit this item:', response.status);
-      }
-      return response.json();
-    })
-    .then((data) => {
-        //handles a successful edit
-    })
-    .catch ((error) => {
-      console.error('Error editing feed item:', error);
-    });
-  } catch (error) {
-    console.error('Error editing feed item:', error);
-  };
-}
+        body: JSON.stringify(feedToEdit),
+      });
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setEditedValues((prevValues) => ({
-      ...prevValues,
-      [name]: value
-    }));
+      if (!response.ok) {
+        throw new Error(`Failed to edit item with ID ${aarId}. Status: ${response.status}`);
+      }
+
+      const updatedItem = await response.json();
+      setAarData(aarData.map(item => item.AAR_ID === aarId ? { ...item, ...updatedItem } : item));
+
+    } catch (error) {
+      console.error('Error editing feed item:', error);
+    }
   };
 
   return (
@@ -173,13 +164,13 @@ const Feed = () => {
             </div>
             <div className="buttonGroup">
 
-              <button onClick={() => handleLike(aar.AAR_ID)}>
+              {/* <button onClick={() => handleLike(aar.AAR_ID)}>
                 <IconContext.Provider value={{className: "like"}}>
                     {likes.feed1 ?
                     <AiFillLike /> : <AiOutlineLike />}
                 </IconContext.Provider>
                 ({likes[aar.AAR_ID]})
-              </button> {/*changed likes*/}
+              </button> changed likes */}
 
               <button onClick={() => handleEdit(aar.AAR_ID)}>
                 <IconContext.Provider value={{className: "buttonGroup"}}>
@@ -203,8 +194,8 @@ const Feed = () => {
         {expandedFeeds[aar.AAR_ID] && (
               <div className="feedDropdown">
               <ul className="feedDropDown-comment">
-                  <li>Comments for Sustain: {aar.CommentsForSustain}</li>
-                  <li>Comments for Improve: {aar.CommentsForImprove}</li>
+                  <li>Comments for Sustain: {aar.sustainCommentData}</li>
+                  <li>Comments for Improve: {aar.improveCommentData}</li>
                 </ul>
               </div>
             )}

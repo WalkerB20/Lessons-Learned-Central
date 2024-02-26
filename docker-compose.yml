@@ -2,6 +2,11 @@ version: '3.8'
 
 services:
   app:
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 500M
     build:
       context: ./Client
       dockerfile: Dockerfile
@@ -12,6 +17,7 @@ services:
       - "3000:3000"
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - NO_PROXY=localhost,127.0.0.1
     depends_on:
       - server
     command: ["npm", "run", "start:dev"]
@@ -19,6 +25,11 @@ services:
       - ./.env
 
   server:
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 200M
     build:
       context: ./Server
       dockerfile: Dockerfile
@@ -46,7 +57,124 @@ services:
     env_file:
       - ./.env
 
+  getroutes:
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 50M
+    build:
+      context: ./Server/Microservices/Get
+      dockerfile: Dockerfile
+    volumes:
+      - ./Server:/usr/src/getroutes
+      - /usr/src/getroutes/node_modules
+    ports:
+      - "3002:3002"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DATABASE_URL=${DATABASE_URL}
+    depends_on:
+      - server
+    command: ["npm", "start"]
+    env_file:
+      - ./.env
+
+  deleteroutes:
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 50M
+    build:
+      context: ./Server/Microservices/Delete
+      dockerfile: Dockerfile
+    volumes:
+      - ./Server:/usr/src/deleteroutes
+      - /usr/src/deleteroutes/node_modules
+    ports:
+      - "3003:3003"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DATABASE_URL=${DATABASE_URL}
+    depends_on:
+      - server
+    command: ["npm", "start"]
+    env_file:
+      - ./.env
+
+  postroutes:
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 50M
+    build:
+      context: ./Server/Microservices/Post
+      dockerfile: Dockerfile
+    volumes:
+      - ./Server:/usr/src/postroutes
+      - /usr/src/postroutes/node_modules
+    ports:
+      - "3004:3004"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DATABASE_URL=${DATABASE_URL}
+    depends_on:
+      - server
+    command: ["npm", "start"]
+    env_file:
+      - ./.env
+
+  patchroutes:
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 50M
+    build:
+      context: ./Server/Microservices/Patch
+      dockerfile: Dockerfile
+    volumes:
+      - ./Server:/usr/src/patchroutes
+      - /usr/src/patchroutes/node_modules
+    ports:
+      - "3005:3005"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DATABASE_URL=${DATABASE_URL}
+    depends_on:
+      - server
+    command: ["npm", "start"]
+    env_file:
+      - ./.env
+
   db:
+    deploy:
+      resources:
+        limits:
+          cpus: '1.00'
+          memory: 500M
     image: postgres:latest
     volumes:
       - postgres_data:/var/lib/postgresql/data

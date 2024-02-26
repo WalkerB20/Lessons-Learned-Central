@@ -6,7 +6,7 @@ import '../Styles/index.css';
 import '../Styles/App.css';
 
 export default function AARComponent() {
-  const url = 'http://localhost:3001';//previously llc
+  const postroutes = 'http://localhost:3001/api';//previously llc
   const [formData, setFormData] = useState({
     eventTitle: '',
     eventType: '',
@@ -21,15 +21,15 @@ export default function AARComponent() {
     additionalInput: '',//needed for the extra input field
     eventDate: new Date()//for the calendar
   });
-useEffect(() => {
-  if (formData.eventType !== 'Other' && formData.eventType === 'Other') {
-    setFormData(prevState => ({
-      ...prevState,
-      additionalOptions: '',
-      additionalInput: '',
-    }));
-  }
-}, [formData.eventType, formData.additionalOptions]);
+  useEffect(() => {
+    if (formData.eventType !== 'Other') {
+      setFormData(prevState => ({
+        ...prevState,
+        additionalOptions: '',
+        additionalInput: '',
+      }));
+    }
+  }, [formData.eventType]); // Only reset when eventType changes
 const handleChange = (event, index) => {
   const { name, value } = event.target;
   if (name === 'eventType' || name === 'additionalOptions') {
@@ -65,7 +65,7 @@ const handleAddSection = () => {
     // Handles the form submission
     console.log('Form submitted:', formData);
     // Fetch request
-    fetch(`${url}/events`, {
+    fetch(`${postroutes}/form`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -110,14 +110,6 @@ const handleAddSection = () => {
             <option value="320">320</option>
             <option value="M9">M9</option>
             <option value="Other">Other</option>
-              {/* {/* {formData.additionalOptions === 'Other' ? (
-              <input
-                type="text"
-                name="additionalOptions"
-                value={formData.additionalOptions}
-                onChange={handleChange} */}
-              {/* />
-            ) : null} */}
           </>
         );
       case 'Deployment':
@@ -129,14 +121,6 @@ const handleAddSection = () => {
             <option value="Equipment">Equipment</option>
             <option value="Post-deployment">Post-deployment</option>
             <option value="Other">Other</option>
-            {/* {/* {formData.additionalOptions === 'Other' ? (
-              <input
-                type="text"
-                name="additionalOptions"
-                value={formData.additionalOptions}
-                onChange={handleChange}
-              />
-            ) : null} */}
           </>
         );
         case 'FTX':
@@ -148,14 +132,6 @@ const handleAddSection = () => {
               <option value="LeadUpTraining">Lead-up Training</option>
               <option value="Packinglist">Packing List</option>
               <option value="Other">Other</option>
-              {/* {formData.additionalOptions === 'Other' ? (
-                <input
-                  type="text"
-                  name="additionalOptions"
-                  value={formData.additionalOptions}
-                  onChange={handleChange}
-                />
-              ) : null} */}
             </>
           );
           case 'Equipment':
@@ -163,14 +139,6 @@ const handleAddSection = () => {
               <>
                 <option value="EquipmentType">Equipment Type</option>
                 <option value="EquipmentStatus">Equipment Status</option>
-                {/* {formData.additionalOptions === 'Other' ? (
-                  <input
-                    type="text"
-                    name="additionalOptions"
-                    value={formData.additionalOptions}
-                    onChange={handleChange}
-                  />
-                ) : null} */}
               </>
             );
             case 'Airborne':
@@ -182,28 +150,12 @@ const handleAddSection = () => {
                   <option value="JumpSafety">Jump Safety</option>
                   <option value="JumpmasterRehearsals">Jumpmaster Rehearsals</option>
                   <option value="JMPI">JMPI</option>
-                  {/* {formData.additionalOptions === 'Other' ? (
-                    <input
-                      type="text"
-                      name="additionalOptions"
-                      value={formData.additionalOptions}
-                      onChange={handleChange}
-                    />
-                  ) : null} */}
                 </>
               );
             case 'Other':
               return (
                 <>
                   <option value="Other">Other</option>
-                    {/* {formData.additionalOptions === 'Other' ? (
-                      <input
-                        type="text"
-                        name="additionalOptions"
-                        value={formData.additionalOptions}
-                        onChange={handleChange}
-                      />
-                    ) : null} */}
                 </>
               );
       default:

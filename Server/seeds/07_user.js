@@ -6,6 +6,10 @@ export async function seed(knex) {
   // Deletes ALL existing entries
   await knex('User').del()
   await knex('User').insert([
-    {User_ID: '00000000-0000-0000-0000-000000000030', User_email: "johndoe@army.com"}
+    {User_ID: '12345678-1234-5678-9012-345678901240', User_email: "susanadams@army.com"},
+    {User_ID: '98765432-5432-1098-7654-321098765438', User_email: "robertmartinez@army.com"},
+    {User_ID: '87654321-2109-8765-4321-098765432115', User_email: "amycampbell@army.com"},
+    {User_ID: '56789012-1098-7654-3210-987654321104', User_email: "kevinthompson@army.com"},
+    {User_ID: '43210987-5432-1098-7654-321098765438', User_email: "rachelgreen@army.com"}
   ]);
 };

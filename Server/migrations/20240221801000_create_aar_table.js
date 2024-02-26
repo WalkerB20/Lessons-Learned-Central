@@ -13,6 +13,10 @@ export const up = async function(knex) {
         table.uuid('Event_ID').unique().defaultTo(knex.raw('uuid_generate_v4()'));
         table.uuid('User_ID');
         table.foreign('User_ID').references('User.User_ID');
+        table.uuid('Sustain_Comment_ID');
+        table.foreign('Sustain_Comment_ID').references('Sustain_Comment.Sustain_Comment_ID');
+        table.uuid('Improve_Comment_ID')
+        table.foreign('Improve_Comment_ID').references('Improve_Comment.Improve_Comment_ID');
       })
     });
 };
@@ -23,6 +27,8 @@ export const up = async function(knex) {
  */
 export const down = async function(knex) {
   return knex.schema.alterTable('AAR', function(table) {
+    table.dropForeign('Improve_Comment_ID');
+    table.dropForeign('Sustain_Comment_ID');
     table.dropForeign('User_ID');
   })
   .then (function() {
