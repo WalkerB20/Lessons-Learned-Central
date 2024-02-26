@@ -215,8 +215,15 @@ const handleAddSection = () => {
       <h1>After Action Review Form</h1>{/*can change name to whatever*/}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
+
           <label>Event Title:</label>
-          <input type="text" placeholder="Give a title to your event" name="eventTitle" value={formData.eventTitle} onChange={handleChange} />
+          <input
+            type="text"
+            placeholder="Give a title to your event"
+            name="eventTitle"
+            value={formData.eventTitle}
+            onChange={handleChange}/>
+
           <label>Event Type:</label>
             <select name="eventType" value={formData.eventType} onChange={handleChange}>
               <option value="">Select an option</option>{/*changed "select" to ""*/}
@@ -281,29 +288,31 @@ const handleAddSection = () => {
                 <option value="sustain">Sustain</option>
                 <option value="improve">Improve</option>
               </select>
-              {section.type && ( // Render text fields only if a comment type is selected
-                <>
-                  <input
-                    type="text"
-                    name="title"
-                    value={section.title}
-                    onChange={(e) => handleChange(e, index)}
-                    placeholder={`Your ${section.type === 'sustain' ? 'sustain' : 'improvement'} title here.`}
-                  />
-                  <textarea
-                    name="comments"
-                    value={section.comments}
-                    onChange={(e) => handleChange(e, index)}
-                    placeholder={`Discussion. What ${section.type === 'sustain' ? 'happened' : 'went wrong'}?`}
-                  ></textarea>
-                  <textarea
-                    name="recommendations"
-                    value={section.recommendations}
-                    onChange={(e) => handleChange(e, index)}
-                    placeholder={`Recommendation. What can be ${section.type === 'sustain' ? 'sustained' : 'improved'} for the future?`}
-                  ></textarea>
-                </>
-              )}
+              <div className="comments-section">
+                {section.type && ( // Render text fields only if a comment type is selected
+                  <>
+                    <input
+                      type="text"
+                      name="title"
+                      value={section.title}
+                      onChange={(e) => handleChange(e, index)}
+                      placeholder={`Your ${section.type === 'sustain' ? 'sustain' : 'improvement'} title here.`}
+                    />
+                    <textarea
+                      name="comments"
+                      value={section.comments}
+                      onChange={(e) => handleChange(e, index)}
+                      placeholder={`Discussion. What ${section.type === 'sustain' ? 'happened' : 'went wrong'}?`}
+                    ></textarea>
+                    <textarea
+                      name="recommendations"
+                      value={section.recommendations}
+                      onChange={(e) => handleChange(e, index)}
+                      placeholder={`Recommendation. What can be ${section.type === 'sustain' ? 'sustained' : 'improved'} for the future?`}
+                    ></textarea>
+                  </>
+                )}
+              </div>
             </div>
           ))}
         </div>

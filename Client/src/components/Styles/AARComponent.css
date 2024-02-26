@@ -7,14 +7,14 @@
 .aarForm {
   display: flex;
   flex-direction: column;
-  max-width: 600px;
+  max-width: 1000px;
   margin: 50px auto;
   padding: 20px;
-  border: 1px solid #ccc;
+  border: 6px solid #4a4a4a;
   border-radius: 10px;
   background-color: rgb(97, 97, 97);
   color: #D5D5D7;
-  height: 80vh;
+  /* height: 80vh; */
   width: 80vw;
 }
 
@@ -37,7 +37,6 @@
   margin-bottom: 5px;
   font-weight: bold;
   background-color:  rgb(97, 97, 97);
-
 }
 
 .aarForm input[type="text"],
@@ -111,11 +110,23 @@
   color: black;
 }
 
+.comments-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  background-color: rgb(97, 97, 97);
+  gap: 10px;
+}
+
 .form-footer {
   display: flex;
+  position: relative;
+  bottom: 0;
+  margin-top: 20px;
   justify-content: center;
-  justify-self: flex-end;
-  align-self: last baseline;
+  /* justify-self: flex-end;
+  align-self: last baseline; */
   gap: 10px;
   background-color: rgb(97, 97, 97);
   color: black;
