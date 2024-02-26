@@ -2,6 +2,11 @@ version: '3.8'
 
 services:
   app:
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 500M
     build:
       context: ./Client
       dockerfile: Dockerfile
@@ -12,6 +17,7 @@ services:
       - "3000:3000"
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - NO_PROXY=localhost,127.0.0.1
     depends_on:
       - server
     command: ["npm", "run", "start:dev"]
