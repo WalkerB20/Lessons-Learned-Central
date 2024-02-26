@@ -15,12 +15,18 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const db = knex(knexfile[process.env.NODE_ENV || 'development']);
 
-// MIDDLEWARE
+// MIDDLEWARE CONFIGURATION
 app.use(cors());
 app.use(express.json());
-app.use('/api', getroutes(db)); // Changed this line
-app.use('/api', postroutes(db)); // Changed this line
-app.use('/api', deleteroutes(db)); // Changed this line
+app.use('/api', getroutes(db));
+app.use('/api', postroutes(db));
+app.use('/api', deleteroutes(db));
+app.use('/api', patchroutes(db));
+
+// MAIN SERVER ROUTE
+app.get('/api', (req, res) => {
+    res.send('Welcome to the server!');
+});
 
 // ERROR HANDLING MIDDLEWARE
 app.use((err, req, res, next) => {
