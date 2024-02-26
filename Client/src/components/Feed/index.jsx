@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 // import { FaMinus, FaPlus } from 'react-icons/fa';
 import { AiFillCaretRight, AiFillCaretDown } from "react-icons/ai";
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
@@ -6,11 +6,14 @@ import { FiEdit } from "react-icons/fi";
 import { TiDeleteOutline } from "react-icons/ti";
 import { IconContext } from "react-icons";
 import '../Styles/Feed.css';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Feed = () => {
   const [likes, setLikes] = useState({}); // State variable for tracking likes
   const [expandedFeeds, setExpandedFeeds] = useState({});
   const [aarData, setAarData] = useState([]);
+  const { getAccessTokenSilentl: getAccessTokenSilentlyRaw } = useAuth0();
+  const getAccessTokenSilently = useCallback(() => getAccessTokenSilentlyRaw(), [getAccessTokenSilentlyRaw]);
   const [editedValues] = useState({
     eventTitle: '',
     eventType: '',
@@ -29,11 +32,17 @@ const Feed = () => {
   const deleteroutes = 'http://localhost:3001/api';
   const patchroutes = 'http://localhost:3001/api';
   const postroutes = 'http://localhost:3001/api';
+  
 
   useEffect(() => {
     const fetchAarData = async () => {
+      const token = await getAccessTokenSilently();
       try {
-        const response = await fetch(`${getroutes}/postdata`);
+        const response = await fetch(`${getroutes}/postdata`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch AAR data');
         }
@@ -44,9 +53,10 @@ const Feed = () => {
       }
     };
     fetchAarData();
-  }, []);
+  }, [getAccessTokenSilently]);
 
-  const handleLike = async (postId, token) => {
+  const handleLike = async (postId) => {
+    const token = await getAccessTokenSilently();
     try {
       const response = await fetch(`${postroutes}/like`, {
         method: 'POST',
@@ -83,7 +93,8 @@ const Feed = () => {
     }));
   };
 
-  const handleDelete = async (aarId, token) => {
+  const handleDelete = async (aarId) => {
+    const token = await getAccessTokenSilently();
     try {
       await fetch(`${deleteroutes}/postdelete/${aarId}`, {
         method: 'DELETE',
@@ -103,7 +114,8 @@ const Feed = () => {
     }
   };
 
-  const handleEdit = async (aarId, token) => {
+  const handleEdit = async (aarId) => {
+    const token = await getAccessTokenSilently();
     try {
       const feedToEdit = { ...editedValues };
       const response = await fetch(`${patchroutes}/postpatch/${aarId}`, {
