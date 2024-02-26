@@ -6,6 +6,7 @@ import { config } from 'dotenv';
 import getroutes from './Microservices/Get/getroutes.js';
 import postroutes from './Microservices/Post/postroutes.js';
 import deleteroutes from './Microservices/Delete/deleteroutes.js';
+import patchroutes from './Microservices/Patch/patchroutes.js';
 
 // Load environment variables for .env file
 config();
@@ -25,6 +26,10 @@ app.use('/api', patchroutes(db));
 
 // MAIN SERVER ROUTE
 app.get('/api', (req, res) => {
+    res.send('Welcome to the application!');
+});
+
+app.get('/', (req, res) => {
     res.send('Welcome to the server!');
 });
 
