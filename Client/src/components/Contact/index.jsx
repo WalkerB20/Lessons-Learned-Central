@@ -25,7 +25,7 @@ const Contact = () => {
     <div className="contact">
 
         <div className = 'title-container'>
-          <h1 className = "title">Contact Us</h1>
+          <h1 className = "title-contact">Contact Us</h1>
           <p>Have a question or comment? Fill out the form below to contact us!</p>
         </div>
 
