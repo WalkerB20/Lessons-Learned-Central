@@ -11,7 +11,6 @@ const patchroutes = (db) => {
   router.patch('/postpatch/:aarId', async (req, res, next) => {
     const aarId = req.params.aarId;
     const updatedData = req.body;
-
     console.log(updatedData);
     try {
       await db.transaction(async trx => {
