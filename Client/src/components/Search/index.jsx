@@ -1,19 +1,19 @@
 import '../Styles/Navbar.css';
+import React from 'react';
 
-const Search = () => {
+const Search = ({ searchTerm, setSearchTerm }) => {
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
   return (
-    <>
-      <form className="search">
-      <input
-        className="search-input"
-        type="text"
-        placeholder="Search..."
-      />
-      <button className="search-button" type="submit">SEARCH</button>
-      </form>
-    </>
-  )
-}
+    <input
+      type="text"
+      placeholder="Search..."
+      value={searchTerm}
+      onChange={handleSearchChange}
+    />
+  );
+};
 
 export default Search;

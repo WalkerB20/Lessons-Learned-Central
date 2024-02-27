@@ -1,4 +1,3 @@
-
 import { Link, useLocation } from 'react-router-dom';
 import Search from '../Search';
 import '../Styles/Navbar.css';
@@ -6,7 +5,7 @@ import '../Styles/Login.css';
 import '../Styles/index.css';
 import NavbarLogin from '../NavbarLogin';
 
-export default function Navbar() {
+export default function Navbar({ searchTerm, setSearchTerm }) {
   const location = useLocation();
 
   return (
@@ -18,7 +17,7 @@ export default function Navbar() {
           <NavbarLogin className="tab" />
         </div>
       </nav>
-      {location.pathname === '/' && <Search className="search" />}
+      {location.pathname === '/' && <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />}
     </nav>
   );
 };

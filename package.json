@@ -11,8 +11,5 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
-  },
-  "scripts": {
-    "start": "concurrently \"npm run start --prefix ./Client\" \"npm run start --prefix ./Server\""
   }
 }
