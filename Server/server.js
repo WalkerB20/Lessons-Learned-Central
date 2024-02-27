@@ -36,17 +36,23 @@ const checkJwt = jwt({
     audience: `${process.env.REACT_APP_AUTH0_AUDIENCE}`,
     algorithms: ['RS256']
   });
+
+  // Use the middleware in routes
+  app.use(checkJwt);
+
 // Middleware to log user actions
 async function logUserAction(actionType) {
     return async (req, res, next) => {
       try {
         const userId = req.user.sub; // Assuming JWT middleware adds user info to req.user
         const postId = req.params.postId || null; // Adapt based on your route structure
+        const likeId = req.params.likeId || null; // Adapt based on your route structure
         
         await db('UserActions').insert({
-          user_id: userId,
-          post_id: postId,
-          action_type: actionType,
+          User_ID: userId,
+          Post_ID: postId,
+          Like_ID: likeId,
+          Action_Type: actionType,
         });
         
         next();

@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
+import logUserAction from '../../server';
 
 config();
 
@@ -11,7 +12,7 @@ const getroutes = (db) => {
   router.use(express.json());
   router.options('*', cors());
 
-router.get("/post", (req, res, next) => {
+router.get("/post", logUserAction('FETCH_POSTS'), (req, res, next) => {
   try {
       res.send("Your Posts are here!");
   } catch (err) {
@@ -19,7 +20,7 @@ router.get("/post", (req, res, next) => {
   }
 });
 
-router.get('/postdata', async (req, res, next) => {
+router.get('/postdata', logUserAction('FETCH_POST_DATA'), async (req, res, next) => {
   try {
       // Fetch data from the AAR table
       const aarData = await db.select('*').from('AAR');

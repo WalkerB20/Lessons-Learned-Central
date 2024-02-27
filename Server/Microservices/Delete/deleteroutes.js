@@ -1,21 +1,18 @@
 import cors from 'cors';
 import express from 'express';
-import pkgJwt from 'express-jwt';
-import pkgJwksRsa from 'jwks-rsa';
 import { config } from 'dotenv';
+import logUserAction from '../../server';
 
 config();
 
 const router = express.Router();
-const { jwt } = pkgJwt;
-const { jwksRsa } = pkgJwksRsa;
 
 const deleteroutes = (db) => {
   router.use(cors());
   router.use(express.json());
   router.options('*', cors());
 
-  router.delete('/postdelete/:aarId', async (req, res, next) => {
+  router.delete('/postdelete/:aarId', logUserAction('DELETE_AAR'), async (req, res, next) => {
     const { aarId } = req.params;
     try {
         // Start a transaction

@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
+import logUserAction from '../../server';
 
 config();
 
@@ -11,7 +12,7 @@ const patchroutes = (db) => {
   router.use(express.json());
   router.options('*', cors());
 
-  router.patch('/postpatch/:aarId', async (req, res, next) => {
+  router.patch('/postpatch/:aarId', logUserAction('UPDATE_AAR'), async (req, res, next) => {
     const aarId = req.params.aarId;
     const updatedData = req.body;
     console.log("Received data for AAR ID:", aarId);
