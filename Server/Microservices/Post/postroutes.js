@@ -15,13 +15,14 @@ const postroutes = (db) => {
   router.post('/likes', logUserAction('LIKE_POST'), async (req, res) => {
     const userId = req.user.sub; // Extract from JWT
     const { postId } = req.body;
+    const likeId = req.params.likeId || null; // Adapt based on your route structure
   
-    const likeExists = await db('Like').where({ User_ID: userId, Post_ID: postId }).first();
+    const likeExists = await db('Like').where({ User_ID: userId, Post_ID: postId, Like_ID: likeId }).first();
     if (likeExists) {
       return res.status(409).json({ message: "Post already liked by the user." });
     }
   
-    await db('Like').insert({ User_ID: userId, Post_ID: postId });
+    await db('Like').insert({ User_ID: userId, Post_ID: postId, Like_ID: likeId });
     res.json({ message: "Post liked successfully." });
   });
   
