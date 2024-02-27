@@ -16,6 +16,10 @@
   margin-top: 0px;
 }
 
+.feedHeader {
+  margin: 0 30 0 30;
+}
+
 .feedHeader select {
   display: inline-block;
   width: 50%;
@@ -171,6 +175,18 @@
   cursor: default;
 }
 
+.location {
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color:transparent;
+  color: black;
+  font-weight: 600;
+  font-size: 1.5em;
+  cursor: default;
+  margin: 0 0 0 50px;
+}
+
 .feedDropdown {
   display: block;
   position: relative;
@@ -215,6 +231,7 @@
   font-weight: bold;
   cursor: pointer;
   background-color:#999;
+  gap: 10px;
 }
 
 /* .sortBy > * {

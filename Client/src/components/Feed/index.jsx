@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaMinus } from "react-icons/fa";
+import { AiFillCaretRight, AiFillCaretDown } from "react-icons/ai";
+// import { AiOutlineLike, AiFillLike } from "react-icons/ai";
+import { FiEdit } from "react-icons/fi";
+import { TiDeleteOutline } from "react-icons/ti";
+import { IconContext } from "react-icons";
 import '../Styles/Feed.css';
 
 const Feed = ({ searchTerm, setSearchTerm }) => {
@@ -168,28 +172,61 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
     console.log('Viewing by comment');
   };
 
+  const formatDate = (dateString) => {
+    const options = { day: '2-digit', month: 'short', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString('en-US', options);
+  };
+
+
   return (
     <div className="feed">
       <div className="feedHeader">
         <h1>FEEDS</h1>
+
         <select className="sortBy" onChange={handleSortByChange}>
           <option value="null">Sort By</option>
           <option value="popular">Popular</option>
           <option value="recent">Recent</option>
         </select>
-      </div>
-      <div className="viewByButton">
-        <button type='button' onClick={handleViewByTitle}>View By Title</button>
-        <button type='button' onClick={handleViewByComment}>View By Comment</button>
-      </div>
+
+        <div className="viewByButton">
+          <button type='button' onClick={handleViewByTitle}>View By Title</button>
+          <button type='button' onClick={handleViewByComment}>View By Comment</button>
+        </div>
+
+    </div>
+
       <div className="feedContentContainer">
+
       {aarData.map((aar, index) => (
         <div className="feedContent" key={index}>
-          <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>
-            {expandedFeeds[aar.AAR_ID] ? <FaMinus /> : <FaPlus />}
-          </button>
-          <h3>{aar.AAR_Name}</h3>
-          <h2>{aar.AAR_Location}</h2>
+          <div className="feedContent-title-bubble">
+            <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>
+
+              <IconContext.Provider
+                value={{className:"toggleButton"}}>
+                  {expandedFeeds[aar.AAR_ID] ?
+                    < AiFillCaretDown/> :
+                    <AiFillCaretRight />}
+              </IconContext.Provider>
+
+            </button>
+            <div className="feedContent-title-line">
+
+          <h3 className="title-feed">
+            {aar.AAR_Name}
+          </h3>
+
+          <h2 className="location">
+            Location: {aar.AAR_Location}
+          </h2>
+
+          <p className="date">
+            {formatDate(aar.AAR_Activity_Date)}
+          </p>
+
+        </div>
+
           <div className="buttonGroup">
             {editingItemId === aar.AAR_ID ? (
               <>
@@ -199,14 +236,26 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
                 <button onClick={() => handleEdit(aar.AAR_ID)}>Submit</button>
               </>
             ) : (
-              <button onClick={() => setEditingItemId(aar.AAR_ID)}>Edit</button>
+              <button onClick={() => setEditingItemId(aar.AAR_ID)}>
+
+                <IconContext.Provider value={{className: "buttonGroup"}}>
+                  <FiEdit />
+                </IconContext.Provider>
+
+              </button>
             )}
-            <button onClick={() => handleDelete(aar.AAR_ID)}>Delete</button>
-            <p className="date">{aar.AAR_Activity_Date}</p>
+          <button onClick={() => handleDelete(aar.AAR_ID)}>
+
+            <IconContext.Provider value={{className: "buttonGroup"}}>
+              <TiDeleteOutline />
+            </IconContext.Provider>
+
+            </button>
+        </div>
         </div>
         {expandedFeeds[aar.AAR_ID] && (
               <div className="feedDropdown">
-                <ul>
+                <ul className="feedDropDown-comment">
                 {improveCommentData.map(comment => (
                   <li key={comment.Improve_Comment_ID}>
                     <strong>Type:</strong> {comment.Improve_Comment_Type}<br />
