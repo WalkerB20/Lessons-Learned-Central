@@ -65,6 +65,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
         },
         body: JSON.stringify({ postId }),
       });
+
       if (!response.ok) {
         if (response.status === 409) {
           console.log("You've already liked this post.");
@@ -85,6 +86,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
       [aarId]: !prevState[aarId],
     }));
   };
+
 
   const handleDelete = async (aarId) => {
     try {
@@ -126,6 +128,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
       console.error('Error editing feed item:', error);
     }
   };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
