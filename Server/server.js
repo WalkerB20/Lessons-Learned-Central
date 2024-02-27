@@ -30,10 +30,10 @@ const checkJwt = jwt({
       cache: true,
       rateLimit: true,
       jwksRequestsPerMinute: 5,
-      jwksUri: `https://${REACT_APP_AUTH0_DOMAIN}/.well-known/jwks.json`
+      jwksUri: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/.well-known/jwks.json`
     }),
-    issuer: `${REACT_APP_AUTH0_DOMAIN}`,
-    audience: `${REACT_APP_AUTH0_AUDIENCE}`,
+    issuer: `${process.env.REACT_APP_AUTH0_DOMAIN}`,
+    audience: `${process.env.REACT_APP_AUTH0_AUDIENCE}`,
     algorithms: ['RS256']
   });
 // Middleware to log user actions
