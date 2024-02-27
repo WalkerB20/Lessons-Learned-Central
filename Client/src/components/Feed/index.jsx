@@ -150,7 +150,9 @@ const Feed = () => {
         <select className="sortBy">
           <option value="null">View By</option>
           <option value="popular">Title</option>
-          <option value="recent">Comment</option>
+          <option
+          value="recent"
+            >Comment</option>
         </select>
 
         </div>
@@ -181,9 +183,14 @@ const Feed = () => {
               </p>{/*this should be the date of the submission*/}
 
             </div>
+              <button onClick={() => handleLike(aar.AAR_ID)}>
+                  <IconContext.Provider value={{className: "buttonGroup"}}>
+                      {likes.feed1 ?
+                      <AiFillLike /> : <AiOutlineLike />}
+                  </IconContext.Provider>
+                  ({likes[aar.AAR_ID]})
+              </button>{/*changed like*/}
             <div className="buttonGroup">
-
-
 
               <button onClick={() => handleEdit(aar.AAR_ID)}>
                 <IconContext.Provider value={{className: "buttonGroup"}}>
@@ -197,13 +204,7 @@ const Feed = () => {
                 </IconContext.Provider>
               </button>{/*changed delete*/}
             </div>
-          <button onClick={() => handleLike(aar.AAR_ID)}>
-                <IconContext.Provider value={{className: "buttonGroup"}}>
-                    {likes.feed1 ?
-                    <AiFillLike /> : <AiOutlineLike />}
-                </IconContext.Provider>
-                ({likes[aar.AAR_ID]})
-              </button>{/*changed like*/}
+
         </div>
 
         {expandedFeeds[aar.AAR_ID] && (
