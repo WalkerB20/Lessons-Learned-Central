@@ -7,7 +7,7 @@ import getroutes from './Microservices/Get/getroutes.js';
 import postroutes from './Microservices/Post/postroutes.js';
 import deleteroutes from './Microservices/Delete/deleteroutes.js';
 import patchroutes from './Microservices/Patch/patchroutes.js';
-import jwt from 'express-jwt';
+import { expressjwt as jwt } from 'express-jwt';
 import jwksRsa from 'jwks-rsa';
 
 config();

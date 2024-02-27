@@ -2,6 +2,9 @@ import cors from 'cors';
 import express from 'express';
 import pkgJwt from 'express-jwt';
 import pkgJwksRsa from 'jwks-rsa';
+import { config } from 'dotenv';
+
+config();
 
 const router = express.Router();
 const { jwt } = pkgJwt;
