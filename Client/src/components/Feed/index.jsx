@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { FaMinus, FaPlus } from 'react-icons/fa';
 import { AiFillCaretRight, AiFillCaretDown } from "react-icons/ai";
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
@@ -12,8 +12,7 @@ const Feed = () => {
   const [likes, setLikes] = useState({}); // State variable for tracking likes
   const [expandedFeeds, setExpandedFeeds] = useState({});
   const [aarData, setAarData] = useState([]);
-  const { getAccessTokenSilentl: getAccessTokenSilentlyRaw } = useAuth0();
-  const getAccessTokenSilently = useCallback(() => getAccessTokenSilentlyRaw(), [getAccessTokenSilentlyRaw]);
+  const { getAccessTokenSilently } = useAuth0();
   const [editedValues] = useState({
     eventTitle: '',
     eventType: '',
@@ -58,7 +57,7 @@ const Feed = () => {
   const handleLike = async (postId) => {
     const token = await getAccessTokenSilently();
     try {
-      const response = await fetch(`${postroutes}/like`, {
+      const response = await fetch(`${postroutes}/likes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

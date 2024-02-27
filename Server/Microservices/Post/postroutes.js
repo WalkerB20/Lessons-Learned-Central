@@ -8,6 +8,20 @@ const postroutes = (db) => {
   router.use(express.json());
   router.options('*', cors());
 
+  router.post('/likes', async (req, res) => {
+    const userId = req.user.sub; // Extract from JWT
+    const { postId } = req.body;
+  
+    const likeExists = await db('Likes').where({ user_id: userId, post_id: postId }).first();
+    if (likeExists) {
+      return res.status(409).json({ message: "Post already liked by the user." });
+    }
+  
+    await db('Likes').insert({ user_id: userId, post_id: postId });
+    res.json({ message: "Post liked successfully." });
+  });
+  
+  
 // POST FOR EVENTS IN FORM DATA AARCOMPONENTS.JSX
 router.post('/form', async (req, res, next) => {
   const formData = req.body;
