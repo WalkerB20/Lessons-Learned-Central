@@ -1,7 +1,7 @@
 import cors from 'cors';
 import express from 'express';
 import { config } from 'dotenv';
-import logUserAction from '../../server';
+import { logUserAction, checkJwt } from '../../server.js';
 
 config();
 
@@ -11,6 +11,7 @@ const deleteroutes = (db) => {
   router.use(cors());
   router.use(express.json());
   router.options('*', cors());
+  router.use(checkJwt);
 
   router.delete('/postdelete/:aarId', logUserAction('DELETE_AAR'), async (req, res, next) => {
     const { aarId } = req.params;

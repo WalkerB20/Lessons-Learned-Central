@@ -20,10 +20,6 @@ const db = knex(knexfile[process.env.NODE_ENV || 'development']);
 // MIDDLEWARE CONFIGURATION
 app.use(cors());
 app.use(express.json());
-app.use('/api', getroutes(db));
-app.use('/api', postroutes(db));
-app.use('/api', deleteroutes(db));
-app.use('/api', patchroutes(db));
 // Authentication middleware
 const checkJwt = jwt({
     secret: jwksRsa.expressJwtSecret({
@@ -40,8 +36,14 @@ const checkJwt = jwt({
   // Use the middleware in routes
   app.use(checkJwt);
 
+app.use('/api', getroutes(db));
+app.use('/api', postroutes(db));
+app.use('/api', deleteroutes(db));
+app.use('/api', patchroutes(db));
+
+
 // Middleware to log user actions
-async function logUserAction(actionType) {
+function logUserAction(actionType) {
     return async (req, res, next) => {
       try {
         const userId = req.user.sub; // Assuming JWT middleware adds user info to req.user
@@ -87,3 +89,5 @@ app.listen(PORT, (err) => {
         console.log(`Server is running on port ${PORT}`);
     }
 });
+
+export { logUserAction, checkJwt };
