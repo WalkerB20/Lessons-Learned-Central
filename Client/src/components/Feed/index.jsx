@@ -1,30 +1,15 @@
 import React, { useState, useEffect } from 'react';
-// import { FaMinus, FaPlus } from 'react-icons/fa';
-import { AiFillCaretRight, AiFillCaretDown } from "react-icons/ai";
-import { AiOutlineLike, AiFillLike } from "react-icons/ai";
-import { FiEdit } from "react-icons/fi";
-import { TiDeleteOutline } from "react-icons/ti";
-import { IconContext } from "react-icons";
+import { FaPlus, FaMinus } from "react-icons/fa";
 import '../Styles/Feed.css';
-
 const Feed = () => {
-  const [likes, setLikes] = useState({}); // State variable for tracking likes
   const [expandedFeeds, setExpandedFeeds] = useState({});
   const [aarData, setAarData] = useState([]);
-  const [editedValues] = useState({
+  const [editedValues, setEditedValues] = useState({
     eventTitle: '',
-    eventType: '',
-    eventDate: '',
     eventLocation: '',
-    sustainTitle: '',
-    commentsSustain: '',
-    recommendationsSustain: '',
-    improveTitle: '',
-    commentsImprove: '',
-    recommendationsImprove: '',
-    additionalOptions: '',
-    additionalInput: '',
+    eventDate: '',
   });
+  const [editingItemId, setEditingItemId] = useState(null); // Track the item being edited
   const getroutes = 'http://localhost:3001/api';
   const deleteroutes = 'http://localhost:3001/api';
   const patchroutes = 'http://localhost:3001/api';
@@ -46,17 +31,15 @@ const Feed = () => {
     fetchAarData();
   }, []);
 
-  const handleLike = async (postId, token) => {
+  const handleLike = async (postId) => {
     try {
       const response = await fetch(`${postroutes}/like`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ postId }),
       });
-  
       if (!response.ok) {
         if (response.status === 409) {
           console.log("You've already liked this post.");
@@ -65,12 +48,7 @@ const Feed = () => {
         }
       } else {
         console.log('Post liked successfully.');
-        setLikes(prevLikes => ({
-          ...prevLikes,
-          [postId]: (prevLikes[postId] || 0) + 1,
-        }));
       }
-
     } catch (error) {
       console.error('Error liking the post:', error);
     }
@@ -83,13 +61,12 @@ const Feed = () => {
     }));
   };
 
-  const handleDelete = async (aarId, token) => {
+  const handleDelete = async (aarId) => {
     try {
       await fetch(`${deleteroutes}/postdelete/${aarId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
         },
       })
       .then((response) => {
@@ -103,106 +80,76 @@ const Feed = () => {
     }
   };
 
-  const handleEdit = async (aarId, token) => {
+  const handleEdit = async (aarId) => {
     try {
-      const feedToEdit = { ...editedValues };
       const response = await fetch(`${patchroutes}/postpatch/${aarId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(feedToEdit),
+        body: JSON.stringify(editedValues),
       });
-
       if (!response.ok) {
         throw new Error(`Failed to edit item with ID ${aarId}. Status: ${response.status}`);
       }
-
-      const updatedItem = await response.json();
-      setAarData(aarData.map(item => item.AAR_ID === aarId ? { ...item, ...updatedItem } : item));
-
+      const responseData = await response.json();
+      const updatedItemData = responseData.updatedItem;
+      console.log('Updated item:', updatedItemData);
+      setAarData(prevAarData => prevAarData.map(item => item.AAR_ID === aarId ? { ...item, ...updatedItemData } : item));
+      setEditingItemId(null); // Reset editing item ID after editing
     } catch (error) {
       console.error('Error editing feed item:', error);
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedValues(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
   return (
     <div className="feed">
-
       <div className="feedHeader">
-        <h1>LLC FEED</h1>
-
-        <div className="feedHeader-buttons">
-
+        <h1>FEEDS</h1>
         <select className="sortBy">
           <option value="null">Sort By</option>
           <option value="popular">Popular</option>
           <option value="recent">Recent</option>
         </select>
-
-        <select className="sortBy">
-          <option value="null">View By</option>
-          <option value="popular">Title</option>
-          <option value="recent">Comment</option>
-        </select>
-
-        </div>
-
       </div>
-
-
-
+      <div className="viewByButton">
+        <button type='button'>View By Title</button> {/*Made changes here, previously alphabetically*/}
+        <button type='button'>View By Comment</button>{/*removed extra className, it was redundant*/}
+      </div>
       {/* This will just have to be mapped with feed content */}
       <div className="feedContentContainer">
       {aarData.map((aar, index) => ( //added to map the data from the server for dynamic updates
         <div className="feedContent" key={index}>{/*added the index key*/}
-          <div className="feedContent-title-bubble">
-            <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>{/*added the index to get the data*/}
-
-              <IconContext.Provider value={{className:"toggleButton"}}>
-                {expandedFeeds[aar.AAR_ID] ?
-                < AiFillCaretDown/> : <AiFillCaretRight />}
-              </IconContext.Provider>{/*samesies*/}
-
-            </button>
-            <div className="feedContent-title-line">
-              <h3 className="title">
-                {aar.AAR_Name}
-              </h3>{/*hopefully this takes the naming convention of the submission*/}
-            </div>
-            <div className="buttonGroup">
-
-              <button onClick={() => handleLike(aar.AAR_ID)}>
-                <IconContext.Provider value={{className: "like"}}>
-                    {likes.feed1 ?
-                    <AiFillLike /> : <AiOutlineLike />}
-                </IconContext.Provider>
-                ({likes[aar.AAR_ID]})
-              </button>{/*changed like*/}
-
-              <button onClick={() => handleEdit(aar.AAR_ID)}>
-                <IconContext.Provider value={{className: "buttonGroup"}}>
-                  <FiEdit />
-                </IconContext.Provider>
-              </button>{/*changed edit*/}
-
-              <button onClick={() => handleDelete(aar.AAR_ID)}>
-                <IconContext.Provider value={{className: "buttonGroup"}}>
-                  <TiDeleteOutline />
-                </IconContext.Provider>
-              </button>{/*changed delete*/}
-
-              <p className="date">
-                {aar.AAR_Activity_Date}
-              </p>{/*this should be the date of the submission*/}
-
-          </div>
+          <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>{/*added the index to get the data*/}
+            {expandedFeeds[aar.AAR_ID] ? <FaMinus /> : <FaPlus />}{/*samesies*/}
+          </button>
+          <h3>{aar.AAR_Name}</h3>{/*hopefully this takes the naming convention of the submission*/}
+          <h2>{aar.AAR_Location}</h2>
+          <div className="buttonGroup">
+            {editingItemId === aar.AAR_ID ? (
+              <>
+                <input type="text" name="eventTitle" value={editedValues.eventTitle} onChange={handleChange} />
+                <input type="text" name="eventLocation" value={editedValues.eventLocation} onChange={handleChange} />
+                <input type="date" name="eventDate" value={editedValues.eventDate} onChange={handleChange} />
+                <button onClick={() => handleEdit(aar.AAR_ID)}>Submit</button>
+              </>
+            ) : (
+              <button onClick={() => setEditingItemId(aar.AAR_ID)}>Edit</button>
+            )}
+            <button onClick={() => handleDelete(aar.AAR_ID)}>Delete</button>{/*changed delete*/}
+            <p className="date">{aar.AAR_Activity_Date}</p>{/*this should be the date of the submission*/}
         </div>
-
         {expandedFeeds[aar.AAR_ID] && (
               <div className="feedDropdown">
-              <ul className="feedDropDown-comment">
+                <ul>
                   <li>Comments for Sustain: {aar.sustainCommentData}</li>
                   <li>Comments for Improve: {aar.improveCommentData}</li>
                 </ul>

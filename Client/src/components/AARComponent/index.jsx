@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
-import '../Styles/index.css';
-import '../Styles/App.css';
 
 export default function AARComponent() {
   const postroutes = 'http://localhost:3001/api';//previously llc
@@ -21,6 +19,7 @@ export default function AARComponent() {
     additionalInput: '',//needed for the extra input field
     eventDate: new Date()//for the calendar
   });
+
   useEffect(() => {
     if (formData.eventType !== 'Other') {
       setFormData(prevState => ({
@@ -30,6 +29,7 @@ export default function AARComponent() {
       }));
     }
   }, [formData.eventType]); // Only reset when eventType changes
+
 const handleChange = (event, index) => {
   const { name, value } = event.target;
   if (name === 'eventType' || name === 'additionalOptions') {
@@ -54,12 +54,14 @@ const handleChange = (event, index) => {
     }));
   }
 };
+
 const handleAddSection = () => {
   setFormData(prevState => ({
     ...prevState,
     sections: [...prevState.sections, { type: '', title: '', comments: '', recommendations: '' }]
   }));
 };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // Handles the form submission
@@ -100,6 +102,7 @@ const handleAddSection = () => {
       eventDate: date
     });
   };
+
   const renderAdditionalOptions = () => {
     switch(formData.eventType) {
       case 'Range':
@@ -139,6 +142,7 @@ const handleAddSection = () => {
               <>
                 <option value="EquipmentType">Equipment Type</option>
                 <option value="EquipmentStatus">Equipment Status</option>
+                <option value="Other">Other</option>
               </>
             );
             case 'Airborne':
@@ -150,6 +154,7 @@ const handleAddSection = () => {
                   <option value="JumpSafety">Jump Safety</option>
                   <option value="JumpmasterRehearsals">Jumpmaster Rehearsals</option>
                   <option value="JMPI">JMPI</option>
+                  <option value="Other">Other</option>
                 </>
               );
             case 'Other':
@@ -164,18 +169,11 @@ const handleAddSection = () => {
   };
   return (
     <div className="aarForm">
-      <h1>After Action Review Form</h1>{/*can change name to whatever*/}
+      <h2>After Action Review Form</h2>{/*can change name to whatever*/}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-
           <label>Event Title:</label>
-          <input
-            type="text"
-            placeholder="Give a title to your event"
-            name="eventTitle"
-            value={formData.eventTitle}
-            onChange={handleChange}/>
-
+          <input type="text" placeholder="Give a title to your event" name="eventTitle" value={formData.eventTitle} onChange={handleChange} />
           <label>Event Type:</label>
             <select name="eventType" value={formData.eventType} onChange={handleChange}>
               <option value="">Select an option</option>{/*changed "select" to ""*/}
@@ -227,7 +225,6 @@ const handleAddSection = () => {
           />
           <label>Event Location:</label>
           <input type="text" placeholder="Where did your event take place?" name="eventLocation" value={formData.eventLocation} onChange={handleChange} />
-
           {formData.sections.map((section, index) => (
             <div key={index} className="aar-section">
               <label>Comments:</label>
@@ -240,38 +237,34 @@ const handleAddSection = () => {
                 <option value="sustain">Sustain</option>
                 <option value="improve">Improve</option>
               </select>
-              <div className="comments-section">
-                {section.type && ( // Render text fields only if a comment type is selected
-                  <>
-                    <input
-                      type="text"
-                      name="title"
-                      value={section.title}
-                      onChange={(e) => handleChange(e, index)}
-                      placeholder={`Your ${section.type === 'sustain' ? 'sustain' : 'improvement'} title here.`}
-                    />
-                    <textarea
-                      name="comments"
-                      value={section.comments}
-                      onChange={(e) => handleChange(e, index)}
-                      placeholder={`Discussion. What ${section.type === 'sustain' ? 'happened' : 'went wrong'}?`}
-                    ></textarea>
-                    <textarea
-                      name="recommendations"
-                      value={section.recommendations}
-                      onChange={(e) => handleChange(e, index)}
-                      placeholder={`Recommendation. What can be ${section.type === 'sustain' ? 'sustained' : 'improved'} for the future?`}
-                    ></textarea>
-                  </>
-                )}
-              </div>
+              {section.type && ( // Render text fields only if a comment type is selected
+                <>
+                  <input
+                    type="text"
+                    name="title"
+                    value={section.title}
+                    onChange={(e) => handleChange(e, index)}
+                    placeholder={`Your ${section.type === 'sustain' ? 'sustain' : 'improvement'} title here.`}
+                  />
+                  <textarea
+                    name="comments"
+                    value={section.comments}
+                    onChange={(e) => handleChange(e, index)}
+                    placeholder={`Discussion. What ${section.type === 'sustain' ? 'happened' : 'went wrong'}?`}
+                  ></textarea>
+                  <textarea
+                    name="recommendations"
+                    value={section.recommendations}
+                    onChange={(e) => handleChange(e, index)}
+                    placeholder={`Recommendation. What can be ${section.type === 'sustain' ? 'sustained' : 'improved'} for the future?`}
+                  ></textarea>
+                </>
+              )}
             </div>
           ))}
         </div>
-        <div className="form-footer">
-          <button type="button" onClick={handleAddSection}>Add comment</button>
-          <button type="submit">Submit</button>
-        </div>
+        <button type="button" onClick={handleAddSection}>Add another comment</button>
+        <button type="submit">Submit</button>
       </form>
     </div>
   );
