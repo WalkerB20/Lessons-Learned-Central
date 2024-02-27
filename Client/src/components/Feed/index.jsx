@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AiFillCaretRight, AiFillCaretDown } from "react-icons/ai";
-import { AiOutlineLike, AiFillLike } from "react-icons/ai";
+// import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
 import { TiDeleteOutline } from "react-icons/ti";
 import { IconContext } from "react-icons";
@@ -8,7 +8,9 @@ import '../Styles/Feed.css';
 
 const Feed = ({ searchTerm, setSearchTerm }) => {
   const [expandedFeeds, setExpandedFeeds] = useState({});
-  const [aarData, setAarData] = useState("");
+  const [improveCommentData, setImproveCommentData] = useState([]);
+  const [sustainCommentData, setSustainCommentData] = useState([]);
+  const [aarData, setAarData] = useState([]);
   const [sortOrder, setSortOrder] = useState('recent');
   const [viewBy, setViewBy] = useState('title');
   const [editedValues, setEditedValues] = useState({
@@ -32,6 +34,20 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
         let responseData = await response.json();
         responseData = responseData.aarData;
 
+              // Fetch improve comment data
+      const responseImprove = await fetch(`${getroutes}/improve`, {});
+      if (!responseImprove.ok) {
+        throw new Error('Failed to fetch improve comment data');
+      }
+      const improveData = await responseImprove.json();
+
+      // Fetch sustain comment data
+      const responseSustain = await fetch(`${getroutes}/sustain`, {});
+      if (!responseSustain.ok) {
+        throw new Error('Failed to fetch sustain comment data');
+      }
+      const sustainData = await responseSustain.json();
+
         // Sort data
         if (sortOrder === 'popular') {
           responseData.sort((a, b) => b.likes - a.likes);
@@ -53,6 +69,9 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
         }
 
         setAarData(responseData);
+        setImproveCommentData(improveData);
+        setSustainCommentData(sustainData);
+
       } catch (error) {
         console.error('Failed to fetch AAR data:', error);
       }
@@ -90,7 +109,8 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
       [aarId]: !prevState[aarId],
     }));
   };
-//
+
+
   const handleDelete = async (aarId) => {
     try {
       await fetch(`${deleteroutes}/postdelete/${aarId}`, {
@@ -132,7 +152,6 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
     }
   };
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedValues(prevState => ({
@@ -140,15 +159,6 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
       [name]: value
     }));
   };
-
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const filteredAarData = Array.isArray(aarData) ? aarData.filter(aar =>
-    (aar.AAR_Name ? aar.AAR_Name.toLowerCase().includes((searchTerm || "").toLowerCase()) : false) ||
-    (aar.AAR_Location ? aar.AAR_Location.toLowerCase().includes((searchTerm || "").toLowerCase()) : false)
-  ) : [];
 
   const handleSortByChange = (event) => {
     console.log(`Sorting by: ${event.target.value}`);
@@ -167,101 +177,108 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
+
   return (
-    <>
-      <div className="feed">
-        <div className="feedHeader">
+    <div className="feed">
+      <div className="feedHeader">
+        <h1>FEEDS</h1>
 
-            <h1> FEEDS </h1>
-            {/* <select className="sortBy" onChange={handleSortByChange}>
-              <option value="null"> Sort By </option>
-              <option value="popular"> Popular </option>
-              <option value="recent"> Recent </option>
-            </select>
+        <select className="sortBy" onChange={handleSortByChange}>
+          <option value="null">Sort By</option>
+          <option value="popular">Popular</option>
+          <option value="recent">Recent</option>
+        </select>
 
-            <select className="sortBy">
-              <option value="null"> View By </option>
-              <option value="popular"> Title </option>
-              <option value="recent"> Comment </option>
-            </select> */}
+        <div className="viewByButton">
+          <button type='button' onClick={handleViewByTitle}>View By Title</button>
+          <button type='button' onClick={handleViewByComment}>View By Comment</button>
+        </div>
 
-            <div className="viewByButton">
-              <button type='button' onClick={handleViewByTitle}>View By Title</button>
-              <button type='button' onClick={handleViewByComment}>View By Comment</button>
-            </div>
+    </div>
+
+      <div className="feedContentContainer">
+
+      {aarData.map((aar, index) => (
+        <div className="feedContent" key={index}>
+          <div className="feedContent-title-bubble">
+            <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>
+
+              <IconContext.Provider
+                value={{className:"toggleButton"}}>
+                  {expandedFeeds[aar.AAR_ID] ?
+                    < AiFillCaretDown/> :
+                    <AiFillCaretRight />}
+              </IconContext.Provider>
+
+            </button>
+            <div className="feedContent-title-line">
+
+          <h3 className="title-feed">
+            {aar.AAR_Name}
+          </h3>
+
+          <h2 className="location">
+            Location: {aar.AAR_Location}
+          </h2>
+
+          <p className="date">
+            {formatDate(aar.AAR_Activity_Date)}
+          </p>
 
         </div>
 
-        <div className="feedContentContainer">
+          <div className="buttonGroup">
+            {editingItemId === aar.AAR_ID ? (
+              <>
+                <input type="text" name="eventTitle" value={editedValues.eventTitle} onChange={handleChange} />
+                <input type="text" name="eventLocation" value={editedValues.eventLocation} onChange={handleChange} />
+                <input type="date" name="eventDate" value={editedValues.eventDate} onChange={handleChange} />
+                <button onClick={() => handleEdit(aar.AAR_ID)}>Submit</button>
+              </>
+            ) : (
+              <button onClick={() => setEditingItemId(aar.AAR_ID)}>
 
-          {filteredAarData.map((aar, index) => (
-            <div className="feedContent" key={index}>
-              <div className="feedContent-title-bubble">
-                <button onClick={() => toggleFeed(aar.AAR_ID)}>
+                <IconContext.Provider value={{className: "buttonGroup"}}>
+                  <FiEdit />
+                </IconContext.Provider>
 
-                  <IconContext.Provider value={{className:"toggleButton"}}>
-                    {expandedFeeds[aar.AAR_ID] ?
-                    < AiFillCaretDown/> : <AiFillCaretRight />}
-                  </IconContext.Provider>
+              </button>
+            )}
+          <button onClick={() => handleDelete(aar.AAR_ID)}>
 
-                </button>
-                <div className="feedContent-title-line">
+            <IconContext.Provider value={{className: "buttonGroup"}}>
+              <TiDeleteOutline />
+            </IconContext.Provider>
 
-                  <h3 className="title-feed">
-                    {aar.AAR_Name}
-                  </h3>
-
-                  <h2 className="location">
-                    Location: {aar.AAR_Location}
-                  </h2>
-
-                  <p className="date">
-                    {formatDate(aar.AAR_Activity_Date)}
-                  </p>
-
-                </div>
-              <div className="buttonGroup">
-                {editingItemId === aar.AAR_ID ?
-                      (
-                        <>
-                          <input type="text" name="eventTitle" value={editedValues.eventTitle} onChange={handleChange} />
-                          <input type="text" name="eventLocation" value={editedValues.eventLocation} onChange={handleChange} />
-                          <input type="date" name="eventDate" value={editedValues.eventDate} onChange={handleChange} />
-                          <button onClick={() => handleEdit(aar.AAR_ID)}>Submit</button>
-                        </>
-                      ) :
-                        (
-                        <button onClick={() => setEditingItemId(aar.AAR_ID)}>
-
-                          <IconContext.Provider value={{className: "buttonGroup"}}>
-                            <FiEdit />
-                          </IconContext.Provider>
-
-                        </button>
-                        )}
-                    <button onClick={() => handleDelete(aar.AAR_ID)}>
-                      <IconContext.Provider value={{className: "buttonGroup"}}>
-                          <TiDeleteOutline />
-                        </IconContext.Provider>
-                    </button>
-
-              </div>
-              </div>
-
-                  {expandedFeeds[aar.AAR_ID] && (
-                    <div className="feedDropdown">
-                      <ul className="feedDropDown-comment">
-                          <li>SUSTAIN: {aar.sustainCommentData}</li>
-                          <li>IMPROVE: {aar.improveCommentData}</li>
-                      </ul>
-                    </div>
-                  )}
-            </div>
-          ))}
+            </button>
         </div>
-
+        </div>
+        {expandedFeeds[aar.AAR_ID] && (
+              <div className="feedDropdown">
+                <ul className="feedDropDown-comment">
+                {improveCommentData.map(comment => (
+                  <li key={comment.Improve_Comment_ID}>
+                    <strong>Type:</strong> {comment.Improve_Comment_Type}<br />
+                    <strong>Title:</strong> {comment.Improve_Comment_Title}<br />
+                    <strong>Discussion:</strong> {comment.Improve_Comment_Discussion}<br />
+                    <strong>Recommendation:</strong> {comment.Improve_Comment_Recommendation}
+                  </li>
+                ))}
+                {sustainCommentData.map(comment => (
+                  <li key={comment.Sustain_Comment_ID}>
+                    <strong>Type:</strong> {comment.Sustain_Comment_Type}<br />
+                    <strong>Title:</strong> {comment.Sustain_Comment_Title}<br />
+                    <strong>Discussion:</strong> {comment.Sustain_Comment_Discussion}<br />
+                    <strong>Recommendation:</strong> {comment.Sustain_Comment_Recommendation}
+                  </li>
+                ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 export default Feed;
