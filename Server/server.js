@@ -36,6 +36,11 @@ const checkJwt = jwt({
   // Use the middleware in routes
   app.use(checkJwt);
 
+  app.use((req, res, next) => {
+    console.log(req.user);
+    next();
+  });
+
 app.use('/api', getroutes(db));
 app.use('/api', postroutes(db));
 app.use('/api', deleteroutes(db));
