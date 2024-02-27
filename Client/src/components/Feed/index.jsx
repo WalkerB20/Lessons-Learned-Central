@@ -197,7 +197,6 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
     </div>
 
       <div className="feedContentContainer">
-
       {aarData.map((aar, index) => (
         <div className="feedContent" key={index}>
           <div className="feedContent-title-bubble">
@@ -255,7 +254,8 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
         </div>
         {expandedFeeds[aar.AAR_ID] && (
               <div className="feedDropdown">
-                <ul className="feedDropDown-comment">
+                  <ul className="feedDropDown-comment">
+
                 {improveCommentData.map(comment => (
                   <li key={comment.Improve_Comment_ID}>
                     <strong>Type:</strong> {comment.Improve_Comment_Type}<br />

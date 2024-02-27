@@ -1,7 +1,7 @@
 import Feed from '../Feed';
-import Navbar from '../Navbar';
 import { useState } from 'react';
 import '../Styles/App.css';
+import Search from '../Search';
 
 
 const Home = () => {
@@ -9,7 +9,7 @@ const Home = () => {
 
   return (
     <div className="home">
-      <Navbar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <Feed searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
     </div>
   )
