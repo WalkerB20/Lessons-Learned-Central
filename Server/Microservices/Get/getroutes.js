@@ -16,6 +16,28 @@ router.get("/post", (req, res, next) => {
   }
 });
 
+  // Route to fetch improve comment data
+  router.get("/improve", async (req, res, next) => {
+    try {
+      // Fetch improve comment data from the Improve_Comment table
+      const improveCommentData = await db.select('*').from('Improve_Comment');
+      res.json(improveCommentData);
+    } catch (err) {
+      next({ message: 'Error occurred while fetching improve comment data', originalError: err });
+    }
+  });
+
+  // Route to fetch sustain comment data
+  router.get("/sustain", async (req, res, next) => {
+    try {
+      // Fetch sustain comment data from the Sustain_Comment table
+      const sustainCommentData = await db.select('*').from('Sustain_Comment');
+      res.json(sustainCommentData);
+    } catch (err) {
+      next({ message: 'Error occurred while fetching sustain comment data', originalError: err });
+    }
+  });
+
 router.get('/postdata', async (req, res, next) => {
   try {
       // Fetch data from the AAR table

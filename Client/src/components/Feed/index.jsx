@@ -4,7 +4,9 @@ import '../Styles/Feed.css';
 
 const Feed = ({ searchTerm, setSearchTerm }) => {
   const [expandedFeeds, setExpandedFeeds] = useState({});
-  const [aarData, setAarData] = useState("");
+  const [improveCommentData, setImproveCommentData] = useState([]);
+  const [sustainCommentData, setSustainCommentData] = useState([]);
+  const [aarData, setAarData] = useState([]);
   const [sortOrder, setSortOrder] = useState('recent');
   const [viewBy, setViewBy] = useState('title');
   const [editedValues, setEditedValues] = useState({
@@ -28,6 +30,20 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
         let responseData = await response.json();
         responseData = responseData.aarData;
 
+              // Fetch improve comment data
+      const responseImprove = await fetch(`${getroutes}/improve`, {});
+      if (!responseImprove.ok) {
+        throw new Error('Failed to fetch improve comment data');
+      }
+      const improveData = await responseImprove.json();
+
+      // Fetch sustain comment data
+      const responseSustain = await fetch(`${getroutes}/sustain`, {});
+      if (!responseSustain.ok) {
+        throw new Error('Failed to fetch sustain comment data');
+      }
+      const sustainData = await responseSustain.json();
+
         // Sort data
         if (sortOrder === 'popular') {
           responseData.sort((a, b) => b.likes - a.likes);
@@ -49,6 +65,9 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
         }
 
         setAarData(responseData);
+        setImproveCommentData(improveData);
+        setSustainCommentData(sustainData);
+
       } catch (error) {
         console.error('Failed to fetch AAR data:', error);
       }
@@ -129,7 +148,6 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
     }
   };
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedValues(prevState => ({
@@ -137,15 +155,6 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
       [name]: value
     }));
   };
-
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const filteredAarData = Array.isArray(aarData) ? aarData.filter(aar =>
-    (aar.AAR_Name ? aar.AAR_Name.toLowerCase().includes((searchTerm || "").toLowerCase()) : false) ||
-    (aar.AAR_Location ? aar.AAR_Location.toLowerCase().includes((searchTerm || "").toLowerCase()) : false)
-  ) : [];
 
   const handleSortByChange = (event) => {
     console.log(`Sorting by: ${event.target.value}`);
@@ -174,7 +183,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
         <button type='button' onClick={handleViewByComment}>View By Comment</button>
       </div>
       <div className="feedContentContainer">
-      {filteredAarData.map((aar, index) => (
+      {aarData.map((aar, index) => (
         <div className="feedContent" key={index}>
           <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>
             {expandedFeeds[aar.AAR_ID] ? <FaMinus /> : <FaPlus />}
@@ -198,8 +207,22 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
         {expandedFeeds[aar.AAR_ID] && (
               <div className="feedDropdown">
                 <ul>
-                  <li>Comments for Sustain: {aar.sustainCommentData}</li>
-                  <li>Comments for Improve: {aar.improveCommentData}</li>
+                {improveCommentData.map(comment => (
+                  <li key={comment.Improve_Comment_ID}>
+                    <strong>Type:</strong> {comment.Improve_Comment_Type}<br />
+                    <strong>Title:</strong> {comment.Improve_Comment_Title}<br />
+                    <strong>Discussion:</strong> {comment.Improve_Comment_Discussion}<br />
+                    <strong>Recommendation:</strong> {comment.Improve_Comment_Recommendation}
+                  </li>
+                ))}
+                {sustainCommentData.map(comment => (
+                  <li key={comment.Sustain_Comment_ID}>
+                    <strong>Type:</strong> {comment.Sustain_Comment_Type}<br />
+                    <strong>Title:</strong> {comment.Sustain_Comment_Title}<br />
+                    <strong>Discussion:</strong> {comment.Sustain_Comment_Discussion}<br />
+                    <strong>Recommendation:</strong> {comment.Sustain_Comment_Recommendation}
+                  </li>
+                ))}
                 </ul>
               </div>
             )}
