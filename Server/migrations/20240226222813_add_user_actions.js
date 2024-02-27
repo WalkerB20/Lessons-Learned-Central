@@ -10,6 +10,9 @@ export const up = function(knex) {
       table.string('Action_Type', 50).notNullable();
       table.timestamp('Action_Timestamp').defaultTo(knex.fn.now());
       table.foreign('Post_ID').references('Posts.Post_ID'); // Optional: Ensure 'Posts' table exists and 'post_id' is the correct column
+      table.foreign('User_ID').references('User.User_ID');
+      table.uuid('Like_ID').nullable();
+      table.foreign('Like_ID').references('Like.Like_ID');
     });
   };
 
