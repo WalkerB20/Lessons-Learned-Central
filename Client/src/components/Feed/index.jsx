@@ -240,7 +240,6 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
                         </button>
                         )}
                     <button onClick={() => handleDelete(aar.AAR_ID)}>
-                      Delete
                       <IconContext.Provider value={{className: "buttonGroup"}}>
                           <TiDeleteOutline />
                         </IconContext.Provider>
