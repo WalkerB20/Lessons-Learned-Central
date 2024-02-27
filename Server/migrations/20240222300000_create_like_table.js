@@ -13,6 +13,8 @@ export const up = async function(knex) {
         table.foreign('Sustain_Comment_ID').references('Sustain_Comment.Sustain_Comment_ID');
         table.uuid('Improve_Comment_ID');
         table.foreign('Improve_Comment_ID').references('Improve_Comment.Improve_Comment_ID');
+        table.integer('Post_ID');
+        table.foreign('Post_ID').references('Posts.Post_ID');
       })
     });
 };

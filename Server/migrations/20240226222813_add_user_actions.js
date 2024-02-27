@@ -5,7 +5,7 @@
 export const up = function(knex) {
     return knex.schema.createTable('UserActions', function(table) {
       table.increments('Action_ID').primary();
-      table.string('User_ID').notNullable();
+      table.uuid('User_ID').notNullable();
       table.integer('Post_ID').nullable();
       table.string('Action_Type', 50).notNullable();
       table.timestamp('Action_Timestamp').defaultTo(knex.fn.now());
