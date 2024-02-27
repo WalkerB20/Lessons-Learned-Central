@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { FaPlus, FaMinus } from "react-icons/fa";
 import '../Styles/Feed.css';
-const Feed = () => {
+
+const Feed = ({ searchTerm, setSearchTerm }) => {
   const [expandedFeeds, setExpandedFeeds] = useState({});
-  const [aarData, setAarData] = useState([]);
+  const [aarData, setAarData] = useState("");
+  const [sortOrder, setSortOrder] = useState('recent');
+  const [viewBy, setViewBy] = useState('title');
   const [editedValues, setEditedValues] = useState({
     eventTitle: '',
     eventLocation: '',
@@ -18,18 +21,40 @@ const Feed = () => {
   useEffect(() => {
     const fetchAarData = async () => {
       try {
-        const response = await fetch(`${getroutes}/postdata`);
+        const response = await fetch(`${getroutes}/postdata`, {});
         if (!response.ok) {
           throw new Error('Failed to fetch AAR data');
         }
-        const responseData = await response.json();
-        setAarData(responseData.aarData);
+        let responseData = await response.json();
+        responseData = responseData.aarData;
+
+        // Sort data
+        if (sortOrder === 'popular') {
+          responseData.sort((a, b) => b.likes - a.likes);
+        } else { // 'recent'
+          responseData.sort((a, b) => new Date(b.date) - new Date(a.date));
+        }
+
+        // Filter data
+        if (viewBy === 'comment') {
+          responseData = responseData.filter(item => item.comments.length > 0);
+        }
+
+        // Search data
+        if (searchTerm) {
+          responseData = responseData.filter(item =>
+            item.AAR_Name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.AAR_Location.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        }
+
+        setAarData(responseData);
       } catch (error) {
         console.error('Failed to fetch AAR data:', error);
       }
     };
     fetchAarData();
-  }, []);
+  }, [sortOrder, viewBy, searchTerm]);
 
   const handleLike = async (postId) => {
     try {
@@ -110,28 +135,48 @@ const Feed = () => {
     }));
   };
 
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredAarData = Array.isArray(aarData) ? aarData.filter(aar =>
+    (aar.AAR_Name ? aar.AAR_Name.toLowerCase().includes((searchTerm || "").toLowerCase()) : false) ||
+    (aar.AAR_Location ? aar.AAR_Location.toLowerCase().includes((searchTerm || "").toLowerCase()) : false)
+  ) : [];
+
+  const handleSortByChange = (event) => {
+    console.log(`Sorting by: ${event.target.value}`);
+  };
+
+  const handleViewByTitle = () => {
+    console.log('Viewing by title');
+  };
+
+  const handleViewByComment = () => {
+    console.log('Viewing by comment');
+  };
+
   return (
     <div className="feed">
       <div className="feedHeader">
         <h1>FEEDS</h1>
-        <select className="sortBy">
+        <select className="sortBy" onChange={handleSortByChange}>
           <option value="null">Sort By</option>
           <option value="popular">Popular</option>
           <option value="recent">Recent</option>
         </select>
       </div>
       <div className="viewByButton">
-        <button type='button'>View By Title</button> {/*Made changes here, previously alphabetically*/}
-        <button type='button'>View By Comment</button>{/*removed extra className, it was redundant*/}
+        <button type='button' onClick={handleViewByTitle}>View By Title</button>
+        <button type='button' onClick={handleViewByComment}>View By Comment</button>
       </div>
-      {/* This will just have to be mapped with feed content */}
       <div className="feedContentContainer">
-      {aarData.map((aar, index) => ( //added to map the data from the server for dynamic updates
-        <div className="feedContent" key={index}>{/*added the index key*/}
-          <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>{/*added the index to get the data*/}
-            {expandedFeeds[aar.AAR_ID] ? <FaMinus /> : <FaPlus />}{/*samesies*/}
+      {filteredAarData.map((aar, index) => (
+        <div className="feedContent" key={index}>
+          <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>
+            {expandedFeeds[aar.AAR_ID] ? <FaMinus /> : <FaPlus />}
           </button>
-          <h3>{aar.AAR_Name}</h3>{/*hopefully this takes the naming convention of the submission*/}
+          <h3>{aar.AAR_Name}</h3>
           <h2>{aar.AAR_Location}</h2>
           <div className="buttonGroup">
             {editingItemId === aar.AAR_ID ? (
@@ -144,8 +189,8 @@ const Feed = () => {
             ) : (
               <button onClick={() => setEditingItemId(aar.AAR_ID)}>Edit</button>
             )}
-            <button onClick={() => handleDelete(aar.AAR_ID)}>Delete</button>{/*changed delete*/}
-            <p className="date">{aar.AAR_Activity_Date}</p>{/*this should be the date of the submission*/}
+            <button onClick={() => handleDelete(aar.AAR_ID)}>Delete</button>
+            <p className="date">{aar.AAR_Activity_Date}</p>
         </div>
         {expandedFeeds[aar.AAR_ID] && (
               <div className="feedDropdown">
