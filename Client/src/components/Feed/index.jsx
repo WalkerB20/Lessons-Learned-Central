@@ -39,7 +39,7 @@ const Feed = () => {
       try {
         const response = await fetch(`${getroutes}/postdata`, {
           headers: {
-            'Authorization': `Bearer ${token}`
+            "authorization": `Bearer ${token}`
           }
         });
         if (!response.ok) {
@@ -61,7 +61,7 @@ const Feed = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "authorization": `Bearer ${token}`
         },
         body: JSON.stringify({ postId }),
       });
@@ -99,7 +99,7 @@ const Feed = () => {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "authorization": `Bearer ${token}`
         },
       })
       .then((response) => {
@@ -121,7 +121,7 @@ const Feed = () => {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          "authorization": `Bearer ${token}`
         },
         body: JSON.stringify(feedToEdit),
       });
