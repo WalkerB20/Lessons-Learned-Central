@@ -256,7 +256,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
         {expandedFeeds[aar.AAR_ID] && (
               <div className="feedDropdown">
                 <ul className="feedDropDown-comment">
-                {improveCommentData.map(comment => (
+                {improveCommentData.filter(comment => comment.Improve_Comment_ID === aar.Improve_Comment_ID).map(comment => (
                   <li key={comment.Improve_Comment_ID}>
                     <strong>Type:</strong> {comment.Improve_Comment_Type}<br />
                     <strong>Title:</strong> {comment.Improve_Comment_Title}<br />
@@ -264,7 +264,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
                     <strong>Recommendation:</strong> {comment.Improve_Comment_Recommendation}
                   </li>
                 ))}
-                {sustainCommentData.map(comment => (
+                {sustainCommentData.filter(comment => comment.Sustain_Comment_ID === aar.Sustain_Comment_ID).map(comment => (
                   <li key={comment.Sustain_Comment_ID}>
                     <strong>Type:</strong> {comment.Sustain_Comment_Type}<br />
                     <strong>Title:</strong> {comment.Sustain_Comment_Title}<br />
