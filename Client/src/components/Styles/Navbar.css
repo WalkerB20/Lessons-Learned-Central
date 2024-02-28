@@ -36,10 +36,9 @@
 
 .search {
   display: flex;
-  flex-wrap: wrap-reverse;
-  justify-self : center;
+  justify-content: center;
   gap: 10px;
-  margin: 0 auto;
+  margin: 20px auto;
   align-items: center;
   border: none;
   border-radius: 5px;
@@ -47,12 +46,23 @@
   cursor: pointer;
   background-color: transparent;
   max-width: 1500px;
-  width: 100vw;
+  width: auto;
 }
 
-.search form {
-  background-color: black;
+.search input {
+  font-size: 24px;
+  outline: none;
+  border: none;
+  background: #454545;
+  padding: 8px;
+  margin: 0 0;
+  border-radius: 10px;
+  color: #f1e4c7;
+  width: 80%;
+}
 
+.search {
+  background-color: black;
 }
 .navbar input  {
   font-size: 24px;
