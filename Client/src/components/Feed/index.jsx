@@ -114,6 +114,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
 
 
   const handleDelete = async (aarId) => {
+    console.log(`Deleting post with ID: ${aarId}`); // Add this line
     try {
       await fetch(`${deleteroutes}/postdelete/${aarId}`, {
         method: 'DELETE',
