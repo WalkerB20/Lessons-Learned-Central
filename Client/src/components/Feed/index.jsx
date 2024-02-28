@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AiFillCaretRight, AiFillCaretDown } from "react-icons/ai";
 // import { AiOutlineLike, AiFillLike } from "react-icons/ai";
-import { FiEdit } from "react-icons/fi";
 import EditIcon from '../EditIcon';
 import DeleteIcon from '../DeleteIcon';
 // import Date from '../Date';
@@ -235,7 +234,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
                 <input type="text" name="eventTitle" value={editedValues.eventTitle} onChange={handleChange} placeholder="Event Title"/>
                 <input type="text" name="eventLocation" value={editedValues.eventLocation} onChange={handleChange} placeholder="Event Location" />
                 <input type="date" name="eventDate" value={editedValues.eventDate} onChange={handleChange}
-                 />
+                />
                 <button id="submit" onClick={() => handleEdit(aar.AAR_ID)}>Submit</button>
               </div>
             ) : (
@@ -244,30 +243,25 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
               </button>
             )}
             <button onClick={() => handleDelete(aar.AAR_ID)}>
-  <IconContext.Provider value={{className: "delete"}}>
-    <TiDeleteOutline />
-  </IconContext.Provider>
-</button>
-</div>
-</div>
-{expandedFeeds[aar.AAR_ID] && (
-  <div className="feedDropdown">
-    <ul className="feedDropDown-comment">
-    {improveCommentData.filter(comment => comment.Improve_Comment_ID === aar.Improve_Comment_ID).map(comment => (
-      <li className="comment-details-container" key={comment.Improve_Comment_ID}>
-        <div id="comment-header">
-          <p>{comment.Improve_Comment_Type}: {comment.Improve_Comment_Title}</p>
               <DeleteIcon />
             </button>
-
+          </div>
         </div>
-        <p className="comment-discussion">
-          Discussion: {comment.Improve_Comment_Discussion}
-        </p>
-        <p className="comment-recommendation">
-          Recommendation: {comment.Improve_Comment_Recommendation}
-        </p>
-      </li>
+          {expandedFeeds[aar.AAR_ID] && (
+          <div className="feedDropdown">
+            <ul className="feedDropDown-comment">
+              {improveCommentData.filter(comment => comment.Improve_Comment_ID === aar.Improve_Comment_ID).map(comment => (
+                <li className="comment-details-container" key={comment.Improve_Comment_ID}>
+              <div id="comment-header">
+                <p>{comment.Improve_Comment_Type}: {comment.Improve_Comment_Title}</p>
+              </div>
+            <p className="comment-discussion">
+              Discussion: {comment.Improve_Comment_Discussion}
+            </p>
+            <p className="comment-recommendation">
+              Recommendation: {comment.Improve_Comment_Recommendation}
+            </p>
+        </li>
     ))}
     {sustainCommentData.filter(comment => comment.Sustain_Comment_ID === aar.Sustain_Comment_ID).map(comment => (
       <li className="comment-details-container" key={comment.Sustain_Comment_ID}>
