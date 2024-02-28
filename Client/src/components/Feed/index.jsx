@@ -36,7 +36,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
         let responseData = await response.json();
         responseData = responseData.aarData;
 
-              // Fetch improve comment data
+      // Fetch improve comment data
       const responseImprove = await fetch(`${getroutes}/improve`, {});
       if (!responseImprove.ok) {
         throw new Error('Failed to fetch improve comment data');
@@ -180,7 +180,6 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
 
-
   return (
     <div className="feed">
       <div className="feedHeader">
@@ -245,50 +244,45 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
               </button>
             )}
             <button onClick={() => handleDelete(aar.AAR_ID)}>
+  <IconContext.Provider value={{className: "delete"}}>
+    <TiDeleteOutline />
+  </IconContext.Provider>
+</button>
+</div>
+</div>
+{expandedFeeds[aar.AAR_ID] && (
+  <div className="feedDropdown">
+    <ul className="feedDropDown-comment">
+    {improveCommentData.filter(comment => comment.Improve_Comment_ID === aar.Improve_Comment_ID).map(comment => (
+      <li className="comment-details-container" key={comment.Improve_Comment_ID}>
+        <div id="comment-header">
+          <p>{comment.Improve_Comment_Type}: {comment.Improve_Comment_Title}</p>
               <DeleteIcon />
             </button>
+
         </div>
+        <p className="comment-discussion">
+          Discussion: {comment.Improve_Comment_Discussion}
+        </p>
+        <p className="comment-recommendation">
+          Recommendation: {comment.Improve_Comment_Recommendation}
+        </p>
+      </li>
+    ))}
+    {sustainCommentData.filter(comment => comment.Sustain_Comment_ID === aar.Sustain_Comment_ID).map(comment => (
+      <li className="comment-details-container" key={comment.Sustain_Comment_ID}>
+        <div id="comment-header">
+          <p>{comment.Sustain_Comment_Type}: {comment.Sustain_Comment_Title}</p>
         </div>
-        {expandedFeeds[aar.AAR_ID] && (
-              <div className="feedDropdown">
-                <ul className="feedDropDown-comment">
-                {improveCommentData.filter(comment => comment.Improve_Comment_ID === aar.Improve_Comment_ID).map(comment => (
-                  <li className="comment-details-container" key={comment.Improve_Comment_ID}>
-
-                    <p id="comment-header">
-                      <p>{comment.Improve_Comment_Type}: {comment.Improve_Comment_Title}
-                      </p>
-                    </p>
-
-                    <p className="comment-discussion">
-                      Discussion: {comment.Improve_Comment_Discussion}
-                    </p>
-
-                    <p className="comment-recommendation">
-                      Recommendation: {comment.Improve_Comment_Recommendation}
-                    </p>
-                  </li>
-                ))}
-                {sustainCommentData.filter(comment => comment.Sustain_Comment_ID === aar.Sustain_Comment_ID).map(comment => (
-
-                  <li className="comment-details-container" key={comment.Sustain_Comment_ID}>
-
-                    <p id="comment-header">
-                      {comment.Sustain_Comment_Type}: {comment.Sustain_Comment_Title}
-                    </p>
-
-                    <p className="comment-discussion">
-                      Discussion: {comment.Sustain_Comment_Discussion}
-                    </p>
-
-                    <p className="comment-recommendation">Recommendation: {comment.Sustain_Comment_Recommendation}
-                    </p>
-
-                  </li>
-                ))}
-                </ul>
-              </div>
-            )}
+        <p className="comment-discussion">
+          Discussion: {comment.Sustain_Comment_Discussion}
+        </p>
+        <p className="comment-recommendation">Recommendation: {comment.Sustain_Comment_Recommendation}</p>
+      </li>
+    ))}
+    </ul>
+  </div>
+)}
           </div>
         ))}
       </div>
