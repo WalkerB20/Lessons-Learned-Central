@@ -36,10 +36,6 @@ const [improveCommentResult] = await trx('Improve_Comment').insert({
               // Add other fields as necessary
         }, 'AAR_ID');
 
-              // Query the comments
-      [improveComment] = await trx('Improve_Comment').where('Improve_Comment_ID', improveCommentId);
-      [sustainComment] = await trx('Sustain_Comment').where('Sustain_Comment_ID', sustainCommentId);
-
           // Insert into the Comment table and get the inserted ID
           const commentIds = await Promise.all(formData.sections.map(async section => {
               const [commentId] = await trx(`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment`).insert({
