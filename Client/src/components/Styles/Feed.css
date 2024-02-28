@@ -94,10 +94,14 @@
   background-color: transparent;
 }
 
+
 .buttonGroup {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  height: auto;
+  position: absolute;
+  bottom: center;
   gap: 10px;
   margin-left: 10px;
   margin-right: 10px;
@@ -108,8 +112,95 @@
   background-color: transparent;
   font-size:1.5rem;
   padding: 0 0 0 0;
+  background-color: transparent;
 }
 
+.delete {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  bottom: center;
+  gap: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 100;
+  background-color: transparent;
+  font-size:3rem;
+  padding: 0 0 0 0;
+  background-color: transparent;
+}
+
+#submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color:#ffcc01;
+  color: black;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1em;
+  text-decoration: none;
+  width: 50%;
+
+}
+.comment-right {
+  display: flex;
+  /* flex-direction: row;
+  align-items: center; */
+  gap: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: 600;
+  background-color: transparent;
+  font-size:1.5rem;
+  padding: 0 0 0 0;
+ }
+
+.comment-right button {
+  background-color: transparent;
+}
+
+
+
+.comment-right button:hover {
+  background-color:none;
+  color: #ffcc01;
+  box-shadow: none;
+
+}
+.comment-right input {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  margin-right: 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  background-color:#727365;
+  color: #D5D5D7;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  width: 500px;
+
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  justify-content: center;
+  align-items: center;
+}
 /* .buttonGroup > *:hover {
   background-color: black;
   color: rgb(219, 191, 14);
