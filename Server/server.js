@@ -88,4 +88,4 @@ app.listen(PORT, (err) => {
     }
 });
 
-export { logUserAction, checkJwt };
+export { logUserAction, jwtCheck };
