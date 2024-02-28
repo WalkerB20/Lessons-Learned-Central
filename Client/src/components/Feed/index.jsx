@@ -228,18 +228,18 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
 
         </div>
 
-          <div className="buttonGroup">
+          <div className="comment-right">
             {editingItemId === aar.AAR_ID ? (
-              <>
+              <div className = "input">
                 <input type="text" name="eventTitle" value={editedValues.eventTitle} onChange={handleChange} />
                 <input type="text" name="eventLocation" value={editedValues.eventLocation} onChange={handleChange} />
                 <input type="date" name="eventDate" value={editedValues.eventDate} onChange={handleChange} />
-                <button onClick={() => handleEdit(aar.AAR_ID)}>Submit</button>
-              </>
+                <button id="submit" onClick={() => handleEdit(aar.AAR_ID)}>Submit</button>
+              </div>
             ) : (
               <button onClick={() => setEditingItemId(aar.AAR_ID)}>
 
-                <IconContext.Provider value={{className: "buttonGroup"}}>
+                <IconContext.Provider value={{className: "delete"}}>
                   <FiEdit />
                 </IconContext.Provider>
 
@@ -247,7 +247,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
             )}
           <button onClick={() => handleDelete(aar.AAR_ID)}>
 
-            <IconContext.Provider value={{className: "buttonGroup"}}>
+            <IconContext.Provider value={{className: "delete"}}>
               <TiDeleteOutline />
             </IconContext.Provider>
 
