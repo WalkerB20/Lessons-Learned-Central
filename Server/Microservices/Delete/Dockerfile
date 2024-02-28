@@ -8,7 +8,7 @@ WORKDIR /usr/src/deleteroutes
 COPY package*.json ./
 
 # Install any dependencies
-RUN npm install --legacy-peer-deps
+RUN npm install
 
 # Install nodemon for development
 RUN npm install -g nodemon

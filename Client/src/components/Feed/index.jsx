@@ -28,11 +28,12 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
 
   useEffect(() => {
     const fetchAarData = async () => {
-      const token = await getAccessTokenSilently();
+      //const token = await getAccessTokenSilently();
       try {
         const response = await fetch(`${getroutes}/postdata`, {
           headers: {
-            "authorization": `Bearer ${token}`
+            method: 'GET',
+            //"authorization": `Bearer ${token}`
           }
         });
         if (!response.ok) {

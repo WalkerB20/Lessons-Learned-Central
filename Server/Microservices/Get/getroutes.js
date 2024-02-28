@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
-import { logUserAction, checkJwt } from '../../server.js';
+import { logUserAction } from '../../server.js';
+//import { checkJwt } from '../../server.js';
 
 config();
 
@@ -11,7 +12,7 @@ const getroutes = (db) => {
   router.use(cors());
   router.use(express.json());
   router.options('*', cors());
-  router.use(checkJwt);
+  //router.use(checkJwt);
 
   router.get("/post", logUserAction('FETCH_POSTS'), (req, res, next) => {
     try {
