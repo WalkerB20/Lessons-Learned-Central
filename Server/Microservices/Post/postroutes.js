@@ -14,15 +14,31 @@ router.post('/form', async (req, res, next) => {
   try {
       // Start a transaction
       await db.transaction(async trx => {
-          // Insert into the AAR table and get the inserted ID
-          const [aarId] = await trx('AAR').insert({
+// Insert the improve comment into the Improve_Comment table and get the inserted ID
+const [improveCommentResult] = await trx('Improve_Comment').insert({
+    Improve_Comment_Discussion: formData.improveComment
+  }, 'Improve_Comment_ID');
+  const improveCommentId = improveCommentResult.Improve_Comment_ID;
+
+  // Insert the sustain comment into the Sustain_Comment table and get the inserted ID
+  const [sustainCommentResult] = await trx('Sustain_Comment').insert({
+    Sustain_Comment_Discussion: formData.sustainComment
+  }, 'Sustain_Comment_ID');
+  const sustainCommentId = sustainCommentResult.Sustain_Comment_ID;
+
+        // Insert into the AAR table and get the inserted ID
+        const [aarId] = await trx('AAR').insert({
               AAR_Name: formData.eventTitle,
               AAR_Location: formData.eventLocation,
               AAR_Activity_Date: formData.eventDate,
-              Sustain_Comment_ID: formData.sustainCommentId,
-              Improve_Comment_ID: formData.improveCommentId,
+              Sustain_Comment_ID: sustainCommentId,
+              Improve_Comment_ID: improveCommentId,
               // Add other fields as necessary
-          }).returning('AAR_ID');
+        }, 'AAR_ID');
+
+              // Query the comments
+      [improveComment] = await trx('Improve_Comment').where('Improve_Comment_ID', improveCommentId);
+      [sustainComment] = await trx('Sustain_Comment').where('Sustain_Comment_ID', sustainCommentId);
 
           // Insert into the Comment table and get the inserted ID
           const commentIds = await Promise.all(formData.sections.map(async section => {
