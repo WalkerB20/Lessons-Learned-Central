@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { AiFillCaretRight, AiFillCaretDown } from "react-icons/ai";
 // import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import { FiEdit } from "react-icons/fi";
-import { TiDeleteOutline } from "react-icons/ti";
+import EditIcon from '../EditIcon';
+import DeleteIcon from '../DeleteIcon';
+// import Date from '../Date';
 import { IconContext } from "react-icons";
 import '../Styles/Feed.css';
 
@@ -230,26 +232,19 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
           <div className="comment-right">
             {editingItemId === aar.AAR_ID ? (
               <div className = "input">
-                <input type="text" name="eventTitle" value={editedValues.eventTitle} onChange={handleChange} />
-                <input type="text" name="eventLocation" value={editedValues.eventLocation} onChange={handleChange} />
-                <input type="date" name="eventDate" value={editedValues.eventDate} onChange={handleChange} />
+                <input type="text" name="eventTitle" value={editedValues.eventTitle} onChange={handleChange} placeholder="Event Title"/>
+                <input type="text" name="eventLocation" value={editedValues.eventLocation} onChange={handleChange} placeholder="Event Location" />
+                <input type="date" name="eventDate" value={editedValues.eventDate} onChange={handleChange}
+                 />
                 <button id="submit" onClick={() => handleEdit(aar.AAR_ID)}>Submit</button>
               </div>
             ) : (
               <button onClick={() => setEditingItemId(aar.AAR_ID)}>
-
-                <IconContext.Provider value={{className: "delete"}}>
-                  <FiEdit />
-                </IconContext.Provider>
-
+                <EditIcon />
               </button>
             )}
-          <button onClick={() => handleDelete(aar.AAR_ID)}>
-
-            <IconContext.Provider value={{className: "delete"}}>
-              <TiDeleteOutline />
-            </IconContext.Provider>
-
+            <button onClick={() => handleDelete(aar.AAR_ID)}>
+              <DeleteIcon />
             </button>
         </div>
         </div>
