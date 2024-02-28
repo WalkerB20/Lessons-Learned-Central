@@ -194,12 +194,19 @@
 
 }
 
+.comment-right input::placeholder {
+  color: #D5D5D7;
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
 .input {
   display: flex;
   flex-direction: column;
   background-color: transparent;
   justify-content: center;
   align-items: center;
+  font-size: 1.8rem;
 }
 /* .buttonGroup > *:hover {
   background-color: black;
