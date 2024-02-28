@@ -7,8 +7,7 @@ import getroutes from './Microservices/Get/getroutes.js';
 import postroutes from './Microservices/Post/postroutes.js';
 import deleteroutes from './Microservices/Delete/deleteroutes.js';
 import patchroutes from './Microservices/Patch/patchroutes.js';
-import { expressjwt as jwt } from 'express-jwt';
-import jwksRsa from 'jwks-rsa';
+import { auth } from 'express-oauth2-jwt-bearer';
 
 config();
 
@@ -21,20 +20,14 @@ const db = knex(knexfile[process.env.NODE_ENV || 'development']);
 app.use(cors());
 app.use(express.json());
 // Authentication middleware
-const checkJwt = jwt({
-    secret: jwksRsa.expressJwtSecret({
-      cache: true,
-      rateLimit: true,
-      jwksRequestsPerMinute: 5,
-      jwksUri: `https://${process.env.REACT_APP_AUTH0_DOMAIN}/.well-known/jwks.json`
-    }),
-    issuer: `${process.env.REACT_APP_AUTH0_DOMAIN}`,
-    audience: `${process.env.REACT_APP_AUTH0_AUDIENCE}`,
-    algorithms: ['RS256']
-  });
+const jwtCheck = auth({
+  audience: 'https://dev-0kr4m17yxuqi4yv8.us.auth0.com/api/v2/',
+  issuerBaseURL: 'https://dev-0kr4m17yxuqi4yv8.us.auth0.com/',
+  tokenSigningAlg: 'RS256'
+});
 
   // Use the middleware in routes
-  app.use(checkJwt);
+  app.use(jwtCheck);
 
   app.use((req, res, next) => {
     console.log(req.user);

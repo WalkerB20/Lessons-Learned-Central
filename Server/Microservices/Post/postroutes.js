@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
-import { logUserAction, checkJwt } from '../../server.js';
+import { logUserAction, jwtCheck } from '../../server.js';
 
 config();
 
@@ -11,7 +11,7 @@ const postroutes = (db) => {
   router.use(cors());
   router.use(express.json());
   router.options('*', cors());
-  router.use(checkJwt);
+  router.use(jwtCheck);
 
   router.post('/likes', logUserAction('LIKE_POST'), async (req, res) => {
     const userId = req.user.sub; // Extract from JWT

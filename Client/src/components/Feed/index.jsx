@@ -28,12 +28,11 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
 
   useEffect(() => {
     const fetchAarData = async () => {
-      //const token = await getAccessTokenSilently();
       try {
         const response = await fetch(`${getroutes}/postdata`, {
+          method: 'GET',
           headers: {
-            method: 'GET',
-            //"authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${await getAccessTokenSilently()}`
           }
         });
         if (!response.ok) {
@@ -85,16 +84,15 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
       }
     };
     fetchAarData();
-  }, [sortOrder, viewBy, searchTerm]);
+  }, [sortOrder, viewBy, searchTerm, getAccessTokenSilently, getroutes]);
 
   const handleLike = async (postId) => {
-    const token = await getAccessTokenSilently();
     try {
       const response = await fetch(`${postroutes}/likes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          "authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${await getAccessTokenSilently()}`
         },
         body: JSON.stringify({ postId }),
       });
@@ -122,13 +120,12 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
 
 
   const handleDelete = async (aarId) => {
-    const token = await getAccessTokenSilently();
     try {
       await fetch(`${deleteroutes}/postdelete/${aarId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          "authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${await getAccessTokenSilently()}`
         },
       })
       .then((response) => {
@@ -143,13 +140,12 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
   };
 
   const handleEdit = async (aarId) => {
-    const token = await getAccessTokenSilently();
     try {
       const response = await fetch(`${patchroutes}/postpatch/${aarId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          "authorization": `Bearer ${token}`
+          "Authorization": `Bearer ${await getAccessTokenSilently()}`
         },
         body: JSON.stringify(editedValues),
       });
