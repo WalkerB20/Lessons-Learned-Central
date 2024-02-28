@@ -183,11 +183,11 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
       <div className="feedHeader">
         <h1>FEEDS</h1>
 
-        <select className="sortBy" onChange={handleSortByChange}>
+        {/* <select className="sortBy" onChange={handleSortByChange}>
           <option value="null">Sort By</option>
           <option value="popular">Popular</option>
           <option value="recent">Recent</option>
-        </select>
+        </select>    */}
 
         <div className="viewByButton">
           <button type='button' onClick={handleViewByTitle}>View By Title</button>
@@ -201,7 +201,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
       {aarData.map((aar, index) => (
         <div className="feedContent" key={index}>
           <div className="feedContent-title-bubble">
-            <button className="toggleButton" onClick={() => toggleFeed(aar.AAR_ID)}>
+            <button onClick={() => toggleFeed(aar.AAR_ID)}>
 
               <IconContext.Provider
                 value={{className:"toggleButton"}}>
@@ -257,19 +257,37 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
               <div className="feedDropdown">
                 <ul className="feedDropDown-comment">
                 {improveCommentData.filter(comment => comment.Improve_Comment_ID === aar.Improve_Comment_ID).map(comment => (
-                  <li key={comment.Improve_Comment_ID}>
-                    <strong>Type:</strong> {comment.Improve_Comment_Type}<br />
-                    <strong>Title:</strong> {comment.Improve_Comment_Title}<br />
-                    <strong>Discussion:</strong> {comment.Improve_Comment_Discussion}<br />
-                    <strong>Recommendation:</strong> {comment.Improve_Comment_Recommendation}
+                  <li className="comment-details-container" key={comment.Improve_Comment_ID}>
+
+                    <p id="comment-header">
+                      <p>{comment.Improve_Comment_Type}: {comment.Improve_Comment_Title}
+                      </p>
+                    </p>
+
+                    <p className="comment-discussion">
+                      Discussion: {comment.Improve_Comment_Discussion}
+                    </p>
+
+                    <p className="comment-recommendation">
+                      Recommendation: {comment.Improve_Comment_Recommendation}
+                    </p>
                   </li>
                 ))}
                 {sustainCommentData.filter(comment => comment.Sustain_Comment_ID === aar.Sustain_Comment_ID).map(comment => (
-                  <li key={comment.Sustain_Comment_ID}>
-                    <strong>Type:</strong> {comment.Sustain_Comment_Type}<br />
-                    <strong>Title:</strong> {comment.Sustain_Comment_Title}<br />
-                    <strong>Discussion:</strong> {comment.Sustain_Comment_Discussion}<br />
-                    <strong>Recommendation:</strong> {comment.Sustain_Comment_Recommendation}
+
+                  <li className="comment-details-container" key={comment.Sustain_Comment_ID}>
+
+                    <p id="comment-header">
+                      {comment.Sustain_Comment_Type}: {comment.Sustain_Comment_Title}
+                    </p>
+
+                    <p className="comment-discussion">
+                      Discussion: {comment.Sustain_Comment_Discussion}
+                    </p>
+
+                    <p className="comment-recommendation">Recommendation: {comment.Sustain_Comment_Recommendation}
+                    </p>
+
                   </li>
                 ))}
                 </ul>

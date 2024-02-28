@@ -211,7 +211,6 @@
 .feedDropDown-comment > * {
   display: flex;
   align-content: flex-start;
-  padding: 10px 20px;
   margin-right: 10px;
   margin-left: 10px;
   border: none;
@@ -225,6 +224,37 @@
 
 }
 
+.comment-details-container {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  background-color:  #ffffff;
+  color: black;
+  border-radius: 1em;
+}
+
+.comment-details-container *  {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  background-color:  transparent;
+  /* color: black; */
+}
+
+#comment-header {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  background-color:  transparent;
+  color:#D5D5D7;
+  font-weight: 700;
+  font-size: 1.5rem;
+  background-color:#727365;
+  padding: 10px 10px;
+  margin: 0 0 0 0;
+
+}
+
 .viewByButton {
   display: flex;
   margin-left: 8.5em;
@@ -232,6 +262,11 @@
   cursor: pointer;
   background-color:#999;
   gap: 10px;
+}
+
+.comment-discussion, .comment-recommendation {
+  padding: 6px 20px;
+
 }
 
 /* .sortBy > * {
