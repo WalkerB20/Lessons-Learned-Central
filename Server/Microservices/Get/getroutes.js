@@ -3,23 +3,15 @@ import cors from 'cors';
 
 const router = express.Router();
 
+// MIDDLEWARE TO GET DATA
 const getroutes = (db) => {
   router.use(cors());
   router.use(express.json());
   router.options('*', cors());
 
-router.get("/post", (req, res, next) => {
-  try {
-      res.send("Your Posts are here!");
-  } catch (err) {
-      next({ message: 'Error occurred while handling / route', originalError: err });
-  }
-});
-
-  // Route to fetch improve comment data
+  // ROUTE TO IMPROVE COMMENT DATA
   router.get("/improve", async (req, res, next) => {
     try {
-      // Fetch improve comment data from the Improve_Comment table
       const improveCommentData = await db.select('*').from('Improve_Comment');
       res.json(improveCommentData);
     } catch (err) {
@@ -27,10 +19,9 @@ router.get("/post", (req, res, next) => {
     }
   });
 
-  // Route to fetch sustain comment data
+  // ROUTE TO SUSTAIN COMMENT DATA
   router.get("/sustain", async (req, res, next) => {
     try {
-      // Fetch sustain comment data from the Sustain_Comment table
       const sustainCommentData = await db.select('*').from('Sustain_Comment');
       res.json(sustainCommentData);
     } catch (err) {
@@ -38,36 +29,19 @@ router.get("/post", (req, res, next) => {
     }
   });
 
-router.get('/postdata', async (req, res, next) => {
-  try {
-      // Fetch data from the AAR table
+  // ROUTE TO POST DATA FOR FEED
+  router.get('/postdata', async (req, res, next) => {
+    try {
       const aarData = await db.select('*').from('AAR');
-
-      // Fetch data from the Sustain Comment table
       const sustainCommentData = await db.select('*').from('Sustain_Comment');
-
-      // Fetch data from the Improve Comment table
       const improveCommentData = await db.select('*').from('Improve_Comment');
-
-      // Fetch data from the Range table
       const rangeData = await db.select('*').from('Range');
-
-      // Fetch data from the Deployment table
       const deploymentData = await db.select('*').from('Deployment');
-
-      // Fetch data from the FTX table
       const ftxData = await db.select('*').from('FTX');
-
-      // Fetch data from the Equipment table
       const equipmentData = await db.select('*').from('Equipment');
-
-      // Fetch data from the Airborne_Operation table
       const airborneOperationData = await db.select('*').from('Airborne');
-
-      // Fetch data from the Other table
       const otherData = await db.select('*').from('Other');
 
-      // Send the fetched data as a response
       res.json({
         aarData,
         sustainCommentData,
@@ -78,11 +52,11 @@ router.get('/postdata', async (req, res, next) => {
         equipmentData,
         airborneOperationData,
         otherData
-    });
-} catch (err) {
-    next({ message: 'Error occurred while fetching data', originalError: err });
-}
-});
+      });
+    } catch (err) {
+      next({ message: 'Error occurred while fetching data', originalError: err });
+    }
+  });
 
 return router;
 };

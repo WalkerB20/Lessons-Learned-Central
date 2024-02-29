@@ -3,14 +3,47 @@ import cors from 'cors';
 
 const router = express.Router();
 
+// MIDDLEWARE IMPORTS
 const postroutes = (db) => {
   router.use(cors());
   router.use(express.json());
   router.options('*', cors());
 
+// ROUTE TO INCREMENT LIKE_COUNT FOR SUSTAIN COMMENT
+router.post("/sustain/:commentId", async (req, res, next) => {
+  const { commentId } = req.params;
+  try {
+    await db('Sustain_Comment')
+      .where('Sustain_Comment_ID', commentId)
+      .increment('Like_Count', 1);
+    const updatedComment = await db('Sustain_Comment')
+      .where('Sustain_Comment_ID', commentId)
+      .first();
+    res.json({ success: true, message: 'Incremented Like_Count for Sustain_Comment', likeCount: updatedComment.Like_Count });
+  } catch (err) {
+    next({ message: 'Error occurred while incrementing Like_Count for Sustain_Comment', originalError: err });
+  }
+});
+
+// ROUTE TO INCREMENT LIKE_COUNT FOR IMPROVE COMMENT
+router.post("/improve/:commentId", async (req, res, next) => {
+  const { commentId } = req.params;
+  try {
+    await db('Improve_Comment')
+      .where('Improve_Comment_ID', commentId)
+      .increment('Like_Count', 1);
+    const updatedComment = await db('Improve_Comment')
+      .where('Improve_Comment_ID', commentId)
+      .first();
+    res.json({ success: true, message: 'Incremented Like_Count for Improve_Comment', likeCount: updatedComment.Like_Count});
+  } catch (err) {
+    next({ message: 'Error occurred while incrementing Like_Count for Improve_Comment', originalError: err });
+  }
+});
+
+  // POST ROUTE TO INSERT FORM DATA
   router.post('/form', async (req, res, next) => {
     const formData = req.body;
-
     try {
       await db.transaction(async trx => {
         let sustainCommentId = null;
@@ -35,20 +68,15 @@ const postroutes = (db) => {
             [`${columnPrefix}_Discussion`]: comments,
             [`${columnPrefix}_Recommendation`]: recommendations,
           };
-
-          // Correctly handle the insert result to extract the UUID
           const insertResult = await trx(tableName)
           .insert(insertData, `${columnPrefix}_ID`)
-          .then((ids) => ids[0][`${columnPrefix}_ID`]); // Correctly accessing the first element of the result
-
+          .then((ids) => ids[0][`${columnPrefix}_ID`]);
           if (type === 'sustain') {
-            sustainCommentId = insertResult; // This should be a UUID string
+            sustainCommentId = insertResult;
           } else if (type === 'improve') {
-            improveCommentId = insertResult; // This should be a UUID string
+            improveCommentId = insertResult;
           }
         }
-
-        // Insert into the AAR table with the captured comment IDs
         const [aarId] = await trx('AAR').insert({
           AAR_Name: formData.eventTitle,
           AAR_Location: formData.eventLocation,
