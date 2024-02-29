@@ -18,8 +18,7 @@ root.render(
         clientId={clientId}
         authorizationParams={{
           redirect_uri: window.location.origin,
-          audience: audience,
-          scope: "read:current_user update:current_user_metadata"
+          audience: audience
         }}
         >
           <App />
