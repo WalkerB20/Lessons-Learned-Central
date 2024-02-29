@@ -18,11 +18,6 @@ services:
       - ./.env
 
   server:
-    deploy:
-      resources:
-        limits:
-          cpus: '2.0'
-          memory: '2G'
     build:
       context: ./Server
       dockerfile: Dockerfile
@@ -51,11 +46,6 @@ services:
       - ./.env
 
   getroutes:
-    deploy:
-      resources:
-        limits:
-          cpus: '2.0'
-          memory: '2G'
     build:
       context: ./Server/Microservices/Get
       dockerfile: Dockerfile
@@ -79,11 +69,6 @@ services:
       - ./.env
 
   deleteroutes:
-    deploy:
-      resources:
-        limits:
-          cpus: '2.0'
-          memory: '2G'
     build:
       context: ./Server/Microservices/Delete
       dockerfile: Dockerfile
@@ -107,11 +92,6 @@ services:
       - ./.env
 
   postroutes:
-    deploy:
-      resources:
-        limits:
-          cpus: '2.0'
-          memory: '2G'
     build:
       context: ./Server/Microservices/Post
       dockerfile: Dockerfile
@@ -135,11 +115,6 @@ services:
       - ./.env
 
   patchroutes:
-    deploy:
-      resources:
-        limits:
-          cpus: '2.0'
-          memory: '2G'
     build:
       context: ./Server/Microservices/Patch
       dockerfile: Dockerfile
@@ -163,11 +138,6 @@ services:
       - ./.env
 
   db:
-    deploy:
-      resources:
-        limits:
-          cpus: '2.0'
-          memory: '2G'
     image: postgres:latest
     volumes:
       - postgres_data:/var/lib/postgresql/data
