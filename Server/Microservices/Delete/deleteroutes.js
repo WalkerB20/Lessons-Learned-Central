@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express from 'express';
-import { logUserAction } from '../../server.js';
+//import { logUserAction } from '../../server.js';
 
 const router = express.Router();
 
