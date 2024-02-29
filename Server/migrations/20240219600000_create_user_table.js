@@ -9,6 +9,8 @@ export const up = async function(knex) {
         table.uuid('User_ID').primary().defaultTo(knex.raw('uuid_generate_v4()'));
         table.string('User_Email');
         table.string('Auth0_ID');
+        table.string('Password');
+        table.boolean('Email_Verified');
       })
     });
 };
