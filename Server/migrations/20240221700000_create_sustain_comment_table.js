@@ -11,6 +11,7 @@ export const up = async function(knex) {
         table.string('Sustain_Comment_Title');
         table.text('Sustain_Comment_Discussion');
         table.text('Sustain_Comment_Recommendation');
+        table.integer('Like_Count').defaultTo(0);
       })
     });
 };
