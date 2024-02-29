@@ -1,11 +1,13 @@
 import express from 'express';
 import cors from 'cors';
-//import { logUserAction } from '../../server.js';
+import { logUserAction, jwtCheck } from '../../server.js';
+import { auth } from 'express-oauth2-jwt-bearer';
 
 const router = express.Router();
 
 // MIDDLEWARE TO GET DATA
 const getroutes = (db) => {
+  router.use(jwtCheck);
   router.use(cors());
   router.use(express.json());
   router.options('*', cors());
