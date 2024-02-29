@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AiFillCaretRight, AiFillCaretDown } from "react-icons/ai";
-// import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import EditIcon from '../EditIcon';
 import DeleteIcon from '../DeleteIcon';
-// import Date from '../Date';
 import { IconContext } from "react-icons";
 import Like from '../Like';
 import '../Styles/Feed.css';
@@ -20,7 +18,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
     eventLocation: '',
     eventDate: '',
   });
-  const [editingItemId, setEditingItemId] = useState(null); // Track the item being edited
+  const [editingItemId, setEditingItemId] = useState(null);
   const getroutes = 'http://localhost:3001/api';
   const deleteroutes = 'http://localhost:3001/api';
   const patchroutes = 'http://localhost:3001/api';
@@ -35,29 +33,26 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
         }
         let responseData = await response.json();
         responseData = responseData.aarData;
-
               // Fetch improve comment data
-      const responseImprove = await fetch(`${getroutes}/improve`, {});
-      if (!responseImprove.ok) {
-        throw new Error('Failed to fetch improve comment data');
-      }
-      const improveData = await responseImprove.json();
+        const responseImprove = await fetch(`${getroutes}/improve`, {});
+        if (!responseImprove.ok) {
+          throw new Error('Failed to fetch improve comment data');
+        }
+        const improveData = await responseImprove.json();
 
-      // Fetch sustain comment data
-      const responseSustain = await fetch(`${getroutes}/sustain`, {});
-      if (!responseSustain.ok) {
-        throw new Error('Failed to fetch sustain comment data');
-      }
-      const sustainData = await responseSustain.json();
-
-        // Sort data
+              // Fetch sustain comment data
+        const responseSustain = await fetch(`${getroutes}/sustain`, {});
+        if (!responseSustain.ok) {
+          throw new Error('Failed to fetch sustain comment data');
+        }
+        const sustainData = await responseSustain.json();
+                // Sort data
         if (sortOrder === 'popular') {
           responseData.sort((a, b) => b.likes - a.likes);
-        } else { // 'recent'
+        } else {
           responseData.sort((a, b) => new Date(b.date) - new Date(a.date));
         }
-
-        // Filter data
+        // Filter data by comment
         if (viewBy === 'comment') {
           responseData = responseData.filter(item => item.comments.length > 0);
         }
@@ -88,9 +83,8 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
     }));
   };
 
-
   const handleDelete = async (aarId) => {
-console.log(`Deleting post with ID: ${aarId}`); // Add this line
+    console.log(`Deleting post with ID: ${aarId}`);
     try {
       await fetch(`${deleteroutes}/postdelete/${aarId}`, {
         method: 'DELETE',
@@ -125,7 +119,7 @@ console.log(`Deleting post with ID: ${aarId}`); // Add this line
       const updatedItemData = responseData.updatedItem;
       console.log('Updated item:', updatedItemData);
       setAarData(prevAarData => prevAarData.map(item => item.AAR_ID === aarId ? { ...item, ...updatedItemData } : item));
-      setEditingItemId(null); // Reset editing item ID after editing
+      setEditingItemId(null);
     } catch (error) {
       console.error('Error editing feed item:', error);
     }
@@ -141,8 +135,7 @@ console.log(`Deleting post with ID: ${aarId}`); // Add this line
 
   const handleViewByTitle = () => {
     setViewBy('title');
-    // Reset expandedFeeds state to collapse all feed items
-    setExpandedFeeds({});
+    setExpandedFeeds({}); // Reset expandedFeeds state to collapse all feed items
   };
 
   const handleViewByComment = () => {
@@ -155,11 +148,17 @@ console.log(`Deleting post with ID: ${aarId}`); // Add this line
     setExpandedFeeds(newExpandedFeeds);
   };
 
+  const handleToggleComments = (aarId) => {
+    setExpandedFeeds((prevState) => ({
+      ...prevState,
+      [aarId]: !prevState[aarId],
+    }));
+  };
+
   const formatDate = (dateString) => {
     const options = { day: '2-digit', month: 'short', year: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
-
 
   return (
     <div className="feed">
@@ -186,7 +185,6 @@ console.log(`Deleting post with ID: ${aarId}`); // Add this line
                 <p className="date">{formatDate(aar.AAR_Activity_Date)}</p>
               </div>
               <div className="comment-right">
-                {/* Render edit and delete buttons */}
                 {editingItemId === aar.AAR_ID ? (
                   <div className="input">
                     <input type="text" name="eventTitle" value={editedValues.eventTitle} onChange={handleChange} placeholder="Event Title"/>
@@ -200,10 +198,9 @@ console.log(`Deleting post with ID: ${aarId}`); // Add this line
                 <button onClick={() => handleDelete(aar.AAR_ID)}><DeleteIcon /></button>
               </div>
             </div>
-            <div className="feedDropdown" style={{ display: expandedFeeds[aar.AAR_ID] || viewBy === 'comment' ? 'block' : 'none' }}>
+            <div className="feedDropdown" style={{ display: expandedFeeds[aar.AAR_ID] || (viewBy === 'comment' && expandedFeeds[aar.AAR_ID]) ? 'block' : 'none' }}>
               <ul className="feedDropDown-comment">
-                {/* Render comments based on viewBy state */}
-                {viewBy === 'comment' && viewBy === 'title' || improveCommentData.filter(comment => comment.Improve_Comment_ID === aar.Improve_Comment_ID).map(comment => (
+                {improveCommentData.filter(comment => comment.Improve_Comment_ID === aar.Improve_Comment_ID).map(comment => (
                   <li className="comment-details-container" key={comment.Improve_Comment_ID}>
                     <div id="comment-header">
                       <p>{comment.Improve_Comment_Type}: {comment.Improve_Comment_Title}</p>
@@ -217,8 +214,7 @@ console.log(`Deleting post with ID: ${aarId}`); // Add this line
                     />
                   </li>
                 ))}
-                 {/* Render comments based on viewBy state */}
-                {viewBy === 'comment' && viewBy === 'title' || sustainCommentData.filter(comment => comment.Sustain_Comment_ID === aar.Sustain_Comment_ID).map(comment => (
+                {sustainCommentData.filter(comment => comment.Sustain_Comment_ID === aar.Sustain_Comment_ID).map(comment => (
                   <li className="comment-details-container" key={comment.Sustain_Comment_ID}>
                     <div id="comment-header">
                       <p>{comment.Sustain_Comment_Type}: {comment.Sustain_Comment_Title}</p>
@@ -240,4 +236,5 @@ console.log(`Deleting post with ID: ${aarId}`); // Add this line
     </div>
   );
 };
+
 export default Feed;
