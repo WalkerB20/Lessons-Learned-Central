@@ -5,26 +5,12 @@
   "type": "module",
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
-    "@fortawesome/fontawesome-free": "^6.5.1",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "aws-jwt-verify": "^4.0.1",
-    "axios": "^1.6.7",
-    "bootstrap": "^5.3.3",
-    "docker": "^1.0.0",
-    "express-oauth2-jwt-bearer": "^1.6.0",
-    "jose": "^5.2.2",
-    "jsonwebtoken": "^9.0.2",
-    "nodemon": "^3.0.3",
+    "eslint-config-react-app": "^7.0.1",
     "react": "^18.2.0",
-    "react-bootstrap": "^2.10.1",
-    "react-datepicker": "^6.1.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
-    "react-router-dom": "^6.22.1",
-    "react-scripts": "^5.0.1",
-    "web-vitals": "^2.1.4"
+    "react-router-dom": "^6.22.2",
+    "react-scripts": "^5.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -50,5 +36,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "depcheck": "^1.4.7"
   }
 }
