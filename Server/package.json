@@ -26,6 +26,7 @@
   "author": "LLC",
   "license": "ISC",
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "depcheck": "^1.4.7"
   }
 }
