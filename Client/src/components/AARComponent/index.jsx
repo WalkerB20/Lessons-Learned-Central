@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
+import '../Styles/index.css';
+import '../Styles/App.css';
 
 export default function AARComponent() {
   const postroutes = 'http://localhost:3001/api';//previously llc
@@ -169,11 +171,16 @@ const handleAddSection = () => {
   };
   return (
     <div className="aarForm">
-      <h2>After Action Review Form</h2>{/*can change name to whatever*/}
+      <h1>After Action Review Form</h1>{/*can change name to whatever*/}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>Event Title:</label>
-          <input type="text" placeholder="Give a title to your event" name="eventTitle" value={formData.eventTitle} onChange={handleChange} />
+          <input
+          type="text"
+          placeholder="Give a title to your event"
+          name="eventTitle"
+          value={formData.eventTitle}
+          onChange={handleChange}/>
           <label>Event Type:</label>
             <select name="eventType" value={formData.eventType} onChange={handleChange}>
               <option value="">Select an option</option>{/*changed "select" to ""*/}
@@ -237,6 +244,7 @@ const handleAddSection = () => {
                 <option value="sustain">Sustain</option>
                 <option value="improve">Improve</option>
               </select>
+              <div className="comments-section">
               {section.type && ( // Render text fields only if a comment type is selected
                 <>
                   <input
@@ -260,11 +268,14 @@ const handleAddSection = () => {
                   ></textarea>
                 </>
               )}
+             </div>
             </div>
           ))}
         </div>
-        <button type="button" onClick={handleAddSection}>Add another comment</button>
+        <div className="form-footer">
+        <button type="button" onClick={handleAddSection}>Add comment</button>
         <button type="submit">Submit</button>
+        </div>
       </form>
     </div>
   );

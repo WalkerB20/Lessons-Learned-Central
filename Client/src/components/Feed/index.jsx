@@ -36,7 +36,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
         let responseData = await response.json();
         responseData = responseData.aarData;
 
-      // Fetch improve comment data
+              // Fetch improve comment data
       const responseImprove = await fetch(`${getroutes}/improve`, {});
       if (!responseImprove.ok) {
         throw new Error('Failed to fetch improve comment data');
@@ -90,7 +90,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
 
 
   const handleDelete = async (aarId) => {
-    console.log(`Deleting post with ID: ${aarId}`); // Add this line
+console.log(`Deleting post with ID: ${aarId}`); // Add this line
     try {
       await fetch(`${deleteroutes}/postdelete/${aarId}`, {
         method: 'DELETE',
@@ -155,6 +155,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
     const options = { day: '2-digit', month: 'short', year: 'numeric' };
     return new Date(dateString).toLocaleDateString('en-US', options);
   };
+
 
   return (
     <div className="feed">
