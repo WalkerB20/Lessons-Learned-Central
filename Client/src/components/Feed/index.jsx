@@ -5,6 +5,7 @@ import EditIcon from '../EditIcon';
 import DeleteIcon from '../DeleteIcon';
 // import Date from '../Date';
 import { IconContext } from "react-icons";
+import Like from '../Like';
 import '../Styles/Feed.css';
 import { useAuth0 } from '@auth0/auth0-react';
 
@@ -86,33 +87,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
       }
     };
     fetchAarData();
-  }, [sortOrder, viewBy, searchTerm, getAccessTokenSilently, getroutes]);
-
-  const handleLike = async (postId) => {
-    const token = await getAccessTokenSilently()
-    try {
-      const response = await fetch(`${postroutes}/likes`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({ postId }),
-      });
-
-      if (!response.ok) {
-        if (response.status === 409) {
-          console.log("You've already liked this post.");
-        } else {
-          throw new Error('Failed to like the post');
-        }
-      } else {
-        console.log('Post liked successfully.');
-      }
-    } catch (error) {
-      console.error('Error liking the post:', error);
-    }
-  };
+  }, [sortOrder, viewBy, searchTerm]);
 
   const toggleFeed = (aarId) => {
     setExpandedFeeds((prevState) => ({
@@ -276,19 +251,29 @@ console.log(`Deleting post with ID: ${aarId}`); // Add this line
             <p className="comment-recommendation">
               Recommendation: {comment.Improve_Comment_Recommendation}
             </p>
+            <Like
+              commentId={comment.Improve_Comment_ID}
+              commentType="improve"
+              likeCount={comment.Like_Count}
+            />
         </li>
-    ))}
+        ))}
         {sustainCommentData.filter(comment => comment.Sustain_Comment_ID === aar.Sustain_Comment_ID).map(comment => (
           <li className="comment-details-container" key={comment.Sustain_Comment_ID}>
             <div id="comment-header">
-              <p>{comment.Sustain_Comment_Type}: {comment.Sustain_Comment_Title}</p>
-            </div>
-            <p className="comment-discussion">
+            <p>{comment.Sustain_Comment_Type}: {comment.Sustain_Comment_Title}</p>
+              </div>
+              <p className="comment-discussion">
               Discussion: {comment.Sustain_Comment_Discussion}
-            </p>
-            <p className="comment-recommendation">Recommendation: {comment.Sustain_Comment_Recommendation}</p>
-          </li>
-        ))}
+              </p>
+          <p className="comment-recommendation">Recommendation: {comment.Sustain_Comment_Recommendation}</p>
+          <Like
+            commentId={comment.Sustain_Comment_ID}
+            commentType="sustain"
+            likeCount={comment.Like_Count}
+          />
+      </li>
+    ))}
     </ul>
   </div>
 )}
