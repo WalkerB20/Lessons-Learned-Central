@@ -264,17 +264,17 @@ console.log(`Deleting post with ID: ${aarId}`); // Add this line
             </p>
         </li>
     ))}
-    {sustainCommentData.filter(comment => comment.Sustain_Comment_ID === aar.Sustain_Comment_ID).map(comment => (
-      <li className="comment-details-container" key={comment.Sustain_Comment_ID}>
-        <div id="comment-header">
-          <p>{comment.Sustain_Comment_Type}: {comment.Sustain_Comment_Title}</p>
-        </div>
-        <p className="comment-discussion">
-          Discussion: {comment.Sustain_Comment_Discussion}
-        </p>
-        <p className="comment-recommendation">Recommendation: {comment.Sustain_Comment_Recommendation}</p>
-      </li>
-    ))}
+        {sustainCommentData.filter(comment => comment.Sustain_Comment_ID === aar.Sustain_Comment_ID).map(comment => (
+          <li className="comment-details-container" key={comment.Sustain_Comment_ID}>
+            <div id="comment-header">
+              <p>{comment.Sustain_Comment_Type}: {comment.Sustain_Comment_Title}</p>
+            </div>
+            <p className="comment-discussion">
+              Discussion: {comment.Sustain_Comment_Discussion}
+            </p>
+            <p className="comment-recommendation">Recommendation: {comment.Sustain_Comment_Recommendation}</p>
+          </li>
+        ))}
     </ul>
   </div>
 )}
