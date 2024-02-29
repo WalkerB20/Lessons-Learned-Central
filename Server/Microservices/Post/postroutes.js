@@ -1,9 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import { config } from 'dotenv';
-import { logUserAction, jwtCheck } from '../../server.js';
-
-config();
 
 const router = express.Router();
 
@@ -11,7 +7,6 @@ const postroutes = (db) => {
   router.use(cors());
   router.use(express.json());
   router.options('*', cors());
-  router.use(jwtCheck);
 
   router.post('/form', async (req, res, next) => {
     const formData = req.body;

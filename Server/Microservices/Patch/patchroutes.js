@@ -1,9 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { config } from 'dotenv';
-import { logUserAction, jwtCheck } from '../../server.js';
-
-config();
+import { logUserAction } from '../../server.js';
 
 const router = express.Router();
 
@@ -11,7 +8,6 @@ const patchroutes = (db) => {
   router.use(cors());
   router.use(express.json());
   router.options('*', cors());
-  router.use(jwtCheck);
 
   router.patch('/postpatch/:aarId', logUserAction('UPDATE_AAR'), async (req, res, next) => {
     const aarId = req.params.aarId;

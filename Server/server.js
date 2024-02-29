@@ -21,7 +21,7 @@ app.use(cors());
 app.use(express.json());
 // Authentication middleware
 const jwtCheck = auth({
-  audience: 'https://dev-0kr4m17yxuqi4yv8.us.auth0.com/api/v2/',
+  audience: 'http://localhost:3001/api',
   issuerBaseURL: 'https://dev-0kr4m17yxuqi4yv8.us.auth0.com/',
   tokenSigningAlg: 'RS256'
 });
@@ -44,7 +44,7 @@ app.use('/api', patchroutes(db));
 function logUserAction(actionType) {
     return async (req, res, next) => {
       try {
-        const userId = req.user.sub; // Assuming JWT middleware adds user info to req.user
+        const userId = req.data.sub // Assuming JWT middleware adds user info to req.user
         const postId = req.params.postId || null; // Adapt based on your route structure
         const likeId = req.params.likeId || null; // Adapt based on your route structure
         
