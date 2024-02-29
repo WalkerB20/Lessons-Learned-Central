@@ -1,6 +1,6 @@
 import cors from 'cors';
 import express from 'express';
-//import { logUserAction } from '../../server.js';
+import { logUserAction } from '../../server.js';
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ const deleteroutes = (db) => {
   router.options('*', cors());
 
 // ROUTE TO DECREMENT LIKE_COUNT FOR SUSTAIN COMMENT
-router.delete("/sustain/:commentId", async (req, res, next) => {
+router.delete("/sustain/:commentId", logUserAction('UNLIKE_SUSTAIN_COMMENT'), async (req, res, next) => {
   const { commentId } = req.params;
   try {
     await db('Sustain_Comment')
@@ -26,7 +26,7 @@ router.delete("/sustain/:commentId", async (req, res, next) => {
 });
 
 // ROUTE TO DECREMENT LIKE_COUNT FOR IMPROVE COMMENT
-router.delete("/improve/:commentId", async (req, res, next) => {
+router.delete("/improve/:commentId", logUserAction('UNLIKE_IMPROVE_COMMENT'), async (req, res, next) => {
   const { commentId } = req.params;
   try {
     await db('Improve_Comment')
@@ -42,7 +42,7 @@ router.delete("/improve/:commentId", async (req, res, next) => {
 });
 
   // DELETE a like from Improve_Comment
-  router.delete('/postdelete/:aarId', async (req, res, next) => {
+  router.delete('/postdelete/:aarId', logUserAction('DELETE_POST'), async (req, res, next) => {
     const { aarId } = req.params;
     console.log(`Received DELETE request for ID: ${aarId}`); // Log the received ID
     try {

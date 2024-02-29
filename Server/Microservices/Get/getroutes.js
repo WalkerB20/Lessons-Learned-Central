@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-//import { logUserAction } from '../../server.js';
+import { logUserAction } from '../../server.js';
 
 const router = express.Router();
 
@@ -11,7 +11,7 @@ const getroutes = (db) => {
   router.options('*', cors());
 
   // ROUTE TO IMPROVE COMMENT DATA
-  router.get("/improve", async (req, res, next) => {
+  router.get("/improve", logUserAction('FETCH_IMPROVE_COMMENT'), async (req, res, next) => {
     try {
       const improveCommentData = await db.select('*').from('Improve_Comment');
       res.json(improveCommentData);
@@ -21,7 +21,7 @@ const getroutes = (db) => {
   });
 
   // ROUTE TO SUSTAIN COMMENT DATA
-  router.get("/sustain", async (req, res, next) => {
+  router.get("/sustain", logUserAction('FETCH_SUSTAIN_COMMENT'), async (req, res, next) => {
     try {
       const sustainCommentData = await db.select('*').from('Sustain_Comment');
       res.json(sustainCommentData);
@@ -31,7 +31,7 @@ const getroutes = (db) => {
   });
 
   // ROUTE TO POST DATA FOR FEED
-  router.get('/postdata', async (req, res, next) => {
+  router.get('/postdata', logUserAction('FETCH_POST_DATA'), async (req, res, next) => {
     try {
       const aarData = await db.select('*').from('AAR');
       const sustainCommentData = await db.select('*').from('Sustain_Comment');

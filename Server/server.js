@@ -34,35 +34,35 @@ const jwtCheck = auth({
     next();
   });
 
-app.use('/api', getroutes(db));
-app.use('/api', postroutes(db));
-app.use('/api', deleteroutes(db));
-app.use('/api', patchroutes(db));
+  app.use('/api', logUserAction('GET'), getroutes(db));
+  app.use('/api', logUserAction('POST'), postroutes(db));
+  app.use('/api', logUserAction('DELETE'), deleteroutes(db));
+  app.use('/api', logUserAction('PATCH'), patchroutes(db));
 
 
 // Middleware to log user actions
 function logUserAction(actionType) {
     return async (req, res, next) => {
       try {
-        const userId = req.data.sub // Assuming JWT middleware adds user info to req.user
-        const postId = req.params.postId || null; // Adapt based on your route structure
-        const likeId = req.params.likeId || null; // Adapt based on your route structure
-        
+        const userId = req.user.sub
+        const postId = req.params.postId || null;
+        const likeId = req.params.likeId || null;
+
         await db('UserActions').insert({
           User_ID: userId,
           Post_ID: postId,
           Like_ID: likeId,
           Action_Type: actionType,
         });
-        
+
         next();
       } catch (error) {
         console.error('Failed to log user action:', error);
-        next();
+        next(error);
       }
     };
   }
-  
+
 
 // MAIN SERVER ROUTE
 app.get('/api', (req, res) => {

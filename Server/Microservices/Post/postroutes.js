@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import { logUserAction } from '../../server.js';
 
 const router = express.Router();
 
@@ -8,9 +9,10 @@ const postroutes = (db) => {
   router.use(cors());
   router.use(express.json());
   router.options('*', cors());
+  router.use(logUserAction('POST'));
 
 // ROUTE TO INCREMENT LIKE_COUNT FOR SUSTAIN COMMENT
-router.post("/sustain/:commentId", async (req, res, next) => {
+router.post("/sustain/:commentId", logUserAction('POST_SUSTAIN_COMMENTS'), async (req, res, next) => {
   const { commentId } = req.params;
   try {
     await db('Sustain_Comment')
@@ -26,7 +28,7 @@ router.post("/sustain/:commentId", async (req, res, next) => {
 });
 
 // ROUTE TO INCREMENT LIKE_COUNT FOR IMPROVE COMMENT
-router.post("/improve/:commentId", async (req, res, next) => {
+router.post("/improve/:commentId", logUserAction('POST_IMPROVE_COMMENTS'), async (req, res, next) => {
   const { commentId } = req.params;
   try {
     await db('Improve_Comment')
@@ -42,7 +44,7 @@ router.post("/improve/:commentId", async (req, res, next) => {
 });
 
   // POST ROUTE TO INSERT FORM DATA
-  router.post('/form', async (req, res, next) => {
+  router.post('/form', logUserAction('POST_FORM_COMMENTS'), async (req, res, next) => {
     const formData = req.body;
     try {
       await db.transaction(async trx => {

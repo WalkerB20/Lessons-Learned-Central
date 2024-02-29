@@ -7,7 +7,6 @@ import DeleteIcon from '../DeleteIcon';
 import { IconContext } from "react-icons";
 import Like from '../Like';
 import '../Styles/Feed.css';
-import { useAuth0 } from '@auth0/auth0-react';
 
 const Feed = ({ searchTerm, setSearchTerm }) => {
   const [expandedFeeds, setExpandedFeeds] = useState({});
@@ -15,7 +14,6 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
   const [sustainCommentData, setSustainCommentData] = useState([]);
   const [aarData, setAarData] = useState([]);
   const [sortOrder, setSortOrder] = useState('recent');
-  const { getAccessTokenSilently } = useAuth0();
   const [viewBy, setViewBy] = useState('title');
   const [editedValues, setEditedValues] = useState({
     eventTitle: '',
@@ -30,14 +28,8 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
 
   useEffect(() => {
     const fetchAarData = async () => {
-      const token = await getAccessTokenSilently();
       try {
-        const response = await fetch(`${getroutes}/postdata`, {
-          method: 'GET',
-          headers: {
-            "Authorization": `Bearer ${token}`
-          }
-        });
+        const response = await fetch(`${getroutes}/postdata`, {});
         if (!response.ok) {
           throw new Error('Failed to fetch AAR data');
         }
@@ -99,13 +91,11 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
 
   const handleDelete = async (aarId) => {
 console.log(`Deleting post with ID: ${aarId}`); // Add this line
-    const token = await getAccessTokenSilently();
     try {
       await fetch(`${deleteroutes}/postdelete/${aarId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${token}`
         },
       })
       .then((response) => {
@@ -120,13 +110,11 @@ console.log(`Deleting post with ID: ${aarId}`); // Add this line
   };
 
   const handleEdit = async (aarId) => {
-    const token = await getAccessTokenSilently();
     try {
       const response = await fetch(`${patchroutes}/postpatch/${aarId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(editedValues),
       });

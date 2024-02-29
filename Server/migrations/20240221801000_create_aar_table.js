@@ -17,7 +17,7 @@ export const up = async function(knex) {
         table.foreign('Sustain_Comment_ID').references('Sustain_Comment.Sustain_Comment_ID');
         table.uuid('Improve_Comment_ID')
         table.foreign('Improve_Comment_ID').references('Improve_Comment.Improve_Comment_ID');
-        table.integer('Post_ID');
+        table.uuid('Post_ID');
         table.foreign('Post_ID').references('Posts.Post_ID');
       })
     });
@@ -32,6 +32,7 @@ export const down = async function(knex) {
     table.dropForeign('Improve_Comment_ID');
     table.dropForeign('Sustain_Comment_ID');
     table.dropForeign('User_ID');
+    table.dropForeign('Post_ID');
   })
   .then (function() {
     return knex.schema.dropTableIfExists('AAR');

@@ -1,5 +1,6 @@
 /**
- * @param { import("knex").Knex } knex
+
+* @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
 export const up = async function(knex) {
