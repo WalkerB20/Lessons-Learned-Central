@@ -13,88 +13,72 @@ const postroutes = (db) => {
   router.options('*', cors());
   router.use(jwtCheck);
 
-  router.post('/likes', logUserAction('LIKE_POST'), async (req, res) => {
-    const userId = req.user.sub; // Extract from JWT
-    const { postId } = req.body;
-    const likeId = req.params.likeId || null; // Adapt based on your route structure
-  
-    const likeExists = await db('Like').where({ User_ID: userId, Post_ID: postId, Like_ID: likeId }).first();
-    if (likeExists) {
-      return res.status(409).json({ message: "Post already liked by the user." });
-    }
-  
-    await db('Like').insert({ User_ID: userId, Post_ID: postId, Like_ID: likeId });
-    res.json({ message: "Post liked successfully." });
-  });
-  
-  
-// POST FOR EVENTS IN FORM DATA AARCOMPONENTS.JSX
-router.post('/form', logUserAction('SUBMIT_FORM'), async (req, res, next) => {
-  const formData = req.body;
-  try {
-      // Start a transaction
+  router.post('/form', async (req, res, next) => {
+    const formData = req.body;
+
+    try {
       await db.transaction(async trx => {
-          // Insert into the AAR table and get the inserted ID
-          const [aarId] = await trx('AAR').insert({
-              AAR_Name: formData.eventTitle,
-              AAR_Location: formData.eventLocation,
-              AAR_Activity_Date: formData.eventDate,
-              Sustain_Comment_ID: formData.sustainCommentId,
-              Improve_Comment_ID: formData.improveCommentId,
-              // Add other fields as necessary
-          }).returning('AAR_ID');
+        let sustainCommentId = null;
+        let improveCommentId = null;
 
-          // Insert into the Comment table and get the inserted ID
-          const commentIds = await Promise.all(formData.sections.map(async section => {
-              const [commentId] = await trx(`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment`).insert({
-                  [`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment_Type`]: section.type,
-                  [`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment_Title`]: section.title,
-                  [`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment_Discussion`]: section.comments,
-                  [`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment_Recommendation`]: section.recommendations
-                  // Add other fields as necessary
-              }).returning(`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment_ID`);
+        for (const section of formData.sections) {
+          const { title, comments, recommendations, type } = section;
+          let tableName, columnPrefix;
 
-              // Insert into the AAR_Comment table
-              await trx('AAR_Comment').insert({
-                  AAR_Comment_ID: aarId[0],
-                  [`${section.type.charAt(0).toUpperCase() + section.type.slice(1)}_Comment_ID`]: commentId[0]
-              });
+          if (type === 'sustain') {
+            tableName = 'Sustain_Comment';
+            columnPrefix = 'Sustain_Comment';
+          } else if (type === 'improve') {
+            tableName = 'Improve_Comment';
+            columnPrefix = 'Improve_Comment';
+          } else {
+            throw new Error(`Unknown section type: ${type}`);
+          }
 
-              return commentId;
-          }));
+          const insertData = {
+            [`${columnPrefix}_Title`]: title,
+            [`${columnPrefix}_Discussion`]: comments,
+            [`${columnPrefix}_Recommendation`]: recommendations,
+          };
 
-          // Convert eventType to match database table naming convention
-          const formattedEventType = formData.eventType.replace(/([a-z])([A-Z])/g, '$1_$2');
-          const dbEventType = formattedEventType.charAt(0).toUpperCase() + formattedEventType.slice(1);
+          // Correctly handle the insert result to extract the UUID
+          const insertResult = await trx(tableName)
+          .insert(insertData, `${columnPrefix}_ID`)
+          .then((ids) => ids[0][`${columnPrefix}_ID`]); // Correctly accessing the first element of the result
 
-          // Insert into the specific event table and get the inserted ID
-          const [eventId] = await trx(dbEventType).insert({
-              [`${dbEventType}_Event_Type`]: formData.eventType,
-              [`${dbEventType}_Event_Option`]: formData.additionalOptions,
-              [`${dbEventType}_Event_Other`]: formData.additionalInput
-              // Add other fields as necessary
-          }).returning(`${dbEventType}_ID`);
+          if (type === 'sustain') {
+            sustainCommentId = insertResult; // This should be a UUID string
+          } else if (type === 'improve') {
+            improveCommentId = insertResult; // This should be a UUID string
+          }
+        }
 
-          // Insert into the Category table and get the inserted ID
-          const [categoryId] = await trx('Category').insert({
-              [`${dbEventType}_ID`]: eventId[0]
-              // Add other fields as necessary
-          }).returning('Category_ID');
+        // Insert into the AAR table with the captured comment IDs
+        const [aarId] = await trx('AAR').insert({
+          AAR_Name: formData.eventTitle,
+          AAR_Location: formData.eventLocation,
+          AAR_Activity_Date: formData.eventDate,
+          Sustain_Comment_ID: sustainCommentId,
+          Improve_Comment_ID: improveCommentId,
+        }, 'AAR_ID');
 
-          // Insert into the AAR_Category table
-          await trx('AAR_Category').insert({
-              AAR_ID: aarId[0],
-              Category_ID: categoryId[0]
-          });
+        res.json({
+          success: true,
+          message: 'Data inserted successfully',
+          data: {
+            AAR_ID: aarId,
+            Sustain_Comment_ID: sustainCommentId,
+            Improve_Comment_ID: improveCommentId,
+          }
+        });
       });
-
-      res.json({ success: true, message: 'Data inserted successfully' });
     } catch (err) {
-        next({ message: 'Error occurred while inserting data', originalError: err });
-      }
-    });
+      console.error(err);
+      next({ message: 'Error occurred while inserting data', originalError: err });
+    }
+  });
 
-    return router;
+  return router;
 };
 
 export default postroutes;
