@@ -28,11 +28,12 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
 
   useEffect(() => {
     const fetchAarData = async () => {
+      const token = await getAccessTokenSilently();
       try {
         const response = await fetch(`${getroutes}/postdata`, {
           method: 'GET',
           headers: {
-            "Authorization": `Bearer ${await getAccessTokenSilently()}`
+            "Authorization": `Bearer ${token}`
           }
         });
         if (!response.ok) {
@@ -87,12 +88,13 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
   }, [sortOrder, viewBy, searchTerm, getAccessTokenSilently, getroutes]);
 
   const handleLike = async (postId) => {
+    const token = await getAccessTokenSilently()
     try {
       const response = await fetch(`${postroutes}/likes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${await getAccessTokenSilently()}`
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({ postId }),
       });
@@ -120,12 +122,13 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
 
 
   const handleDelete = async (aarId) => {
+    const token = await getAccessTokenSilently();
     try {
       await fetch(`${deleteroutes}/postdelete/${aarId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${await getAccessTokenSilently()}`
+          "Authorization": `Bearer ${token}`
         },
       })
       .then((response) => {
@@ -140,12 +143,13 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
   };
 
   const handleEdit = async (aarId) => {
+    const token = await getAccessTokenSilently();
     try {
       const response = await fetch(`${patchroutes}/postpatch/${aarId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${await getAccessTokenSilently()}`
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(editedValues),
       });

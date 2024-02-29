@@ -23,8 +23,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.50'
-          memory: 200M
+          cpus: '1.0'
+          memory: '1G'
     build:
       context: ./Server
       dockerfile: Dockerfile
@@ -56,8 +56,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.25'
-          memory: 50M
+          cpus: '1.0'
+          memory: '1G'
     build:
       context: ./Server/Microservices/Get
       dockerfile: Dockerfile
@@ -84,8 +84,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.25'
-          memory: 50M
+          cpus: '1.0'
+          memory: '1G'
     build:
       context: ./Server/Microservices/Delete
       dockerfile: Dockerfile
@@ -112,8 +112,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.25'
-          memory: 50M
+          cpus: '1.0'
+          memory: '1G'
     build:
       context: ./Server/Microservices/Post
       dockerfile: Dockerfile
@@ -140,8 +140,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.25'
-          memory: 50M
+          cpus: '1.0'
+          memory: '1G'
     build:
       context: ./Server/Microservices/Patch
       dockerfile: Dockerfile
@@ -168,8 +168,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.00'
-          memory: 500M
+          cpus: '1.0'
+          memory: '1G'
     image: postgres:latest
     volumes:
       - postgres_data:/var/lib/postgresql/data
