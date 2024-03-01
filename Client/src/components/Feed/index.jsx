@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { AiFillCaretRight, AiFillCaretDown } from "react-icons/ai";
-// import { AiOutlineLike, AiFillLike } from "react-icons/ai";
 import EditIcon from '../EditIcon';
 import DeleteIcon from '../DeleteIcon';
 // import Date from '../Date';
 import { IconContext } from "react-icons";
 import Like from '../Like';
 import '../Styles/Feed.css';
+import '../Styles/Like.css';
 
 const Feed = ({ searchTerm, setSearchTerm }) => {
   const [expandedFeeds, setExpandedFeeds] = useState({});
@@ -233,17 +233,22 @@ console.log(`Deleting post with ID: ${aarId}`); // Add this line
               <div id="comment-header">
                 <p>{comment.Improve_Comment_Type}: {comment.Improve_Comment_Title}</p>
               </div>
-            <p className="comment-discussion">
-              Discussion: {comment.Improve_Comment_Discussion}
-            </p>
-            <p className="comment-recommendation">
-              Recommendation: {comment.Improve_Comment_Recommendation}
-            </p>
-            <Like
-              commentId={comment.Improve_Comment_ID}
-              commentType="improve"
-              likeCount={comment.Like_Count}
-            />
+              <div className="comments-wrapper">
+                <div className="comments">
+                  <p className="comment-discussion">
+                    Discussion: {comment.Improve_Comment_Discussion}
+                  </p>
+                  <p className="comment-recommendation">
+                    Recommendation: {comment.Improve_Comment_Recommendation}
+                  </p>
+                </div>
+
+              <Like
+                commentId={comment.Improve_Comment_ID}
+                commentType="improve"
+                likeCount={comment.Like_Count}
+              />
+            </div>
         </li>
         ))}
         {sustainCommentData.filter(comment => comment.Sustain_Comment_ID === aar.Sustain_Comment_ID).map(comment => (
@@ -259,6 +264,7 @@ console.log(`Deleting post with ID: ${aarId}`); // Add this line
             commentId={comment.Sustain_Comment_ID}
             commentType="sustain"
             likeCount={comment.Like_Count}
+            className="like"
           />
       </li>
     ))}
