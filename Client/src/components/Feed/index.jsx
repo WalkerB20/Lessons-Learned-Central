@@ -12,7 +12,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
   const [improveCommentData, setImproveCommentData] = useState([]);
   const [sustainCommentData, setSustainCommentData] = useState([]);
   const [aarData, setAarData] = useState([]);
-  const [sortOrder, setSortOrder] = useState('recent');
+  const [sortOrder] = useState('recent');
   const [viewBy, setViewBy] = useState('title');
   const [editedValues, setEditedValues] = useState({
     eventTitle: '',
@@ -23,7 +23,6 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
   const getroutes = 'http://localhost:3001/api';
   const deleteroutes = 'http://localhost:3001/api';
   const patchroutes = 'http://localhost:3001/api';
-  const postroutes = 'http://localhost:3001/api';
 
   useEffect(() => {
     const fetchAarData = async () => {
@@ -149,12 +148,12 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
     setExpandedFeeds(newExpandedFeeds);
   };
 
-  const handleToggleComments = (aarId) => {
-    setExpandedFeeds((prevState) => ({
-      ...prevState,
-      [aarId]: !prevState[aarId],
-    }));
-  };
+  // const handleToggleComments = (aarId) => {
+  //   setExpandedFeeds((prevState) => ({
+  //     ...prevState,
+  //     [aarId]: !prevState[aarId],
+  //   }));
+  // };
 
   const formatDate = (dateString) => {
     const options = { day: '2-digit', month: 'short', year: 'numeric' };
@@ -204,7 +203,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
                 {improveCommentData.filter(comment => comment.Improve_Comment_ID === aar.Improve_Comment_ID).map(comment => (
                   <li className="comment-details-container" key={comment.Improve_Comment_ID}>
                     <div id="comment-header">
-                      <p>{comment.Improve_Comment_Type}: {comment.Improve_Comment_Title}</p>
+                      <p>Improve: {comment.Improve_Comment_Title}</p>
                     </div>
                     <div className="comments-wrapper">
                     <div className="comments">
@@ -222,7 +221,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
                 {sustainCommentData.filter(comment => comment.Sustain_Comment_ID === aar.Sustain_Comment_ID).map(comment => (
                   <li className="comment-details-container" key={comment.Sustain_Comment_ID}>
                     <div id="comment-header">
-                      <p>{comment.Sustain_Comment_Type}: {comment.Sustain_Comment_Title}</p>
+                      <p>Sustain: {comment.Sustain_Comment_Title}</p>
                     </div>
                     <div className="comments-wrapper">
                     <div className="comments">
