@@ -35,8 +35,8 @@ const Like = ({ commentId, commentType, likeCount: initialLikeCount = 0, liked: 
   return (
     <div>
       {error && <p>Error: {error.message}</p>}
-      <button onClick={handleLike}>
-      <IconContext.Provider value={{className: "like"}}>
+      <button className="likeButton" onClick={handleLike}>
+      <IconContext.Provider value={{className:"like"}}>
         {liked ? <AiFillLike /> : <AiOutlineLike />}
       </IconContext.Provider>
         <span>{likeCount}</span>

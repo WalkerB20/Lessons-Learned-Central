@@ -233,6 +233,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
                       commentId={comment.Sustain_Comment_ID}
                       commentType="sustain"
                       likeCount={comment.Like_Count}
+
                     />
                     </div>
                   </li>

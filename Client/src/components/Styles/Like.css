@@ -10,15 +10,15 @@
   border-radius: 5px;
   cursor: pointer;
   font-weight: 100;
-  background-color: blue;
+  background-color: transparent;
   font-size:3rem;
   padding: 0 0 0 0;
 
 }
 
-.like:hover {
+.likeButton:hover {
   background-color:transparent;
   color: #ffcc01;
   box-shadow: none;
-
 }
+

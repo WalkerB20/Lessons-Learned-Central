@@ -364,6 +364,11 @@
   border-radius: 1em;
 }
 
+.comments-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
 .viewByButton {
   display: flex;
   margin-left: 8.5em;
