@@ -17,10 +17,10 @@ This application is designed to facilitate the After Action Review (AAR) process
 1. Start Docker (Docker must be running for this application to work on a local machine).
 2. Make a folder to house this repository, and clone the repository to that folder.
 3. Use a terminal to cd into the folder that has the repository.
-4. Type docker-compose up
+4. Type `docker-compose up`
 5. Navigate to http://localhost:3000 in a browser.
-6. To close the program, type docker-compose down.
+6. To close the program, type `docker-compose down`.
 7. If you want to save space on your computer:
-	1. Use docker-compose down --rmi all -v to remove all images and volumes.
-	2. Use docker system prune -a --volumes to also clear your builds and cache.
+	1. Use `docker-compose down --rmi all -v` to remove all images and volumes.
+	2. Use `docker system prune -a --volumes` to also clear your builds and cache.
 8. If you want to deploy this application for remote users, Auth0 login functionality is on board. You will just need to create an Auth0 account and follow the instrucitons. You'll need to create a .env file in the root folder with your Auth0 credentials.
