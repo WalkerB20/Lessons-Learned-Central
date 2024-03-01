@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import '../Styles/Contact.css';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     name: '',
     email: '',
     message: ''
-  });
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -17,8 +19,9 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform form submission logic here
     console.log(formData);
+    setFormData(initialFormData);
+    window.alert('Submitted successfully! Thenk you for contacting us!');
   };
 
   return (

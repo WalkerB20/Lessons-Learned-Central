@@ -135,7 +135,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
 
   const handleViewByTitle = () => {
     setViewBy('title');
-    setExpandedFeeds({}); // Reset expandedFeeds state to collapse all feed items
+    setExpandedFeeds({});
   };
 
   const handleViewByComment = () => {
@@ -232,7 +232,6 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
                       commentId={comment.Sustain_Comment_ID}
                       commentType="sustain"
                       likeCount={comment.Like_Count}
-
                     />
                     </div>
                   </li>
