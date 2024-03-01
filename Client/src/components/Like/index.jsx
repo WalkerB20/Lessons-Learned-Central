@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { AiOutlineLike, AiFillLike } from "react-icons/ai";
+import { IconContext } from "react-icons";
+import '../Styles/Like.css';
+import '../Styles/index.css';
+import '../Styles/Feed.css';
 
 const likeroutes = 'http://localhost:3001/api';
 
@@ -31,8 +35,10 @@ const Like = ({ commentId, commentType, likeCount: initialLikeCount = 0, liked: 
   return (
     <div>
       {error && <p>Error: {error.message}</p>}
-      <button onClick={handleLike}>
+      <button className="likeButton" onClick={handleLike}>
+      <IconContext.Provider value={{className:"like"}}>
         {liked ? <AiFillLike /> : <AiOutlineLike />}
+      </IconContext.Provider>
         <span>{likeCount}</span>
       </button>
     </div>

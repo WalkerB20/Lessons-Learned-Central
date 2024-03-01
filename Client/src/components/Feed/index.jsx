@@ -5,6 +5,7 @@ import DeleteIcon from '../DeleteIcon';
 import { IconContext } from "react-icons";
 import Like from '../Like';
 import '../Styles/Feed.css';
+import '../Styles/Like.css';
 
 const Feed = ({ searchTerm, setSearchTerm }) => {
   const [expandedFeeds, setExpandedFeeds] = useState({});
@@ -205,13 +206,17 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
                     <div id="comment-header">
                       <p>{comment.Improve_Comment_Type}: {comment.Improve_Comment_Title}</p>
                     </div>
+                    <div className="comments-wrapper">
+                    <div className="comments">
                     <p className="comment-discussion">Discussion: {comment.Improve_Comment_Discussion}</p>
                     <p className="comment-recommendation">Recommendation: {comment.Improve_Comment_Recommendation}</p>
+                    </div>
                     <Like
                       commentId={comment.Improve_Comment_ID}
                       commentType="improve"
                       likeCount={comment.Like_Count}
                     />
+                    </div>
                   </li>
                 ))}
                 {sustainCommentData.filter(comment => comment.Sustain_Comment_ID === aar.Sustain_Comment_ID).map(comment => (
@@ -219,13 +224,18 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
                     <div id="comment-header">
                       <p>{comment.Sustain_Comment_Type}: {comment.Sustain_Comment_Title}</p>
                     </div>
+                    <div className="comments-wrapper">
+                    <div className="comments">
                     <p className="comment-discussion">Discussion: {comment.Sustain_Comment_Discussion}</p>
                     <p className="comment-recommendation">Recommendation: {comment.Sustain_Comment_Recommendation}</p>
+                    </div>
                     <Like
                       commentId={comment.Sustain_Comment_ID}
                       commentType="sustain"
                       likeCount={comment.Like_Count}
+
                     />
+                    </div>
                   </li>
                 ))}
               </ul>
