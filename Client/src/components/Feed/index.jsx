@@ -29,7 +29,13 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
   useEffect(() => {
     const fetchAarData = async () => {
       try {
-        const response = await fetch(`${getroutes}/postdata`, {});
+        const response = await fetch(`${getroutes}/postdata`, {
+          method: 'GET',
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch AAR data');
         }
@@ -37,14 +43,24 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
         responseData = responseData.aarData;
 
               // Fetch improve comment data
-      const responseImprove = await fetch(`${getroutes}/improve`, {});
+      const responseImprove = await fetch(`${getroutes}/improve`, {          method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      }});
       if (!responseImprove.ok) {
         throw new Error('Failed to fetch improve comment data');
       }
       const improveData = await responseImprove.json();
 
       // Fetch sustain comment data
-      const responseSustain = await fetch(`${getroutes}/sustain`, {});
+      const responseSustain = await fetch(`${getroutes}/sustain`, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        }
+      });
       if (!responseSustain.ok) {
         throw new Error('Failed to fetch sustain comment data');
       }
@@ -79,7 +95,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
       }
     };
     fetchAarData();
-  }, [sortOrder, viewBy, searchTerm]);
+  }, [sortOrder, viewBy, searchTerm, getAccessTokenSilently]);
 
   const toggleFeed = (aarId) => {
     setExpandedFeeds((prevState) => ({

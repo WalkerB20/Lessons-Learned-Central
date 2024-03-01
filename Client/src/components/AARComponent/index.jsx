@@ -4,8 +4,10 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styles from '../Styles/AARComponent.css';
 import '../Styles/index.css';
 import '../Styles/App.css';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export default function AARComponent() {
+  const { getAccessTokenSilently } = useAuth0();
   const postroutes = 'http://localhost:3001/api';//previously llc
   const [formData, setFormData] = useState({
     eventTitle: '',
@@ -65,6 +67,7 @@ const handleAddSection = () => {
 };
 
   const handleSubmit = (event) => {
+    const token = getAccessTokenSilently();
     event.preventDefault();
     // Handles the form submission
     console.log('Form submitted:', formData);
@@ -72,7 +75,8 @@ const handleAddSection = () => {
     fetch(`${postroutes}/form`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(formData)
     })

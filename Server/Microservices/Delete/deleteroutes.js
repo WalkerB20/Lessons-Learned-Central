@@ -1,10 +1,12 @@
 import cors from 'cors';
 import express from 'express';
-import { logUserAction } from '../../server.js';
+import { logUserAction, jwtCheck } from '../../server.js';
+import { auth } from 'express-oauth2-jwt-bearer';
 
 const router = express.Router();
 
 const deleteroutes = (db) => {
+  router.use(jwtCheck);
   router.use(cors());
   router.use(express.json());
   router.options('*', cors());

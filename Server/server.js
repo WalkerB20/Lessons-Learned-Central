@@ -44,9 +44,9 @@ const jwtCheck = auth({
 function logUserAction(actionType) {
     return async (req, res, next) => {
       try {
-        const userId = req.user.sub
-        const postId = req.params.postId || null;
-        const likeId = req.params.likeId || null;
+        const userId = req.user.sub // Assuming JWT middleware adds user info to req.user
+        const postId = req.params.postId || null; // Adapt based on your route structure
+        const likeId = req.params.likeId || null; // Adapt based on your route structure
 
         await db('UserActions').insert({
           User_ID: userId,
@@ -66,10 +66,12 @@ function logUserAction(actionType) {
 
 // MAIN SERVER ROUTE
 app.get('/api', (req, res) => {
+  jwtCheck(req, res);
     res.send('Welcome to the application!');
 });
 
 app.get('/', (req, res) => {
+  jwtCheck(req, res);
     res.send('Welcome to the server!');
 });
 
