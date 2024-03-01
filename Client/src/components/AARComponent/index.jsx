@@ -64,23 +64,24 @@ const handleAddSection = () => {
   }));
 };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Handles the form submission
-    console.log('Form submitted:', formData);
-    // Fetch request
-    fetch(`${postroutes}/form`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(formData)
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch((error) => {
-      console.error('Error:', error);
-    });
+const handleSubmit = (event) => {
+  event.preventDefault();
+
+  // Handles the form submission
+  console.log('Form submitted:', formData);
+
+  // Fetch request
+  fetch(`${postroutes}/form`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(formData)
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    alert('Submission was sent successfully');
     // Form reset after submission
     setFormData({
       eventTitle: '',
@@ -96,7 +97,11 @@ const handleAddSection = () => {
         recommendations: ''
       }],
     });
-  };
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+};
 
   const handleDateChange = (date) => {
     setFormData({
