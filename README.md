@@ -1,26 +1,39 @@
 # Lessons Learned Central Application
 
 ## Overview
-
-This application is designed to facilitate the After Action Review (AAR) process. It allows users to record, analyze, and share lessons learned from both training and real-world operations.
+The Lessons Learned Central Application simplifies the After Action Review (AAR) process. It assists users in documenting, analyzing, and sharing insights from both training sessions and real-world operations.
 
 ## Features
+### Record AARs
+Easily input data from AARs, including important events, observations, and lessons learned.
 
-- **Record AARs**: Users can easily input data from AARs, including key events, observations, and lessons learned.
+### Share Lessons
+Promote continuous learning and improvement by sharing lessons learned with others.
 
-- **Share Lessons**: Users can share lessons learned with others, promoting a culture of continuous learning and improvement.
+### Search
+Quickly find relevant AARs for upcoming operations or activities, allowing users to implement best practices effectively.
 
-- **Search**: Users can search the database for AARs specific to their upcoming operations or activities, and implement best practices based on their results.
+## Getting Started
+1. **Start Docker**: Ensure Docker is running on your local machine.
+2. **Setup Repository**:
+   - Create a folder to house this repository.
+   - Clone the repository to that folder.
+3. **Run the Application**:
+   - Use the terminal to navigate (`cd`) into the repository folder.
+   - Type `docker-compose up`.
+4. **Access the Application**:
+   - Open a web browser and go to [http://localhost:3000](http://localhost:3000).
+5. **Shut Down**:
+   - To close the program, type `docker-compose down`.
+6. **Optional: Free up Space**:
+   - Remove all images and volumes: `docker-compose down --rmi all -v`.
+   - Clear builds and cache: `docker system prune -a --volumes`.
 
-## Start Up:
+## Deployment for Remote Users
+If you want to deploy this application for remote users:
+- Utilize Auth0 login functionality.
+- Create an Auth0 account and follow the instructions.
+- Create a `.env` file in the root folder with your Auth0 credentials.
 
-1. Start Docker (Docker must be running for this application to work on a local machine).
-2. Make a folder to house this repository, and clone the repository to that folder.
-3. Use a terminal to cd into the folder that has the repository.
-4. Type `docker-compose up`
-5. Navigate to http://localhost:3000 in a browser.
-6. To close the program, type `docker-compose down`.
-7. If you want to save space on your computer:
-	1. Use `docker-compose down --rmi all -v` to remove all images and volumes.
-	2. Use `docker system prune -a --volumes` to also clear your builds and cache.
-8. If you want to deploy this application for remote users, Auth0 login functionality is on board. You will just need to create an Auth0 account and follow the instrucitons. You'll need to create a .env file in the root folder with your Auth0 credentials.
+---
+This README provides simple steps to navigate and utilize the Lessons Learned Central Application effectively.
