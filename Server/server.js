@@ -27,7 +27,7 @@ const jwtCheck = auth({
 });
 
   // Use the middleware in routes
-  app.use(jwtCheck);
+  // app.use(jwtCheck);
 
   app.use((req, res, next) => {
     console.log(req.user);

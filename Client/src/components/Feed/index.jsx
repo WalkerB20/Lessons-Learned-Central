@@ -30,13 +30,13 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
 
   useEffect(() => {
     const fetchAarData = async () => {
-      const token = await getAccessTokenSilently();
+      //const token = await getAccessTokenSilently();
       try {
         const response = await fetch(`${getroutes}/postdata`, {
           method: 'GET',
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            //"Authorization": `Bearer ${token}`
           }
         });
         if (!response.ok) {
@@ -49,7 +49,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
       const responseImprove = await fetch(`${getroutes}/improve`, {          method: 'GET',
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        //"Authorization": `Bearer ${token}`
       }});
       if (!responseImprove.ok) {
         throw new Error('Failed to fetch improve comment data');
@@ -61,7 +61,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
         method: 'GET',
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          //"Authorization": `Bearer ${token}`
         }
       });
       if (!responseSustain.ok) {
@@ -98,7 +98,7 @@ const Feed = ({ searchTerm, setSearchTerm }) => {
       }
     };
     fetchAarData();
-  }, [sortOrder, viewBy, searchTerm, getAccessTokenSilently]);
+  }, [sortOrder, viewBy, searchTerm]);
 
   const toggleFeed = (aarId) => {
     setExpandedFeeds((prevState) => ({

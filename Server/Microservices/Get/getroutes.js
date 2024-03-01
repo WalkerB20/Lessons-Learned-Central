@@ -7,7 +7,7 @@ const router = express.Router();
 
 // MIDDLEWARE TO GET DATA
 const getroutes = (db) => {
-  router.use(jwtCheck);
+  // router.use(jwtCheck);
   router.use(cors());
   router.use(express.json());
   router.options('*', cors());
