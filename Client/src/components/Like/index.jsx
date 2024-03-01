@@ -14,43 +14,46 @@ const Like = ({ commentId, commentType, likeCount: initialLikeCount = 0, liked: 
   const [error, setError] = useState(null);
   const { getAccessTokenSilently } = useAuth0();
 
-  const handleLike = () => {
-    const token = getAccessTokenSilently();
+  const handleLike = async () => {
+    const token = await getAccessTokenSilently();
     const method = liked ? 'DELETE' : 'POST';
-
-    fetch(`${likeroutes}/${commentType}/${commentId}`, {
-      method: method,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-  }})
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+  
+    try {
+      const response = await fetch(`${likeroutes}/${commentType}/${commentId}`, {
+        method: method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         }
-        return response.json();
-      })
-      .then(data => {
-        setLiked(!liked);
-        setLikeCount(data.likeCount);
-      })
-      .catch(error => {
-        console.log('Error:', error);
-        setError(error);
       });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      if (method === 'POST') {
+        setLiked(true);
+        setLikeCount(likeCount + 1);
+      } else {
+        setLiked(false);
+        setLikeCount(likeCount - 1);
+      }
+    } catch (error) {
+      setError(error);
+    }
   };
-
+  
   return (
-    <div>
-      {error && <p>Error: {error.message}</p>}
-      <button className="likeButton" onClick={handleLike}>
-      <IconContext.Provider value={{className:"like"}}>
-        {liked ? <AiFillLike /> : <AiOutlineLike />}
-      </IconContext.Provider>
-        <span>{likeCount}</span>
-      </button>
-    </div>
-  );
+      <div>
+        {error && <p>Error: {error.message}</p>}
+        <button className="likeButton" onClick={handleLike}>
+        <IconContext.Provider value={{className:"like"}}>
+          {liked ? <AiFillLike /> : <AiOutlineLike />}
+        </IconContext.Provider>
+          <span>{likeCount}</span>
+        </button>
+      </div>
+    );
 };
 
-export default Like;
+    
+
+  export default Like;
